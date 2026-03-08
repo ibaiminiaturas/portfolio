@@ -31,17 +31,14 @@ fetch('../galeries.json')
     titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
 
     let subGalerias = data[galeriaSeleccionada];
-
-    // Si hay parámetro subSeleccionada, filtramos solo esa subgalería
     if(subSeleccionada){
       subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
     }
-    // SI NO hay subSeleccionada, NO filtramos nada y cargamos todas las subgalerías
 
     subGalerias.forEach((sub, index) => {
       const subDiv = document.createElement('div');
       subDiv.className = 'flex items-center h-[200px] space-x-4';
-      subDiv.style.marginBottom = '150px';
+      subDiv.style.marginBottom = '120px';
 
       if(index % 2 === 0){
         subDiv.style.paddingLeft = '15%';
@@ -64,6 +61,27 @@ fetch('../galeries.json')
       carruselWrapper.style.flex = '1';
       carruselWrapper.style.height = '200px';
 
+      const carruselDiv = document.createElement('div');
+      carruselDiv.className = 'flex h-[200px] overflow-x-auto scrollbar-hide';
+      carruselDiv.style.flex = '1';
+      carruselDiv.style.scrollBehavior = 'smooth';
+      carruselDiv.style.gap = '20px'; // 20px entre imágenes
+
+      for(let i = 1; i <= sub.images; i++){
+        const img = document.createElement('img');
+        img.src = `data/${galeriaSeleccionada}/${sub.name}/${i}.jpg`;
+        img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0';
+        carruselDiv.appendChild(img);
+        img.addEventListener('click', () => {
+  const images = [];
+  for(let j = 1; j <= sub.images; j++){
+    images.push(`data/${galeriaSeleccionada}/${sub.name}/${j}.jpg`);
+  }
+
+  openLightbox(images, i - 1);
+});
+      }
+
       // Flechas
       const leftArrow = document.createElement('div');
       leftArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,17 +99,13 @@ fetch('../galeries.json')
       rightArrow.style.right = '0';
       rightArrow.style.zIndex = '10';
 
-      const carruselDiv = document.createElement('div');
-      carruselDiv.className = 'flex space-x-2 h-[200px] overflow-x-auto scrollbar-hide';
-      carruselDiv.style.flex = '1';
-      carruselDiv.style.scrollBehavior = 'smooth';
-
-      for(let i = 1; i <= sub.images; i++){
-        const img = document.createElement('img');
-        img.src = `data/${galeriaSeleccionada}/${sub.name}/${i}.jpg`;
-        img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0';
-        carruselDiv.appendChild(img);
-      }
+      // Ocultar flechas si no hace falta
+      setTimeout(() => {
+        if(carruselDiv.scrollWidth <= carruselDiv.clientWidth){
+          leftArrow.style.display = 'none';
+          rightArrow.style.display = 'none';
+        }
+      }, 50); // Delay para que carguen las imágenes
 
       // Eventos flechas
       leftArrow.addEventListener('click', () => {
@@ -123,5 +137,25 @@ fetch('../galeries.json')
   scrollbar-width: none; /* Firefox */
 }
 </style>
+
+
+  <!-- LIGHTBOX (visor de imagen grande) -->
+  <div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
+
+    <img id="lightbox-img" class="max-h-[90%] max-w-[90%] rounded shadow-lg">
+
+    <button id="lightbox-prev" class="absolute left-10 text-white text-5xl hover:text-yellow-400">
+      ❮
+    </button>
+
+    <button id="lightbox-next" class="absolute right-10 text-white text-5xl hover:text-yellow-400">
+      ❯
+    </button>
+
+  </div>
+
+
+  <!-- scripts -->
+  <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>
