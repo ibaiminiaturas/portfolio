@@ -18,7 +18,7 @@ function initializeMenu() {
 
     // Galería principal
     const aMain = document.createElement("a");
-    aMain.href = `galleries/index.html?galeria=${encodeURIComponent(section.section)}`;
+    aMain.href = `/galleries/index.html?galeria=${encodeURIComponent(section.section)}`;
     aMain.textContent = section.section;
     aMain.className = "block px-4 py-2 cursor-pointer rounded hover:bg-gray-700 w-full";
     li.appendChild(aMain);
@@ -30,7 +30,7 @@ function initializeMenu() {
 
       section.subs.forEach(sub => {
         const aSub = document.createElement("a");
-        aSub.href = `galleries/index.html?galeria=${encodeURIComponent(section.section)}&sub=${encodeURIComponent(sub)}`;
+        aSub.href = `/galleries/index.html?galeria=${encodeURIComponent(section.section)}&sub=${encodeURIComponent(sub)}`;
         aSub.textContent = sub;
         aSub.className = "block px-4 py-2 rounded hover:bg-gray-600";
         subMenu.appendChild(aSub);

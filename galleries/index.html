@@ -91,88 +91,33 @@
 
         // ====== MOSAICO TIPO TETRIS ======
         if(sub.type === 'mosaic') {
-          // Configuración del mosaico
-          const cellSize = 200; // Tamaño base de cada celda (200px = tamaño imagen 1x1)
-          const gridSize = 6; // 6x6 celdas = 1200x1200px total
-
           const mosaicContainer = document.createElement('div');
-          mosaicContainer.style.flex = '1';
-          mosaicContainer.style.display = 'grid';
-          mosaicContainer.style.gridTemplateColumns = `repeat(${gridSize}, ${cellSize}px)`;
+          mosaicContainer.style.display = 'flex';
+          mosaicContainer.style.flexWrap = 'wrap';
           mosaicContainer.style.gap = '20px';
-          mosaicContainer.style.gridAutoRows = `${cellSize}px`;
-          mosaicContainer.style.maxWidth = 'fit-content';
+          mosaicContainer.style.width = '90%';
+          mosaicContainer.style.justifyContent = 'flex-start';
 
-          // Algoritmo Tetris: colocar imágenes grandes primero, luego rellenar huecos
-          const grid = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
-
-          // Función para encontrar espacio disponible
-          function findSpace(size) {
-            for(let row = 0; row <= gridSize - size; row++) {
-              for(let col = 0; col <= gridSize - size; col++) {
-                let canPlace = true;
-                for(let r = 0; r < size; r++) {
-                  for(let c = 0; c < size; c++) {
-                    if(grid[row + r][col + c]) {
-                      canPlace = false;
-                      break;
-                    }
-                  }
-                  if(!canPlace) break;
-                }
-                if(canPlace) return { row, col };
-              }
-            }
-            return null;
+          // Crear imágenes con tamaños aleatorios entre 200x200 y 600x600
+          for(let i = 0; i < sub.images; i++){
+            const size = 200 + Math.random() * 400; // Tamaño aleatorio entre 200 y 600
+            const img = document.createElement('img');
+            img.src = images[i];
+            img.style.width = `${size}px`;
+            img.style.height = `${size}px`;
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '8px';
+            img.style.cursor = 'pointer';
+            img.style.transition = 'transform 0.25s ease-out';
+            img.addEventListener('click', () => openLightbox(images, i));
+            img.addEventListener('mouseenter', () => {
+              img.style.transform = 'scale(1.1)';
+            });
+            img.addEventListener('mouseleave', () => {
+              img.style.transform = 'scale(1)';
+            });
+            mosaicContainer.appendChild(img);
           }
-
-          // Función para marcar espacio como ocupado
-          function occupySpace(row, col, size) {
-            for(let r = 0; r < size; r++) {
-              for(let c = 0; c < size; c++) {
-                grid[row + r][col + c] = true;
-              }
-            }
-          }
-
-          // Crear lista de imágenes con tamaños (priorizar grandes)
-          const imageSizes = [];
-          for(let i = 0; i < sub.images; i++) {
-            imageSizes.push({ index: i, size: [3, 2, 1][Math.floor(Math.random() * 3)] });
-          }
-          // Ordenar por tamaño descendente para colocar grandes primero
-          imageSizes.sort((a, b) => b.size - a.size);
-
-          // Colocar imágenes
-          imageSizes.forEach(({ index, size }) => {
-            const space = findSpace(size);
-            if(space) {
-              occupySpace(space.row, space.col, size);
-
-              const img = document.createElement('img');
-              img.src = images[index];
-              img.style.width = '100%';
-              img.style.height = '100%';
-              img.style.objectFit = 'cover';
-              img.style.borderRadius = '8px';
-              img.style.cursor = 'pointer';
-              img.style.transition = 'transform 0.25s ease-out';
-              img.style.gridColumn = `span ${size}`;
-              img.style.gridRow = `span ${size}`;
-
-              img.addEventListener('click', () => openLightbox(images, index));
-
-              img.addEventListener('mouseenter', () => {
-                img.style.transform = 'scale(1.1)';
-              });
-
-              img.addEventListener('mouseleave', () => {
-                img.style.transform = 'scale(1)';
-              });
-
-              mosaicContainer.appendChild(img);
-            }
-          });
 
           titleSection.appendChild(mosaicContainer);
           subDiv.appendChild(titleSection);

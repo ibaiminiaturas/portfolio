@@ -3,7 +3,7 @@
   "Box Arts": [
     { "name": "MarvelUnited", "displayName": "Marvel United", "images": 8 },
     { "name": "SOIF", "displayName": "Song of Ice And Fire", "images": 6 },
-    { "name": "Other", "displayName": "Otros Trabajos", "images": 4, "type": "mosaic" }
+    { "name": "Other", "displayName": "Otros Trabajos", "images": 12, "type": "mosaic" }
   ],
   "Warhammer": [
     { "name": "Other", "displayName": "Otros Warhammer", "images": 3, "type": "mosaic" }
