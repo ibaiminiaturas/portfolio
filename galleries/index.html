@@ -91,24 +91,46 @@
 
         // ====== MOSAICO TIPO TETRIS ======
         if(sub.type === 'mosaic') {
-          const mosaicContainer = document.createElement('div');
-          mosaicContainer.style.display = 'flex';
-          mosaicContainer.style.flexWrap = 'wrap';
-          mosaicContainer.style.gap = '20px';
-          mosaicContainer.style.width = '90%';
-          mosaicContainer.style.justifyContent = 'flex-start';
+          const cellSize = 200;
+          const gap = 20;
+          const availableWidth = (window.innerWidth - 48) * 0.9;
+          let maxCols = Math.floor(availableWidth / cellSize);
+          let totalWidth = maxCols * cellSize + (maxCols - 1) * gap;
+          while (totalWidth > availableWidth && maxCols > 1) {
+            maxCols--;
+            totalWidth = maxCols * cellSize + (maxCols - 1) * gap;
+          }
 
-          // Crear imágenes con tamaños aleatorios entre 200x200 y 600x600
+          const mosaicContainer = document.createElement('div');
+          mosaicContainer.style.display = 'grid';
+          mosaicContainer.style.gridTemplateColumns = `repeat(${maxCols}, ${cellSize}px)`;
+          mosaicContainer.style.gap = `${gap}px`;
+          mosaicContainer.style.gridAutoFlow = 'dense';
+          mosaicContainer.style.gridAutoRows = `${cellSize}px`;
+          mosaicContainer.style.width = `${totalWidth}px`; // Ancho exacto para evitar scroll
+
+          // Asignar spans sin ordenar para menos predecibilidad
           for(let i = 0; i < sub.images; i++){
-            const size = 200 + Math.random() * 400; // Tamaño aleatorio entre 200 y 600
+            let span;
+            if(Math.random() < 0.5) {
+              // 50% spans estándar 1,2,3
+              span = Math.random() < 0.5 ? 1 : Math.random() < 0.7 ? 2 : 3;
+            } else {
+              // 50% tamaños random ajustados
+              const randomSize = 200 + Math.random() * 400;
+              span = Math.max(1, Math.min(maxCols, Math.round(randomSize / cellSize)));
+            }
+
             const img = document.createElement('img');
             img.src = images[i];
-            img.style.width = `${size}px`;
-            img.style.height = `${size}px`;
+            img.style.width = '100%';
+            img.style.height = '100%';
             img.style.objectFit = 'cover';
             img.style.borderRadius = '8px';
             img.style.cursor = 'pointer';
             img.style.transition = 'transform 0.25s ease-out';
+            img.style.gridColumn = `span ${span}`;
+            img.style.gridRow = `span ${span}`;
             img.addEventListener('click', () => openLightbox(images, i));
             img.addEventListener('mouseenter', () => {
               img.style.transform = 'scale(1.1)';
