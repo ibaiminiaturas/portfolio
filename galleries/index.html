@@ -10,13 +10,13 @@
   <div id="header-placeholder"></div>
 
   <script>
-    fetch('../components/header.html')
+    fetch('/components/header.html')
       .then(res => res.text())
       .then(html => {
         document.getElementById('header-placeholder').innerHTML = html;
         // Cargar el script del menú después de que el header esté en el DOM
         const script = document.createElement('script');
-        script.src = '../assets/js/menu.js';
+        script.src = '/assets/js/menu.js';
         document.body.appendChild(script);
       });
   </script>
@@ -31,7 +31,7 @@
     <button id="lightbox-next" class="absolute text-white text-5xl hover:text-yellow-400">❯</button>
   </div>
 
-  <script src="../assets/js/lightbox.js"></script>
+  <script src="/assets/js/lightbox.js"></script>
 
   <script>
   const params = new URLSearchParams(window.location.search);
@@ -41,7 +41,7 @@
   const container = document.getElementById('galeria-container');
   const titulo = document.getElementById('titulo-galeria');
 
-  fetch('../galeries.json')
+  fetch('/galeries.json')
     .then(res => res.json())
     .then(data => {
       if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
@@ -58,10 +58,20 @@
       }
 
       subGalerias.forEach((sub, index) => {
-        const subDiv = document.createElement('div');
-        subDiv.className = 'flex items-center h-[200px] space-x-4';
-        subDiv.style.marginBottom = '120px';
+        // Nombre + imágenes
+        const nombreDiv = document.createElement('div');
+        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+        nombreDiv.style.flexShrink = '0';
+        nombreDiv.textContent = sub.displayName || sub.name;
 
+        const images = Array.from({length: sub.images}, (_, j) => 
+          `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+        );
+
+        // Contenedor principal
+        const subDiv = document.createElement('div');
+        subDiv.style.marginBottom = '120px';
+        
         if(index % 2 === 0){
           subDiv.style.paddingLeft = '15%';
           subDiv.style.paddingRight = '5%';
@@ -70,14 +80,107 @@
           subDiv.style.paddingRight = '10%';
         }
 
-        // Nombre de la subgalería
-        const nombreDiv = document.createElement('div');
-        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
-        nombreDiv.style.flexShrink = '0';
-        nombreDiv.textContent = sub.displayName || sub.name;
-        subDiv.appendChild(nombreDiv);
+        // Nombre
+        const titleSection = document.createElement('div');
+        titleSection.style.display = 'flex';
+        titleSection.style.gap = '20px';
+        titleSection.style.alignItems = 'flex-start';
+        titleSection.style.marginBottom = '20px';
 
-        // Carrusel
+        titleSection.appendChild(nombreDiv);
+
+        // ====== MOSAICO TIPO TETRIS ======
+        if(sub.type === 'mosaic') {
+          // Configuración del mosaico
+          const cellSize = 200; // Tamaño base de cada celda (200px = tamaño imagen 1x1)
+          const gridSize = 6; // 6x6 celdas = 1200x1200px total
+
+          const mosaicContainer = document.createElement('div');
+          mosaicContainer.style.flex = '1';
+          mosaicContainer.style.display = 'grid';
+          mosaicContainer.style.gridTemplateColumns = `repeat(${gridSize}, ${cellSize}px)`;
+          mosaicContainer.style.gap = '20px';
+          mosaicContainer.style.gridAutoRows = `${cellSize}px`;
+          mosaicContainer.style.maxWidth = 'fit-content';
+
+          // Algoritmo Tetris: colocar imágenes grandes primero, luego rellenar huecos
+          const grid = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
+
+          // Función para encontrar espacio disponible
+          function findSpace(size) {
+            for(let row = 0; row <= gridSize - size; row++) {
+              for(let col = 0; col <= gridSize - size; col++) {
+                let canPlace = true;
+                for(let r = 0; r < size; r++) {
+                  for(let c = 0; c < size; c++) {
+                    if(grid[row + r][col + c]) {
+                      canPlace = false;
+                      break;
+                    }
+                  }
+                  if(!canPlace) break;
+                }
+                if(canPlace) return { row, col };
+              }
+            }
+            return null;
+          }
+
+          // Función para marcar espacio como ocupado
+          function occupySpace(row, col, size) {
+            for(let r = 0; r < size; r++) {
+              for(let c = 0; c < size; c++) {
+                grid[row + r][col + c] = true;
+              }
+            }
+          }
+
+          // Crear lista de imágenes con tamaños (priorizar grandes)
+          const imageSizes = [];
+          for(let i = 0; i < sub.images; i++) {
+            imageSizes.push({ index: i, size: [3, 2, 1][Math.floor(Math.random() * 3)] });
+          }
+          // Ordenar por tamaño descendente para colocar grandes primero
+          imageSizes.sort((a, b) => b.size - a.size);
+
+          // Colocar imágenes
+          imageSizes.forEach(({ index, size }) => {
+            const space = findSpace(size);
+            if(space) {
+              occupySpace(space.row, space.col, size);
+
+              const img = document.createElement('img');
+              img.src = images[index];
+              img.style.width = '100%';
+              img.style.height = '100%';
+              img.style.objectFit = 'cover';
+              img.style.borderRadius = '8px';
+              img.style.cursor = 'pointer';
+              img.style.transition = 'transform 0.25s ease-out';
+              img.style.gridColumn = `span ${size}`;
+              img.style.gridRow = `span ${size}`;
+
+              img.addEventListener('click', () => openLightbox(images, index));
+
+              img.addEventListener('mouseenter', () => {
+                img.style.transform = 'scale(1.1)';
+              });
+
+              img.addEventListener('mouseleave', () => {
+                img.style.transform = 'scale(1)';
+              });
+
+              mosaicContainer.appendChild(img);
+            }
+          });
+
+          titleSection.appendChild(mosaicContainer);
+          subDiv.appendChild(titleSection);
+          container.appendChild(subDiv);
+          return;
+        }
+
+        // ====== CARRUSEL (por defecto) ======
         const carruselWrapper = document.createElement('div');
         carruselWrapper.className = 'relative flex items-center';
         carruselWrapper.style.flex = '1';
@@ -90,9 +193,6 @@
         carruselDiv.style.gap = '20px';
 
         const imgs = [];
-        const images = Array.from({length: sub.images}, (_, j) => 
-          `data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
-        );
 
         for(let i = 1; i <= sub.images; i++){
           const img = document.createElement('img');
@@ -158,7 +258,8 @@
         carruselWrapper.appendChild(rightArrow);
         carruselWrapper.appendChild(carruselDiv);
 
-        subDiv.appendChild(carruselWrapper);
+        titleSection.appendChild(carruselWrapper);
+        subDiv.appendChild(titleSection);
         container.appendChild(subDiv);
       });
     })
