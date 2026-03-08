@@ -40,31 +40,33 @@ const galerias = [
 
 const dropdown = document.getElementById("dropdown-galerias");
 
+// Eliminamos padding extra del dropdown principal
+dropdown.className = "absolute hidden bg-gray-800 mt-2 rounded shadow-lg w-max";
+
 galerias.forEach(section => {
   const li = document.createElement("div");
   li.className = "relative";
 
   const span = document.createElement("div");
   span.textContent = section.section;
-  span.className = "px-4 py-2 cursor-pointer hover:bg-gray-700 rounded";
+  // Mantener mayúsculas y padding, pero el hover abarca todo
+  span.className = "block px-4 py-2 cursor-pointer rounded hover:bg-gray-700 w-full";
   li.appendChild(span);
 
-  // Submenú lateral
   if(section.subs && section.subs.length > 0){
     const subMenu = document.createElement("div");
-    subMenu.className = "absolute top-0 left-full hidden bg-gray-800 py-2 rounded shadow-lg min-w-[200px]";
+    subMenu.className = "absolute top-0 left-full hidden bg-gray-700 py-2 rounded shadow-lg min-w-[200px]";
 
     section.subs.forEach(sub => {
       const a = document.createElement("a");
       a.href = sub.url;
       a.textContent = sub.name;
-      a.className = "block px-4 py-2 hover:bg-gray-700";
+      a.className = "block px-4 py-2 rounded hover:bg-gray-600";
       subMenu.appendChild(a);
     });
 
     li.appendChild(subMenu);
 
-    // Hover con JS para submenus
     li.addEventListener("mouseenter", () => subMenu.classList.remove("hidden"));
     li.addEventListener("mouseleave", () => subMenu.classList.add("hidden"));
   }
