@@ -4,26 +4,18 @@
   <meta charset="UTF-8">
   <title>Galería</title>
   <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="../assets/css/style.css">
+  
 </head>
 <body class="bg-gray-100 p-6">
 
   <h1 class="text-4xl font-bold mb-6" id="titulo-galeria">Galería</h1>
+
   <div id="galeria-container" class="space-y-6"></div>
-
-  <!-- LIGHTBOX -->
-  <div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
-    <div class="relative">
-      <img id="lightbox-img" class="max-h-[90vh] max-w-[90vw] rounded shadow-lg">
-      <button id="lightbox-prev" class="absolute text-white text-5xl hover:text-yellow-400">❮</button>
-      <button id="lightbox-next" class="absolute text-white text-5xl hover:text-yellow-400">❯</button>
-    </div>
-  </div>
-
 <script>
 const params = new URLSearchParams(window.location.search);
 const galeriaSeleccionada = params.get('galeria'); 
 const subSeleccionada = params.get('sub'); 
+
 const container = document.getElementById('galeria-container');
 const titulo = document.getElementById('titulo-galeria');
 
@@ -39,12 +31,15 @@ fetch('../galeries.json')
     titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
 
     let subGalerias = data[galeriaSeleccionada];
-    if(subSeleccionada) subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
+    if(subSeleccionada){
+      subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
+    }
 
     subGalerias.forEach((sub, index) => {
       const subDiv = document.createElement('div');
       subDiv.className = 'flex items-center h-[200px] space-x-4';
       subDiv.style.marginBottom = '120px';
+
       if(index % 2 === 0){
         subDiv.style.paddingLeft = '15%';
         subDiv.style.paddingRight = '5%';
@@ -53,14 +48,14 @@ fetch('../galeries.json')
         subDiv.style.paddingRight = '10%';
       }
 
-      // Nombre subgalería
+      // Nombre de la subgalería
       const nombreDiv = document.createElement('div');
       nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
       nombreDiv.style.flexShrink = '0';
       nombreDiv.textContent = sub.displayName || sub.name;
       subDiv.appendChild(nombreDiv);
 
-      // Carrusel wrapper
+      // Carrusel
       const carruselWrapper = document.createElement('div');
       carruselWrapper.className = 'relative flex items-center';
       carruselWrapper.style.flex = '1';
@@ -70,55 +65,55 @@ fetch('../galeries.json')
       carruselDiv.className = 'flex h-[200px] overflow-x-auto scrollbar-hide';
       carruselDiv.style.flex = '1';
       carruselDiv.style.scrollBehavior = 'smooth';
-      carruselDiv.style.gap = '20px';
+      carruselDiv.style.gap = '20px'; // 20px entre imágenes
 
       for(let i = 1; i <= sub.images; i++){
         const img = document.createElement('img');
         img.src = `data/${galeriaSeleccionada}/${sub.name}/${i}.jpg`;
-        img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0 cursor-pointer';
+        img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0';
         carruselDiv.appendChild(img);
         img.addEventListener('click', () => {
-          const images = [];
-          for(let j = 1; j <= sub.images; j++) images.push(`data/${galeriaSeleccionada}/${sub.name}/${j}.jpg`);
-          openLightbox(images, i - 1);
-        });
+  const images = [];
+  for(let j = 1; j <= sub.images; j++){
+    images.push(`data/${galeriaSeleccionada}/${sub.name}/${j}.jpg`);
+  }
+
+  openLightbox(images, i - 1);
+});
       }
 
       // Flechas
       const leftArrow = document.createElement('div');
-      leftArrow.style.display = 'none'; // inicialmente oculto
-
       leftArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>`;
       leftArrow.style.position = 'absolute';
       leftArrow.style.left = '0';
       leftArrow.style.zIndex = '10';
-      leftArrow.style.top = '50%';
-      leftArrow.style.transform = 'translateY(-50%)';
 
       const rightArrow = document.createElement('div');
-      rightArrow.style.display = 'none'; // inicialmente oculto
       rightArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>`;
       rightArrow.style.position = 'absolute';
       rightArrow.style.right = '0';
       rightArrow.style.zIndex = '10';
-      rightArrow.style.top = '50%';
-      rightArrow.style.transform = 'translateY(-50%)';
+
+      // Ocultar flechas si no hace falta
+      setTimeout(() => {
+        if(carruselDiv.scrollWidth <= carruselDiv.clientWidth){
+          leftArrow.style.display = 'none';
+          rightArrow.style.display = 'none';
+        }
+      }, 50); // Delay para que carguen las imágenes
 
       // Eventos flechas
-      leftArrow.addEventListener('click', () => { carruselDiv.scrollBy({ left: -220, behavior: 'smooth' }); });
-      rightArrow.addEventListener('click', () => { carruselDiv.scrollBy({ left: 220, behavior: 'smooth' }); });
-
-      // Mostrar/ocultar flechas según scroll
-      function updateCarruselArrows() {
-        leftArrow.style.display = carruselDiv.scrollLeft <= 0 ? 'none' : 'flex';
-        rightArrow.style.display = (carruselDiv.scrollLeft + carruselDiv.clientWidth >= carruselDiv.scrollWidth - 1) ? 'none' : 'flex';
-      }
-      carruselDiv.addEventListener('scroll', updateCarruselArrows);
-      setTimeout(updateCarruselArrows, 100);
+      leftArrow.addEventListener('click', () => {
+        carruselDiv.scrollBy({ left: -220, behavior: 'smooth' });
+      });
+      rightArrow.addEventListener('click', () => {
+        carruselDiv.scrollBy({ left: 220, behavior: 'smooth' });
+      });
 
       carruselWrapper.appendChild(leftArrow);
       carruselWrapper.appendChild(rightArrow);
@@ -133,9 +128,34 @@ fetch('../galeries.json')
     container.innerHTML = "<p class='text-xl'>Error cargando la galería.</p>";
   });
 </script>
+<style>
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>
 
-<!-- Tu script original de lightbox -->
-<script src="../assets/js/lightbox.js"></script>
 
+  <!-- LIGHTBOX (visor de imagen grande) -->
+  <div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
+
+    <img id="lightbox-img" class="max-h-[90%] max-w-[90%] rounded shadow-lg">
+
+    <button id="lightbox-prev" class="absolute left-10 text-white text-5xl hover:text-yellow-400">
+      ❮
+    </button>
+
+    <button id="lightbox-next" class="absolute right-10 text-white text-5xl hover:text-yellow-400">
+      ❯
+    </button>
+
+  </div>
+
+
+  <!-- scripts -->
+  <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>
