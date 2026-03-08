@@ -11,11 +11,10 @@
   <h1 class="text-4xl font-bold mb-6" id="titulo-galeria">Galería</h1>
 
   <div id="galeria-container" class="space-y-6"></div>
-
 <script>
   const params = new URLSearchParams(window.location.search);
-  const galeriaSeleccionada = params.get('galeria'); // Ej: "Box Arts"
-  const subSeleccionada = params.get('sub'); // Ej: "MarvelUnited" u otra
+  const galeriaSeleccionada = params.get('galeria'); 
+  const subSeleccionada = params.get('sub'); 
 
   const container = document.getElementById('galeria-container');
   const titulo = document.getElementById('titulo-galeria');
@@ -31,7 +30,6 @@
 
       titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
 
-      // Filtrar subgalería si se seleccionó
       let subGalerias = data[galeriaSeleccionada];
       if(subSeleccionada){
         subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
@@ -39,24 +37,24 @@
 
       subGalerias.forEach(sub => {
         const subDiv = document.createElement('div');
-        subDiv.className = 'subgaleria flex items-center h-[200px] space-x-4 p-2';
+        // Contenedor principal con padding y flex-row
+        subDiv.className = 'flex items-center h-[200px] space-x-4 p-2';
+        subDiv.style.paddingLeft = '15%';
+        subDiv.style.paddingRight = '10%';
 
-        // Nombre de la subgalería
+        // Nombre de la subgalería: ancho fijo 200px
         const nombreDiv = document.createElement('div');
-        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-5xl font-bold text-gray-800 break-words pr-[20%]';
+        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+        nombreDiv.style.flexShrink = '0'; // Evita que se reduzca
         nombreDiv.textContent = sub.name;
         subDiv.appendChild(nombreDiv);
 
-        // Mini carrusel
+        // Carrusel de imágenes
         const carruselDiv = document.createElement('div');
         carruselDiv.className = 'flex space-x-2';
         carruselDiv.style.height = '200px';
-
-        // Comprobamos si hace falta scroll
-        const totalWidth = sub.images * 200 + (sub.images - 1) * 8; // 200px por imagen + gap de 8px
-        if(totalWidth > window.innerWidth - 220){ // 220px para el bloque de nombre y padding
-          carruselDiv.classList.add('overflow-x-auto');
-        }
+        carruselDiv.style.flex = '1';
+        carruselDiv.style.overflowX = 'auto'; // Scroll si no caben
 
         for(let i = 1; i <= sub.images; i++){
           const img = document.createElement('img');
