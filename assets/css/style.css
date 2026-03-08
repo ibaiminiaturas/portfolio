@@ -37,3 +37,22 @@
   font-size: 2rem;
   z-index: 100;
 }
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.gallery {
+  width: 60%;
+  margin: 0 auto;        /* centra la columna */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.gallery img {
+  width: 100%;           /* ocupa todo el ancho de la columna */
+  height: auto;          /* mantiene proporción */
+  display: block;
+}
