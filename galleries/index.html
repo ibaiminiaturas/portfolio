@@ -4,158 +4,183 @@
   <meta charset="UTF-8">
   <title>Galería</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  
 </head>
 <body class="bg-gray-100 p-6">
 
   <h1 class="text-4xl font-bold mb-6" id="titulo-galeria">Galería</h1>
-
   <div id="galeria-container" class="space-y-6"></div>
-<script>
-const params = new URLSearchParams(window.location.search);
-const galeriaSeleccionada = params.get('galeria'); 
-const subSeleccionada = params.get('sub'); 
-
-const container = document.getElementById('galeria-container');
-const titulo = document.getElementById('titulo-galeria');
-
-fetch('../galeries.json')
-  .then(res => res.json())
-  .then(data => {
-    if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
-      container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
-      console.log("Galería no encontrada:", galeriaSeleccionada);
-      return;
-    }
-
-    titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
-
-    let subGalerias = data[galeriaSeleccionada];
-    if(subSeleccionada){
-      subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
-    }
-
-    subGalerias.forEach((sub, index) => {
-      const subDiv = document.createElement('div');
-      subDiv.className = 'flex items-center h-[200px] space-x-4';
-      subDiv.style.marginBottom = '120px';
-
-      if(index % 2 === 0){
-        subDiv.style.paddingLeft = '15%';
-        subDiv.style.paddingRight = '5%';
-      } else {
-        subDiv.style.paddingLeft = '10%';
-        subDiv.style.paddingRight = '10%';
-      }
-
-      // Nombre de la subgalería
-      const nombreDiv = document.createElement('div');
-      nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
-      nombreDiv.style.flexShrink = '0';
-      nombreDiv.textContent = sub.displayName || sub.name;
-      subDiv.appendChild(nombreDiv);
-
-      // Carrusel
-      const carruselWrapper = document.createElement('div');
-      carruselWrapper.className = 'relative flex items-center';
-      carruselWrapper.style.flex = '1';
-      carruselWrapper.style.height = '200px';
-
-      const carruselDiv = document.createElement('div');
-      carruselDiv.className = 'flex h-[200px] overflow-x-auto scrollbar-hide';
-      carruselDiv.style.flex = '1';
-      carruselDiv.style.scrollBehavior = 'smooth';
-      carruselDiv.style.gap = '20px'; // 20px entre imágenes
-
-      for(let i = 1; i <= sub.images; i++){
-        const img = document.createElement('img');
-        img.src = `data/${galeriaSeleccionada}/${sub.name}/${i}.jpg`;
-        img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0';
-        carruselDiv.appendChild(img);
-        img.addEventListener('click', () => {
-  const images = [];
-  for(let j = 1; j <= sub.images; j++){
-    images.push(`data/${galeriaSeleccionada}/${sub.name}/${j}.jpg`);
-  }
-
-  openLightbox(images, i - 1);
-});
-      }
-
-      // Flechas
-      const leftArrow = document.createElement('div');
-      leftArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>`;
-      leftArrow.style.position = 'absolute';
-      leftArrow.style.left = '0';
-      leftArrow.style.zIndex = '10';
-
-      const rightArrow = document.createElement('div');
-      rightArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>`;
-      rightArrow.style.position = 'absolute';
-      rightArrow.style.right = '0';
-      rightArrow.style.zIndex = '10';
-
-      // Ocultar flechas si no hace falta
-      setTimeout(() => {
-        if(carruselDiv.scrollWidth <= carruselDiv.clientWidth){
-          leftArrow.style.display = 'none';
-          rightArrow.style.display = 'none';
-        }
-      }, 50); // Delay para que carguen las imágenes
-
-      // Eventos flechas
-      leftArrow.addEventListener('click', () => {
-        carruselDiv.scrollBy({ left: -220, behavior: 'smooth' });
-      });
-      rightArrow.addEventListener('click', () => {
-        carruselDiv.scrollBy({ left: 220, behavior: 'smooth' });
-      });
-
-      carruselWrapper.appendChild(leftArrow);
-      carruselWrapper.appendChild(rightArrow);
-      carruselWrapper.appendChild(carruselDiv);
-
-      subDiv.appendChild(carruselWrapper);
-      container.appendChild(subDiv);
-    });
-  })
-  .catch(err => {
-    console.error('Error cargando galería:', err);
-    container.innerHTML = "<p class='text-xl'>Error cargando la galería.</p>";
-  });
-</script>
-<style>
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-</style>
-
 
   <!-- LIGHTBOX (visor de imagen grande) -->
   <div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
-
     <img id="lightbox-img" class="max-h-[90%] max-w-[90%] rounded shadow-lg">
-
-    <button id="lightbox-prev" class="absolute left-10 text-white text-5xl hover:text-yellow-400">
-      ❮
-    </button>
-
-    <button id="lightbox-next" class="absolute right-10 text-white text-5xl hover:text-yellow-400">
-      ❯
-    </button>
-
+    <button id="lightbox-prev" class="absolute text-white text-5xl hover:text-yellow-400">❮</button>
+    <button id="lightbox-next" class="absolute text-white text-5xl hover:text-yellow-400">❯</button>
   </div>
 
-
-  <!-- scripts -->
   <script src="../assets/js/lightbox.js"></script>
+
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const galeriaSeleccionada = params.get('galeria'); 
+  const subSeleccionada = params.get('sub'); 
+
+  const container = document.getElementById('galeria-container');
+  const titulo = document.getElementById('titulo-galeria');
+
+  fetch('../galeries.json')
+    .then(res => res.json())
+    .then(data => {
+      if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
+        container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
+        console.log("Galería no encontrada:", galeriaSeleccionada);
+        return;
+      }
+
+      titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
+
+      let subGalerias = data[galeriaSeleccionada];
+      if(subSeleccionada){
+        subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
+      }
+
+      subGalerias.forEach((sub, index) => {
+        const subDiv = document.createElement('div');
+        subDiv.className = 'flex items-center h-[200px] space-x-4';
+        subDiv.style.marginBottom = '120px';
+
+        if(index % 2 === 0){
+          subDiv.style.paddingLeft = '15%';
+          subDiv.style.paddingRight = '5%';
+        } else {
+          subDiv.style.paddingLeft = '10%';
+          subDiv.style.paddingRight = '10%';
+        }
+
+        // Nombre de la subgalería
+        const nombreDiv = document.createElement('div');
+        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+        nombreDiv.style.flexShrink = '0';
+        nombreDiv.textContent = sub.displayName || sub.name;
+        subDiv.appendChild(nombreDiv);
+
+        // Carrusel
+        const carruselWrapper = document.createElement('div');
+        carruselWrapper.className = 'relative flex items-center';
+        carruselWrapper.style.flex = '1';
+        carruselWrapper.style.height = '200px';
+
+        const carruselDiv = document.createElement('div');
+        carruselDiv.className = 'flex h-[200px] overflow-x-auto scrollbar-hide';
+        carruselDiv.style.flex = '1';
+        carruselDiv.style.scrollBehavior = 'smooth';
+        carruselDiv.style.gap = '20px';
+
+        const imgs = [];
+        const images = Array.from({length: sub.images}, (_, j) => 
+          `data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+        );
+
+        for(let i = 1; i <= sub.images; i++){
+          const img = document.createElement('img');
+          img.src = images[i-1];
+          img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0 cursor-pointer';
+          carruselDiv.appendChild(img);
+          imgs.push(img);
+
+          img.addEventListener('click', () => openLightbox(images, i - 1));
+
+          img.addEventListener('mouseenter', () => {
+            img.style.animation = 'zoomIn 0.25s ease-out forwards';
+          });
+
+          img.addEventListener('mouseleave', () => {
+            img.style.animation = 'zoomOut 0.25s ease-out forwards';
+          });
+        }
+
+        // Flechas
+        const SCROLL_AMOUNT = 220; // 200px imagen + 20px gap
+        const leftArrow = document.createElement('div');
+        leftArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>`;
+        leftArrow.style.position = 'absolute';
+        leftArrow.style.left = '0';
+        leftArrow.style.top = '50%';
+        leftArrow.style.transform = 'translateY(-50%)';
+        leftArrow.style.zIndex = '10';
+        leftArrow.style.display = 'none';
+
+        const rightArrow = document.createElement('div');
+        rightArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>`;
+        rightArrow.style.position = 'absolute';
+        rightArrow.style.right = '0';
+        rightArrow.style.top = '50%';
+        rightArrow.style.transform = 'translateY(-50%)';
+        rightArrow.style.zIndex = '10';
+        rightArrow.style.display = 'none';
+
+        function updateCarruselArrows() {
+          const hasScroll = carruselDiv.scrollWidth > carruselDiv.clientWidth;
+          const scrollLeft = carruselDiv.scrollLeft;
+          const scrollRight = carruselDiv.scrollWidth - carruselDiv.clientWidth - scrollLeft;
+
+          leftArrow.style.display = (hasScroll && scrollLeft > 0) ? 'flex' : 'none';
+          rightArrow.style.display = (hasScroll && scrollRight > 1) ? 'flex' : 'none';
+        }
+
+        // Actualizar flechas al hacer scroll o al cargar imágenes
+        carruselDiv.addEventListener('scroll', updateCarruselArrows);
+        imgs.forEach(img => img.addEventListener('load', updateCarruselArrows));
+        setTimeout(updateCarruselArrows, 100);
+
+        // Eventos de click
+        leftArrow.addEventListener('click', () => carruselDiv.scrollBy({ left: -SCROLL_AMOUNT, behavior: 'smooth' }));
+        rightArrow.addEventListener('click', () => carruselDiv.scrollBy({ left: SCROLL_AMOUNT, behavior: 'smooth' }));
+
+        carruselWrapper.appendChild(leftArrow);
+        carruselWrapper.appendChild(rightArrow);
+        carruselWrapper.appendChild(carruselDiv);
+
+        subDiv.appendChild(carruselWrapper);
+        container.appendChild(subDiv);
+      });
+    })
+    .catch(err => {
+      console.error('Error cargando galería:', err);
+      container.innerHTML = "<p class='text-xl'>Error cargando la galería.</p>";
+    });
+  </script>
+
+  <style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  @keyframes zoomIn {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes zoomOut {
+    from {
+      transform: scale(1.1);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  </style>
+
 </body>
 </html>
