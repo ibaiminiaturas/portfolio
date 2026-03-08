@@ -1,0 +1,13 @@
+{
+  "Box Arts": [
+    { "name": "MarvelUnited", "images": 5 },
+    { "name": "SOIF", "images": 4 },
+    { "name": "Other", "images": 6, "type": "mosaic" }
+  ],
+  "Warhammer": [
+ { "name": "Other", "images": 3, "type": "mosaic" }
+  ],
+  "Warhammer 40k": [
+ { "name": "Other", "images": 5, "type": "mosaic" }
+  ]
+}

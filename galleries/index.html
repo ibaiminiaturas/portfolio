@@ -1,0 +1,37 @@
+<div id="galeria-container" class="space-y-6"></div>
+
+<script>
+fetch('galeria.json')
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('galeria-container');
+
+    for (const [galeriaName, subs] of Object.entries(data)) {
+      subs.forEach(sub => {
+        const subDiv = document.createElement('div');
+        subDiv.className = 'subgaleria flex items-center h-[200px] space-x-4';
+
+        // Nombre de la subgalería
+        const nombreDiv = document.createElement('div');
+        nombreDiv.className = 'flex items-center justify-center h-[100px] w-[200px] text-5xl font-bold text-gray-800';
+        nombreDiv.textContent = sub.name;
+        subDiv.appendChild(nombreDiv);
+
+        // Mini carrusel
+        const carruselDiv = document.createElement('div');
+        carruselDiv.className = 'flex overflow-x-auto space-x-2 h-[200px]';
+
+        for (let i = 1; i <= sub.images; i++) {
+          const img = document.createElement('img');
+          img.src = `galleries/data/${galeriaName}/${sub.name}/${i}.jpg`;
+          img.className = 'w-[200px] h-[200px] object-cover rounded';
+          carruselDiv.appendChild(img);
+        }
+
+        subDiv.appendChild(carruselDiv);
+        container.appendChild(subDiv);
+      });
+    }
+  })
+  .catch(err => console.error('Error cargando galería:', err));
+</script>
