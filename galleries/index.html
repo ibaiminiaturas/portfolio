@@ -12,66 +12,114 @@
 
   <div id="galeria-container" class="space-y-6"></div>
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const galeriaSeleccionada = params.get('galeria'); 
-  const subSeleccionada = params.get('sub'); 
+const params = new URLSearchParams(window.location.search);
+const galeriaSeleccionada = params.get('galeria'); 
+const subSeleccionada = params.get('sub'); 
 
-  const container = document.getElementById('galeria-container');
-  const titulo = document.getElementById('titulo-galeria');
+const container = document.getElementById('galeria-container');
+const titulo = document.getElementById('titulo-galeria');
 
-  fetch('../galeries.json')
-    .then(res => res.json())
-    .then(data => {
-      if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
-        container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
-        console.log("Galería no encontrada:", galeriaSeleccionada);
-        return;
-      }
+fetch('../galeries.json')
+  .then(res => res.json())
+  .then(data => {
+    if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
+      container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
+      console.log("Galería no encontrada:", galeriaSeleccionada);
+      return;
+    }
 
-      titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
+    titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
 
-      let subGalerias = data[galeriaSeleccionada];
-      if(subSeleccionada){
-        subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
-      }
+    let subGalerias = data[galeriaSeleccionada];
+    if(subSeleccionada){
+      subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
+    }
 
-      subGalerias.forEach(sub => {
-        const subDiv = document.createElement('div');
-        // Contenedor principal con padding y flex-row
-        subDiv.className = 'flex items-center h-[200px] space-x-4 p-2';
+    subGalerias.forEach((sub, index) => {
+      const subDiv = document.createElement('div');
+      subDiv.className = 'flex items-center h-[200px] space-x-4';
+
+      // Pim-pam: filas pares/impares
+      if(index % 2 === 0){
         subDiv.style.paddingLeft = '15%';
+        subDiv.style.paddingRight = '5%';
+      } else {
+        subDiv.style.paddingLeft = '10%';
         subDiv.style.paddingRight = '10%';
+      }
 
-        // Nombre de la subgalería: ancho fijo 200px
-        const nombreDiv = document.createElement('div');
-        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
-        nombreDiv.style.flexShrink = '0'; // Evita que se reduzca
-        nombreDiv.textContent = sub.name;
-        subDiv.appendChild(nombreDiv);
+      // Nombre de la subgalería
+      const nombreDiv = document.createElement('div');
+      nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+      nombreDiv.style.flexShrink = '0';
+      nombreDiv.textContent = sub.displayName || sub.name;
+      subDiv.appendChild(nombreDiv);
 
-        // Carrusel de imágenes
-        const carruselDiv = document.createElement('div');
-        carruselDiv.className = 'flex space-x-2';
-        carruselDiv.style.height = '200px';
-        carruselDiv.style.flex = '1';
-        carruselDiv.style.overflowX = 'auto'; // Scroll si no caben
+      // Contenedor carrusel con posición relativa
+      const carruselWrapper = document.createElement('div');
+      carruselWrapper.className = 'relative flex items-center';
+      carruselWrapper.style.flex = '1';
+      carruselWrapper.style.height = '200px';
 
-        for(let i = 1; i <= sub.images; i++){
-          const img = document.createElement('img');
-          img.src = `data/${galeriaSeleccionada}/${sub.name}/${i}.jpg`;
-          img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0';
-          carruselDiv.appendChild(img);
-        }
+      // Flechas
+      const leftArrow = document.createElement('div');
+      leftArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>`;
+      leftArrow.style.position = 'absolute';
+      leftArrow.style.left = '0';
+      leftArrow.style.zIndex = '10';
 
-        subDiv.appendChild(carruselDiv);
-        container.appendChild(subDiv);
+      const rightArrow = document.createElement('div');
+      rightArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>`;
+      rightArrow.style.position = 'absolute';
+      rightArrow.style.right = '0';
+      rightArrow.style.zIndex = '10';
+
+      // Carrusel
+      const carruselDiv = document.createElement('div');
+      carruselDiv.className = 'flex space-x-2 h-[200px] overflow-x-auto scrollbar-hide';
+      carruselDiv.style.flex = '1';
+      carruselDiv.style.scrollBehavior = 'smooth';
+
+      for(let i = 1; i <= sub.images; i++){
+        const img = document.createElement('img');
+        img.src = `data/${galeriaSeleccionada}/${sub.name}/${i}.jpg`;
+        img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0';
+        carruselDiv.appendChild(img);
+      }
+
+      // Eventos flechas
+      leftArrow.addEventListener('click', () => {
+        carruselDiv.scrollBy({ left: -220, behavior: 'smooth' });
+      });
+      rightArrow.addEventListener('click', () => {
+        carruselDiv.scrollBy({ left: 220, behavior: 'smooth' });
       });
 
-    })
-    .catch(err => {
-      console.error('Error cargando galería:', err);
-      container.innerHTML = "<p class='text-xl'>Error cargando la galería.</p>";
+      carruselWrapper.appendChild(leftArrow);
+      carruselWrapper.appendChild(rightArrow);
+      carruselWrapper.appendChild(carruselDiv);
+
+      subDiv.appendChild(carruselWrapper);
+      container.appendChild(subDiv);
     });
+  })
+  .catch(err => {
+    console.error('Error cargando galería:', err);
+    container.innerHTML = "<p class='text-xl'>Error cargando la galería.</p>";
+  });
 </script>
+<style>
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>
 </body>
 </html>
