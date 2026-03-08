@@ -7,6 +7,20 @@
 </head>
 <body class="bg-gray-100 p-6">
 
+  <div id="header-placeholder"></div>
+
+  <script>
+    fetch('../components/header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        // Cargar el script del menú después de que el header esté en el DOM
+        const script = document.createElement('script');
+        script.src = '../assets/js/menu.js';
+        document.body.appendChild(script);
+      });
+  </script>
+
   <h1 class="text-4xl font-bold mb-6" id="titulo-galeria">Galería</h1>
   <div id="galeria-container" class="space-y-6"></div>
 
