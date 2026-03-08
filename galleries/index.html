@@ -31,15 +31,18 @@ fetch('../galeries.json')
     titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
 
     let subGalerias = data[galeriaSeleccionada];
+
+    // Si hay parámetro subSeleccionada, filtramos solo esa subgalería
     if(subSeleccionada){
       subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
     }
+    // SI NO hay subSeleccionada, NO filtramos nada y cargamos todas las subgalerías
 
     subGalerias.forEach((sub, index) => {
       const subDiv = document.createElement('div');
       subDiv.className = 'flex items-center h-[200px] space-x-4';
+      subDiv.style.marginBottom = '150px';
 
-      // Pim-pam: filas pares/impares
       if(index % 2 === 0){
         subDiv.style.paddingLeft = '15%';
         subDiv.style.paddingRight = '5%';
@@ -55,7 +58,7 @@ fetch('../galeries.json')
       nombreDiv.textContent = sub.displayName || sub.name;
       subDiv.appendChild(nombreDiv);
 
-      // Contenedor carrusel con posición relativa
+      // Carrusel
       const carruselWrapper = document.createElement('div');
       carruselWrapper.className = 'relative flex items-center';
       carruselWrapper.style.flex = '1';
@@ -78,7 +81,6 @@ fetch('../galeries.json')
       rightArrow.style.right = '0';
       rightArrow.style.zIndex = '10';
 
-      // Carrusel
       const carruselDiv = document.createElement('div');
       carruselDiv.className = 'flex space-x-2 h-[200px] overflow-x-auto scrollbar-hide';
       carruselDiv.style.flex = '1';
