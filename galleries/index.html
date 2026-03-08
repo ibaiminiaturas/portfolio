@@ -1,37 +1,94 @@
-<div id="galeria-container" class="space-y-6"></div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
 
-<script>
-fetch('galeria.json')
-  .then(res => res.json())
-  .then(data => {
+  <h1 class="text-4xl font-bold mb-6" id="titulo-galeria">Galería</h1>
+
+  <div id="galeria-container" class="space-y-6"></div>
+
+  <script>
+    // Leer parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const galeriaSeleccionada = params.get('galeria'); // Ej: "Box Arts"
+    const subSeleccionada = params.get('sub'); // Ej: "MarvelUnited" u otra
+
+    // Transformar nombre de galería a carpeta
+    const carpetaGaleria = galeriaSeleccionada ? galeriaSeleccionada.toLowerCase().replace(/ /g,'-') : null;
+
     const container = document.getElementById('galeria-container');
+    const titulo = document.getElementById('titulo-galeria');
 
-    for (const [galeriaName, subs] of Object.entries(data)) {
-      subs.forEach(sub => {
-        const subDiv = document.createElement('div');
-        subDiv.className = 'subgaleria flex items-center h-[200px] space-x-4';
+    // Cargar JSON
+    fetch('../galeries.json')
+      .then(res => res.json())
+      .then(data => {
 
-        // Nombre de la subgalería
-        const nombreDiv = document.createElement('div');
-        nombreDiv.className = 'flex items-center justify-center h-[100px] w-[200px] text-5xl font-bold text-gray-800';
-        nombreDiv.textContent = sub.name;
-        subDiv.appendChild(nombreDiv);
-
-        // Mini carrusel
-        const carruselDiv = document.createElement('div');
-        carruselDiv.className = 'flex overflow-x-auto space-x-2 h-[200px]';
-
-        for (let i = 1; i <= sub.images; i++) {
-          const img = document.createElement('img');
-          img.src = `galleries/data/${galeriaName}/${sub.name}/${i}.jpg`;
-          img.className = 'w-[200px] h-[200px] object-cover rounded';
-          carruselDiv.appendChild(img);
+        if(!galeriaSeleccionada || !data[galeriaSeleccionada]){
+          container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
+          return;
         }
 
-        subDiv.appendChild(carruselDiv);
-        container.appendChild(subDiv);
+        titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
+
+        // Filtrar subgalería si se seleccionó
+        let subGalerias = data[galeriaSeleccionada];
+        if(subSeleccionada){
+          subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
+        }
+
+        subGalerias.forEach(sub => {
+          if(sub.type === "mosaic"){
+            // Mosaico para "Other Works"
+            const mosaicDiv = document.createElement('div');
+            mosaicDiv.className = 'grid grid-cols-3 gap-4';
+
+            for(let i = 1; i <= sub.images; i++){
+              const img = document.createElement('img');
+              img.src = `data/${carpetaGaleria}/${sub.name}/${i}.jpg`;
+              img.className = 'w-full h-[200px] object-cover rounded';
+              mosaicDiv.appendChild(img);
+            }
+
+            container.appendChild(mosaicDiv);
+          } else {
+            // Mini carrusel normal
+            const subDiv = document.createElement('div');
+            subDiv.className = 'subgaleria flex items-center h-[200px] space-x-4 bg-white rounded shadow p-2';
+
+            // Nombre de la subgalería
+            const nombreDiv = document.createElement('div');
+            nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-5xl font-bold text-gray-800';
+            nombreDiv.textContent = sub.name;
+            subDiv.appendChild(nombreDiv);
+
+            // Mini carrusel
+            const carruselDiv = document.createElement('div');
+            carruselDiv.className = 'flex overflow-x-auto space-x-2 h-[200px]';
+
+            for(let i = 1; i <= sub.images; i++){
+              const img = document.createElement('img');
+              img.src = `data/${carpetaGaleria}/${sub.name}/${i}.jpg`;
+              img.className = 'w-[200px] h-[200px] object-cover rounded';
+              carruselDiv.appendChild(img);
+            }
+
+            subDiv.appendChild(carruselDiv);
+            container.appendChild(subDiv);
+          }
+        });
+
+      })
+      .catch(err => {
+        console.error('Error cargando galería:', err);
+        container.innerHTML = "<p class='text-xl'>Error cargando la galería.</p>";
       });
-    }
-  })
-  .catch(err => console.error('Error cargando galería:', err));
-</script>
+
+  </script>
+</body>
+</html>
