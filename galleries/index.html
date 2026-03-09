@@ -61,7 +61,7 @@ document.body.appendChild(script);
 <script src="/assets/js/lightbox.js"></script>
 
 <script type="module">
-import { crearMiniCarrusel } from '/assets/js/minicarrusel.js';
+import { crearMiniCarrusel } from '/assets/js/minicarrusel.obf.js';
     import { crearMosaico } from '/assets/js/mosaico.js';
 const params = new URLSearchParams(window.location.search);
 const galeriaSeleccionada = params.get('galeria');
@@ -109,15 +109,11 @@ subGalerias.forEach((sub, index) => {
 
     titleSection.appendChild(nombreDiv);
 
-
-
-// Dentro del forEach:
 if(sub.type === 'mosaic'){
     const mosaicoDiv = crearMosaico(sub, images, openLightbox);
     container.appendChild(mosaicoDiv);
     return;
 }
-    // ================= MINI CARRUSEL =================
     if(index % 2 === 0){
         subDiv.style.paddingLeft = '15%';
         subDiv.style.paddingRight = '5%';
