@@ -160,7 +160,7 @@ fetch('/galeries.json')
             bloqueDiv.className = "flex flex-col items-center mb-32";
 
             // Si estamos en subgalería, no repetir el título
-            if (!subSeleccionada || sub.type === 'mosaic') {
+            if (!subSeleccionada && sub.type === 'mosaic') {
                 const nombreDiv = document.createElement('div');
                 nombreDiv.className = "text-4xl font-bold text-gray-800 text-center mb-4";
                 nombreDiv.textContent = sub.displayName || sub.name;
