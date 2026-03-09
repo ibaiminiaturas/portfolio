@@ -1,18 +1,26 @@
-<header class="bg-gray-900 text-white p-4 sticky top-0 z-50 shadow-md">
-  <nav class="container mx-auto flex justify-center">
-    <ul class="flex space-x-10 items-center">
-      <li><a href="/index.html" class="hover:text-yellow-400">Inicio</a></li>
+<header class="bg-white sticky top-0 z-50 h-24 flex items-center relative">
 
-      <!-- Galerías -->
-      <li class="relative" id="menu-galerias">
-        <a href="#" class="cursor-pointer hover:text-yellow-400">Galerías</a>
-        <div id="dropdown-galerias" class="absolute hidden bg-gray-800 mt-2 rounded shadow-lg w-max">
-          <!-- JS generará los submenus -->
-        </div>
-      </li>
+  <div class="flex items-center gap-3 ml-4">
+    <img src="/assets/images/ibai-miniaturas-circle.png" alt="Logo" class="h-14 w-14 rounded-full">
+    <span class="text-2xl font-bold text-gray-800">Ibai Miniaturas</span>
+  </div>
 
-      <li><a href="/index.html#sobre-mi" class="hover:text-yellow-400">Sobre mí</a></li>
-      <li><a href="/index.html#contacto" class="hover:text-yellow-400">Contacto</a></li>
-    </ul>
-  </nav>
+  <ul class="absolute left-1/2 -translate-x-1/2 flex space-x-12 items-center text-lg font-semibold text-gray-800">
+    <li><a href="/index.html" class="hover:text-gray-300 transition-colors duration-200">Inicio</a></li>
+
+    <li class="relative" id="menu-galerias">
+      <a href="#" class="cursor-pointer hover:text-gray-300 transition-colors duration-200">Galerías</a>
+
+      <!-- SOLO AQUÍ EL CAMBIO REAL -->
+      <div id="dropdown-galerias" class="absolute hidden bg-gray-800 mt-2 rounded w-max text-white">
+      </div>
+
+    </li>
+
+    <li><a href="/index.html#sobre-mi" class="hover:text-gray-300 transition-colors duration-200">Sobre mí</a></li>
+    <li><a href="/index.html#contacto" class="hover:text-gray-300 transition-colors duration-200">Contacto</a></li>
+  </ul>
+
 </header>
+
+<div class="h-24"></div>

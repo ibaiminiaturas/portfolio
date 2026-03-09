@@ -9,7 +9,7 @@ function initializeMenu() {
   const dropdown = document.getElementById("dropdown-galerias");
   if(!dropdown) return; // Si el header no está cargado/presente, salir
   
-  dropdown.className = "absolute hidden bg-gray-800 mt-2 rounded shadow-lg w-max";
+  dropdown.className ="absolute hidden bg-gray-800 mt-2 rounded shadow-lg w-max text-white";
 
   // Construir el menú
   galerias.forEach(section => {
@@ -20,7 +20,7 @@ function initializeMenu() {
     const aMain = document.createElement("a");
     aMain.href = `/galleries/index.html?galeria=${encodeURIComponent(section.section)}`;
     aMain.textContent = section.section;
-    aMain.className = "block px-4 py-2 cursor-pointer rounded hover:bg-gray-700 w-full";
+    aMain.className = "block px-4 py-2 cursor-pointer rounded hover:bg-gray-700 w-full  text-white";
     li.appendChild(aMain);
 
     // Submenú
@@ -32,7 +32,7 @@ function initializeMenu() {
         const aSub = document.createElement("a");
         aSub.href = `/galleries/index.html?galeria=${encodeURIComponent(section.section)}&sub=${encodeURIComponent(sub)}`;
         aSub.textContent = sub;
-        aSub.className = "block px-4 py-2 rounded hover:bg-gray-600";
+        aSub.className = "block px-4 py-2 rounded hover:bg-gray-600 text-white";
         subMenu.appendChild(aSub);
       });
 

@@ -8,6 +8,13 @@
   scrollbar-width: none; /* Firefox */
 }
 
+#dropdown-galerias a {
+  color: white !important;
+}
+
+#dropdown-galerias a:hover {
+  color: white !important;
+}
 #lightbox {
   display: none;
   position: fixed;
