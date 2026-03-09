@@ -2,61 +2,76 @@
 export function crearMosaico(sub, images, openLightbox) {
     const subDiv = document.createElement('div');
     subDiv.style.marginBottom = '120px';
+    subDiv.style.display = 'flex';
+    subDiv.style.justifyContent = 'center'; // centramos el bloque completo
+    subDiv.style.width = '100%';
 
-    const mosaicLayout = document.createElement('div');
-    mosaicLayout.style.display = 'grid';
-    mosaicLayout.style.gridTemplateColumns = '20% 60% 20%';
-    mosaicLayout.style.width = '100%';
-    mosaicLayout.style.alignItems = 'start';
+    // contenedor para nombre + mosaico
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.alignItems = 'flex-start';
+    container.style.gap = '15px';
+    container.style.position = 'relative';
 
+    // nombre a la izquierda
     const nameContainer = document.createElement('div');
     const nombreDiv = document.createElement('div');
-    nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+    nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 text-center';
     nombreDiv.style.flexShrink = '0';
     nombreDiv.textContent = sub.displayName || sub.name;
     nameContainer.appendChild(nombreDiv);
 
+    container.appendChild(nameContainer);
+
+    // contenedor del mosaico (exactamente 800px)
     const mosaicContainer = document.createElement('div');
-    mosaicContainer.style.display = 'grid';
-    mosaicContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px,1fr))';
-    mosaicContainer.style.gridAutoFlow = 'dense';
-    mosaicContainer.style.gap = '20px';
+    mosaicContainer.style.position = 'relative';
+    mosaicContainer.style.width = '800px';
+    mosaicContainer.style.height = 'auto';
 
-    for (let i = 0; i < sub.images; i++) {
+    // posición para colocar imágenes fila por fila
+    let x = 0;
+    let y = 0;
+    let maxRowHeight = 0;
+    const GAP = 15;
+    const CONTAINER_WIDTH = 800; // solo el mosaico, sin contar nombre
+
+    images.forEach((src, i) => {
+        const size = 200 + Math.floor(Math.random() * 201); // 200–400px
+
+        if (x + size > CONTAINER_WIDTH) {
+            x = 0;
+            y += maxRowHeight + GAP;
+            maxRowHeight = 0;
+        }
+
         const img = document.createElement('img');
-        img.src = images[i];
-
-        img.style.width = '100%';
-        img.style.height = 'auto';
-        img.style.objectFit = 'contain';
+        img.src = src;
+        img.style.width = size + 'px';
+        img.style.height = size + 'px';
+        img.style.objectFit = 'cover';
         img.style.borderRadius = '8px';
         img.style.cursor = 'pointer';
         img.style.transition = 'transform 0.25s ease-out';
 
-        const r = Math.random();
-        if (r < 0.65) {
-            img.style.gridColumn = 'span 1';
-            img.style.aspectRatio = '1/1';
-        } else if (r < 0.9) {
-            img.style.gridColumn = 'span 2';
-            img.style.aspectRatio = '2/1';
-        } else {
-            img.style.gridColumn = 'span 2';
-            img.style.aspectRatio = '1/2';
-        }
+        img.style.position = 'absolute';
+        img.style.left = x + 'px'; // dentro del mosaico de 800px
+        img.style.top = y + 'px';
 
         img.addEventListener('click', () => openLightbox(images, i));
         img.addEventListener('mouseenter', () => { img.style.transform = 'scale(1.05)'; });
         img.addEventListener('mouseleave', () => { img.style.transform = 'scale(1)'; });
 
         mosaicContainer.appendChild(img);
-    }
 
-    mosaicLayout.appendChild(nameContainer);
-    mosaicLayout.appendChild(mosaicContainer);
-    mosaicLayout.appendChild(document.createElement('div')); // columna vacía
+        x += size + GAP;
+        if (size > maxRowHeight) maxRowHeight = size;
+    });
 
-    subDiv.appendChild(mosaicLayout);
+    mosaicContainer.style.height = (y + maxRowHeight) + 'px';
+
+    container.appendChild(mosaicContainer);
+    subDiv.appendChild(container);
 
     return subDiv;
 }
