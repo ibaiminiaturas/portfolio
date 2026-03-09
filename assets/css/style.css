@@ -22,7 +22,10 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
+/* Fuente Akira para toda la web */
+body, h1, h2, h3, h4, h5, h6, p, span, a, li, button {
+  font-family: 'Akira', sans-serif;
+}
 /* Animaciones */
 @keyframes zoomIn {
   from { transform: scale(1); }

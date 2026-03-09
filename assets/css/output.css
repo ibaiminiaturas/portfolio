@@ -27,6 +27,9 @@
 .mx-auto {
   margin-inline: auto;
 }
+.mb-\[120px\] {
+  margin-bottom: 120px;
+}
 .ml-auto {
   margin-left: auto;
 }
@@ -41,9 +44,6 @@
 }
 .hidden {
   display: none;
-}
-.inline {
-  display: inline;
 }
 .h-\[200px\] {
   height: 200px;
@@ -67,6 +67,9 @@
   min-width: 200px;
 }
 .flex-shrink-0 {
+  flex-shrink: 0;
+}
+.shrink-0 {
   flex-shrink: 0;
 }
 .-translate-x-1\/2 {
@@ -103,11 +106,14 @@
 .object-cover {
   object-fit: cover;
 }
-.px-\[10\%\] {
-  padding-inline: 10%;
-}
 .pr-\[5\%\] {
   padding-right: 5%;
+}
+.pr-\[10\%\] {
+  padding-right: 10%;
+}
+.pl-\[10\%\] {
+  padding-left: 10%;
 }
 .pl-\[15\%\] {
   padding-left: 15%;
@@ -159,6 +165,9 @@
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+body, h1, h2, h3, h4, h5, h6, p, span, a, li, button {
+  font-family: 'Akira', sans-serif;
 }
 @keyframes zoomIn {
   from {
