@@ -98,6 +98,14 @@ body::before {
   height: auto;
   display: block;
 }
+/* Efecto hover en las imágenes del carrusel */
+.carrusel-img {
+  transition: transform 0.5s ease;
+}
+
+.carrusel-img:hover {
+  transform: scale(0.95);
+}
 </style>
 </head>
 
@@ -252,11 +260,12 @@ fetch('/galeries.json')
       subDiv.style.paddingRight = '10%';
   }
 
-  const carruselWrapper = crearMiniCarrusel(sub, images);
-  carruselWrapper.querySelectorAll('img').forEach((img, i) => {
-      img.addEventListener('click', () => openLightbox(images, i));
-  });
 
+const carruselWrapper = crearMiniCarrusel(sub, images);
+carruselWrapper.querySelectorAll('img').forEach((img, i) => {
+    img.classList.add('carrusel-img'); // 🔹 Mantener la clase de animación
+    img.addEventListener('click', () => openLightbox(images, i));
+});
   titleSection.appendChild(carruselWrapper);
   subDiv.appendChild(titleSection);
   container.appendChild(subDiv);
