@@ -1,3 +1,5 @@
+console.log("LIGHTBOX JS CARGADO");
+
 let currentImages = [];
 let currentIndex = 0;
 
@@ -11,34 +13,31 @@ function openLightbox(images, index) {
   currentIndex = index;
   updateLightboxImage();
 
-  lightbox.classList.remove('hidden');
-  lightbox.classList.add('flex');
+  // Mostrar lightbox
+  lightbox.style.display = 'flex';
   lightbox.style.opacity = 0;
-  lightbox.style.transition = 'opacity 0.8s ease';
+  lightbox.style.transition = 'opacity 0.3s ease';
   requestAnimationFrame(() => lightbox.style.opacity = 1);
 }
 
 function closeLightbox() {
   lightbox.style.opacity = 0;
   lightbox.addEventListener('transitionend', () => {
-    lightbox.classList.add('hidden');
-    lightbox.classList.remove('flex');
+    lightbox.style.display = 'none';
   }, { once: true });
 }
 
 function updateLightboxImage() {
   lightboxImg.style.opacity = 0;
-  lightboxImg.style.transition = 'opacity 0.8s ease';
+  lightboxImg.src = currentImages[currentIndex];
+  lightboxImg.onload = () => {
+    lightboxImg.style.opacity = 1;
+    positionButtons();
+  };
 
-  setTimeout(() => {
-    lightboxImg.src = currentImages[currentIndex];
-    lightboxImg.onload = () => {
-      lightboxImg.style.opacity = 1;
-      positionButtons(); // reposiciona flechas con cada imagen
-    };
-  }, 50);
-
-  updateButtons();
+  // Mostrar u ocultar flechas según posición
+  prevBtn.style.display = currentIndex > 0 ? 'block' : 'none';
+  nextBtn.style.display = currentIndex < currentImages.length - 1 ? 'block' : 'none';
 }
 
 function showNext() {
@@ -55,19 +54,11 @@ function showPrev() {
   }
 }
 
-function updateButtons() {
-  prevBtn.disabled = currentIndex === 0;
-  nextBtn.disabled = currentIndex === currentImages.length - 1;
-
-  prevBtn.style.opacity = currentIndex === 0 ? '0.3' : '1';
-  nextBtn.style.opacity = currentIndex === currentImages.length - 1 ? '0.3' : '1';
-}
-
 function positionButtons() {
   const imgRect = lightboxImg.getBoundingClientRect();
-  const containerRect = lightboxImg.parentElement.getBoundingClientRect(); // contenedor relativo
+  const containerRect = lightbox.getBoundingClientRect(); // contenedor relativo
 
-  const margin = 20; // distancia desde el borde de la imagen
+  const margin = 20;
 
   // izquierda
   prevBtn.style.left = (imgRect.left - containerRect.left - prevBtn.offsetWidth - margin) + 'px';
@@ -82,4 +73,8 @@ function positionButtons() {
 nextBtn.addEventListener('click', showNext);
 prevBtn.addEventListener('click', showPrev);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-window.addEventListener('resize', () => { if (!lightbox.classList.contains('hidden')) positionButtons(); });
+window.addEventListener('resize', () => { if (lightbox.style.display === 'flex') positionButtons(); });
+
+// Exponer globalmente
+window.openLightbox = openLightbox;
+console.log("openLightbox global:", window.openLightbox);

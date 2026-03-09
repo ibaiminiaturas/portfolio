@@ -1,6 +1,7 @@
 // minicarrusel.js
 
 export function crearMiniCarrusel(sub, images) {
+    const openLightbox = window.openLightbox;
     const carruselWrapper = document.createElement('div');
     carruselWrapper.className = 'relative flex items-center';
     carruselWrapper.style.flex = '1';

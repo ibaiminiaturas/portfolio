@@ -1,4 +1,4 @@
-import { crearMiniCarrusel } from '/assets/js-obfuscated/minicarrusel.js';
+import { crearMiniCarrusel } from '/assets/js/minicarrusel.js';
 import { crearMosaico } from '/assets/js/mosaico.js';
 
 const params = new URLSearchParams(window.location.search);
