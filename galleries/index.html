@@ -115,6 +115,7 @@ const subSeleccionada = params.get('sub');
 
 const container = document.getElementById('galeria-container');
 const titulo = document.getElementById('titulo-galeria');
+titulo.className = 'text-8xl font-bold text-gray-800 text-center flex items-center justify-center h-48';
 
 fetch('/galeries.json')
   .then(res => res.json())
