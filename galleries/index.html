@@ -7,26 +7,26 @@
 
 <style>
 body{
-overflow-x:hidden;
+  overflow-x:hidden;
 }
 
 .scrollbar-hide::-webkit-scrollbar{
-display:none;
+  display:none;
 }
 
 .scrollbar-hide{
--ms-overflow-style:none;
-scrollbar-width:none;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
 }
 
 @keyframes zoomIn{
-from{transform:scale(1);}
-to{transform:scale(1.1);}
+  from{transform:scale(1);}
+  to{transform:scale(1.1);}
 }
 
 @keyframes zoomOut{
-from{transform:scale(1.1);}
-to{transform:scale(1);}
+  from{transform:scale(1.1);}
+  to{transform:scale(1);}
 }
 </style>
 
@@ -40,11 +40,11 @@ to{transform:scale(1);}
 fetch('/components/header.html')
 .then(res => res.text())
 .then(html => {
-document.getElementById('header-placeholder').innerHTML = html;
+  document.getElementById('header-placeholder').innerHTML = html;
 
-const script = document.createElement('script');
-script.src = '/assets/js-obfuscated/menu.js';
-document.body.appendChild(script);
+  const script = document.createElement('script');
+  script.src = '/assets/js-obfuscated/menu.js';
+  document.body.appendChild(script);
 });
 </script>
 
@@ -53,16 +53,17 @@ document.body.appendChild(script);
 
 <!-- LIGHTBOX -->
 <div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
-<img id="lightbox-img" class="max-h-[90%] max-w-[90%] rounded shadow-lg">
-<button id="lightbox-prev" class="absolute text-white text-5xl hover:text-yellow-400">❮</button>
-<button id="lightbox-next" class="absolute text-white text-5xl hover:text-yellow-400">❯</button>
+  <img id="lightbox-img" class="max-h-[90%] max-w-[90%] rounded shadow-lg">
+  <button id="lightbox-prev" class="absolute text-white text-5xl hover:text-yellow-400">❮</button>
+  <button id="lightbox-next" class="absolute text-white text-5xl hover:text-yellow-400">❯</button>
 </div>
 
 <script src="/assets/js-obfuscated/lightbox.js"></script>
 
 <script type="module">
 import { crearMiniCarrusel } from '/assets/js-obfuscated/minicarrusel.js';
-    import { crearMosaico } from '/assets/js/mosaico.js';
+import { crearMosaico } from '/assets/js/mosaico.js';
+
 const params = new URLSearchParams(window.location.search);
 const galeriaSeleccionada = params.get('galeria');
 const subSeleccionada = params.get('sub');
@@ -74,64 +75,93 @@ fetch('/galeries.json')
 .then(res => res.json())
 .then(data => {
 
-if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
-    container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
-    return;
-}
+  if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
+      container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
+      return;
+  }
 
-titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
+  titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
 
-let subGalerias = data[galeriaSeleccionada];
+  let subGalerias = data[galeriaSeleccionada];
+  if(subSeleccionada){
+      subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
+  }
 
-if(subSeleccionada){
-    subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
-}
+  subGalerias.forEach((sub, index) => {
 
-subGalerias.forEach((sub, index) => {
+      const images = Array.from({length: sub.images}, (_, j) =>
+          `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+      );
 
-    const nombreDiv = document.createElement('div');
-    nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
-    nombreDiv.style.flexShrink = '0';
-    nombreDiv.textContent = sub.displayName || sub.name;
+      const subDiv = document.createElement('div');
+      subDiv.style.marginBottom = '120px';
 
-    const images = Array.from({length: sub.images}, (_, j) =>
-        `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
-    );
+      if(sub.type === 'mosaic'){
 
-    const subDiv = document.createElement('div');
-    subDiv.style.marginBottom = '120px';
+          const wrapper = document.createElement('div');
+          wrapper.style.display = 'flex';
+          wrapper.style.justifyContent = 'center'; // centro horizontal
+          wrapper.style.width = '100%';
+          wrapper.style.marginBottom = '120px';
 
-    const titleSection = document.createElement('div');
-    titleSection.style.display = 'flex';
-    titleSection.style.gap = '20px';
-    titleSection.style.alignItems = 'flex-start';
-    titleSection.style.marginBottom = '20px';
+          const innerContainer = document.createElement('div');
+          innerContainer.style.display = 'flex';
+          innerContainer.style.alignItems = 'center'; // centro vertical
+          innerContainer.style.gap = '20px';
 
-    titleSection.appendChild(nombreDiv);
+          // NOMBRE a la izquierda
+          const nombreDiv = document.createElement('div');
+          nombreDiv.textContent = sub.displayName || sub.name;
+          nombreDiv.style.width = '200px';
+          nombreDiv.style.height = '200px';
+          nombreDiv.style.display = 'flex';
+          nombreDiv.style.alignItems = 'center';
+          nombreDiv.style.justifyContent = 'center';
+          nombreDiv.style.fontSize = '2rem';
+          nombreDiv.style.fontWeight = 'bold';
+          innerContainer.appendChild(nombreDiv);
 
-if(sub.type === 'mosaic'){
-    const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-    container.appendChild(mosaicoDiv);
-    return;
-}
-    if(index % 2 === 0){
-        subDiv.style.paddingLeft = '15%';
-        subDiv.style.paddingRight = '5%';
-    } else {
-        subDiv.style.paddingLeft = '10%';
-        subDiv.style.paddingRight = '10%';
-    }
+          // MOSAICO
+          const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+          innerContainer.appendChild(mosaicoDiv);
 
-    const carruselWrapper = crearMiniCarrusel(sub, images, openLightbox);
-    titleSection.appendChild(carruselWrapper);
-    subDiv.appendChild(titleSection);
-    container.appendChild(subDiv);
+          wrapper.appendChild(innerContainer);
+          container.appendChild(wrapper);
 
-});
+          return;
+      }
+
+      const titleSection = document.createElement('div');
+      titleSection.style.display = 'flex';
+      titleSection.style.gap = '20px';
+      titleSection.style.alignItems = 'flex-start';
+      titleSection.style.marginBottom = '20px';
+
+      const nombreDiv = document.createElement('div');
+      nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+      nombreDiv.style.flexShrink = '0';
+      nombreDiv.textContent = sub.displayName || sub.name;
+      titleSection.appendChild(nombreDiv);
+
+      if(index % 2 === 0){
+          subDiv.style.paddingLeft = '15%';
+          subDiv.style.paddingRight = '5%';
+      } else {
+          subDiv.style.paddingLeft = '10%';
+          subDiv.style.paddingRight = '10%';
+      }
+
+      const carruselWrapper = crearMiniCarrusel(sub, images, openLightbox);
+      titleSection.appendChild(carruselWrapper);
+      subDiv.appendChild(titleSection);
+      container.appendChild(subDiv);
+
+  });
+
 })
 .catch(err=>{
-    console.error('Error cargando galería:',err);
-    container.innerHTML="<p class='text-xl'>Error cargando la galería.</p>";
+  console.error('Error cargando galería:',err);
+  container.innerHTML="<p class='text-xl'>Error cargando la galería.</p>";
 });
 </script>
 
