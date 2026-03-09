@@ -90,66 +90,72 @@ fetch('/galeries.json')
       subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
   }
 
-  subGalerias.forEach((sub, index) => {
+subGalerias.forEach((sub, index) => {
 
-      const images = Array.from({length: sub.images}, (_, j) =>
-          `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
-      );
+    const images = Array.from({length: sub.images}, (_, j) =>
+        `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+    );
 
-      const subDiv = document.createElement('div');
-      subDiv.style.marginBottom = '120px';
+    const subDiv = document.createElement('div');
+    subDiv.style.marginBottom = '120px';
 
-if(sub.type === 'mosaic'){
+    // Determinar si mostrar mosaico:
+    // 1. Si sub.type === 'mosaic'
+    // 2. O si es la última subgalería
+    const esUltima = index === subGalerias.length - 1;
+    if (sub.type === 'mosaic' || esUltima) {
 
-// En tu index.html dentro del if(sub.type === 'mosaic')
-const subDiv = document.createElement('div');
-subDiv.style.display = 'flex';
-subDiv.style.flexDirection = 'column';
-subDiv.style.alignItems = 'center'; // centro horizontalmente todo el bloque
-subDiv.style.marginBottom = '120px';
+        // Contenedor principal del bloque
+        const bloqueDiv = document.createElement('div');
+        bloqueDiv.style.display = 'flex';
+        bloqueDiv.style.flexDirection = 'column';
+        bloqueDiv.style.alignItems = 'center'; // centro horizontalmente
+        bloqueDiv.style.marginBottom = '120px';
 
-// NOMBRE encima del mosaico, centrado y uniforme
-const nombreDiv = document.createElement('div');
-nombreDiv.className = 'text-4xl font-bold text-gray-800 text-center mb-4';
-nombreDiv.textContent = sub.displayName || sub.name;
-subDiv.appendChild(nombreDiv);
+        // Nombre encima del mosaico, centrado
+        const nombreDiv = document.createElement('div');
+        nombreDiv.className = 'text-4xl font-bold text-gray-800 text-center mb-4';
+        nombreDiv.textContent = sub.displayName || sub.name;
+        bloqueDiv.appendChild(nombreDiv);
 
-// MOSAICO
-const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-subDiv.appendChild(mosaicoDiv);
+        // Mosaico
+        const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+        bloqueDiv.appendChild(mosaicoDiv);
 
-// Añadimos todo al contenedor principal
-container.appendChild(subDiv);
+        // Añadimos al contenedor principal
+        container.appendChild(bloqueDiv);
 
-    return;
-}
-      const titleSection = document.createElement('div');
-      titleSection.style.display = 'flex';
-      titleSection.style.gap = '20px';
-      titleSection.style.alignItems = 'flex-start';
-      titleSection.style.marginBottom = '20px';
+        return; // fin del if
+    }
 
-      const nombreDiv = document.createElement('div');
-      nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
-      nombreDiv.style.flexShrink = '0';
-      nombreDiv.textContent = sub.displayName || sub.name;
-      titleSection.appendChild(nombreDiv);
+    // Mini carrusel (el resto de subgalerías)
+    const titleSection = document.createElement('div');
+    titleSection.style.display = 'flex';
+    titleSection.style.gap = '20px';
+    titleSection.style.alignItems = 'flex-start';
+    titleSection.style.marginBottom = '20px';
 
-      if(index % 2 === 0){
-          subDiv.style.paddingLeft = '15%';
-          subDiv.style.paddingRight = '5%';
-      } else {
-          subDiv.style.paddingLeft = '10%';
-          subDiv.style.paddingRight = '10%';
-      }
+    const nombreDiv = document.createElement('div');
+    nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+    nombreDiv.style.flexShrink = '0';
+    nombreDiv.textContent = sub.displayName || sub.name;
+    titleSection.appendChild(nombreDiv);
 
-      const carruselWrapper = crearMiniCarrusel(sub, images, openLightbox);
-      titleSection.appendChild(carruselWrapper);
-      subDiv.appendChild(titleSection);
-      container.appendChild(subDiv);
+    // Alternamos padding para estilo
+    if(index % 2 === 0){
+        subDiv.style.paddingLeft = '15%';
+        subDiv.style.paddingRight = '5%';
+    } else {
+        subDiv.style.paddingLeft = '10%';
+        subDiv.style.paddingRight = '10%';
+    }
 
-  });
+    const carruselWrapper = crearMiniCarrusel(sub, images, openLightbox);
+    titleSection.appendChild(carruselWrapper);
+    subDiv.appendChild(titleSection);
+    container.appendChild(subDiv);
 
+});
 })
 .catch(err=>{
   console.error('Error cargando galería:',err);
