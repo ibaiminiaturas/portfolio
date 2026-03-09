@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Portfolio de Miniaturas</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Portfolio de Miniaturas</title>
 
-  <!-- TailwindCSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<!-- TailwindCSS -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Montserrat -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Google Fonts: Montserrat -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      overflow-x: hidden;
-      font-family: 'Montserrat', sans-serif;
-      background-color: #f3f4f6; /* Tailwind bg-gray-100 */
-    }
-  </style>
+<style>
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f3f4f6; /* Tailwind bg-gray-100 */
+  }
+</style>
 </head>
-<body class="bg-gray-100 font-sans">
+
+<body class="bg-gray-100">
 
 <!-- HEADER STICKY REAL -->
 <header id="main-header" class="sticky top-0 z-50 bg-white"></header>
@@ -32,13 +33,13 @@ fetch('/components/header.html')
     const header = document.getElementById('main-header');
     header.innerHTML = html;
 
-    // Shadow al hacer scroll
+    // Shadow dinámico al hacer scroll
     header.style.transition = 'box-shadow 0.3s ease';
     window.addEventListener('scroll', () => {
       header.style.boxShadow = window.scrollY > 10 ? '0 2px 8px rgba(0,0,0,0.1)' : 'none';
     });
 
-    // Cargar el menú flotante
+    // Cargar el menú flotante (submenús)
     const script = document.createElement('script');
     script.src = '/assets/js/menu.js';
     document.body.appendChild(script);
@@ -54,11 +55,11 @@ fetch('/components/header.html')
 <div id="footer-placeholder"></div>
 
 <script>
-  fetch('/components/footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('footer-placeholder').innerHTML = html;
-    });
+fetch('/components/footer.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('footer-placeholder').innerHTML = html;
+  });
 </script>
 
 </body>

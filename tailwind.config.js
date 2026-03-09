@@ -6,6 +6,12 @@ module.exports = {
     "./components/**/*.html",
     "./assets/js/**/*.js",
   ],
-  theme: { extend: {} },
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Montserrat', 'sans-serif'], // <-- aquí Montserrat
+      },
+    },
+  },
   plugins: [],
 }
