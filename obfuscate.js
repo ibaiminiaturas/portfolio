@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const JavaScriptObfuscator = require('javascript-obfuscator');
 
-const inputDir = path.join(__dirname, 'js'); // carpeta con tus JS originales
-const outputDir = path.join(__dirname, 'js-obfuscated'); // donde se guardan los ofuscados
+const inputDir = path.join(__dirname, 'assets/js'); // carpeta con tus JS originales
+const outputDir = path.join(__dirname, 'assets/js-obfuscated'); // donde se guardan los ofuscados
 
 if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
@@ -16,7 +16,7 @@ fs.readdirSync(inputDir).forEach(file => {
             compact: true,
             controlFlowFlattening: true,
             stringArray: true,
-            stringArrayEncoding: 'base64',
+            stringArrayEncoding: ['base64'], // <-- CORREGIDO
             numbersToExpressions: true
         }).getObfuscatedCode();
 

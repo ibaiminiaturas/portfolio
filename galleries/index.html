@@ -43,7 +43,7 @@ fetch('/components/header.html')
 document.getElementById('header-placeholder').innerHTML = html;
 
 const script = document.createElement('script');
-script.src = '/assets/js/menu.js';
+script.src = '/assets/js-obfuscated/menu.js';
 document.body.appendChild(script);
 });
 </script>
@@ -58,11 +58,11 @@ document.body.appendChild(script);
 <button id="lightbox-next" class="absolute text-white text-5xl hover:text-yellow-400">❯</button>
 </div>
 
-<script src="/assets/js/lightbox.js"></script>
+<script src="/assets/js-obfuscated/lightbox.js"></script>
 
 <script type="module">
-import { crearMiniCarrusel } from '/assets/js/minicarrusel.obf.js';
-    import { crearMosaico } from '/assets/js/mosaico.js';
+import { crearMiniCarrusel } from '/assets/js-obfuscated/minicarrusel.js';
+    import { crearMosaico } from '/assets/mosaico.js';
 const params = new URLSearchParams(window.location.search);
 const galeriaSeleccionada = params.get('galeria');
 const subSeleccionada = params.get('sub');
