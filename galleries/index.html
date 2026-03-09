@@ -144,35 +144,42 @@ fetch('/galeries.json')
     titulo.textContent = tituloGrande;
     titulo.className = "text-8xl font-bold text-center my-12";
 
-    subGalerias.forEach((sub, index) => {
-        const images = Array.from({ length: sub.images }, (_, j) =>
-            `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j + 1}.jpg`
-        );
+subGalerias.forEach((sub, index) => {
+    const images = Array.from({length: sub.images}, (_, j) =>
+        `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+    );
 
-        const subDiv = document.createElement('div');
-        subDiv.className = "mb-32"; // margen inferior uniforme
+    const subDiv = document.createElement('div');
 
-        const esUltima = index === subGalerias.length - 1;
+    // Margen inferior general
+    subDiv.style.marginBottom = '120px';
 
-        if (sub.type === 'mosaic' || esUltima) {
-            // Bloque mosaico grande
-            const bloqueDiv = document.createElement('div');
-            bloqueDiv.className = "flex flex-col items-center mb-32";
+    // Margen extra superior si es mosaico dentro de galería principal
+    if(sub.type === 'mosaic' && sub.name !== 'Other') {
+        subDiv.style.marginTop = '10px';
+    }
 
-            // Si estamos en subgalería, no repetir el título
-            if (!subSeleccionada && sub.type === 'mosaic') {
-                const nombreDiv = document.createElement('div');
-                nombreDiv.className = "text-4xl font-bold text-gray-800 text-center mb-4";
-                nombreDiv.textContent = sub.displayName || sub.name;
-                bloqueDiv.appendChild(nombreDiv);
-            }
+    const esUltima = index === subGalerias.length - 1;
+    if (sub.type === 'mosaic' || esUltima) {
+        const bloqueDiv = document.createElement('div');
+        bloqueDiv.style.display = 'flex';
+        bloqueDiv.style.flexDirection = 'column';
+        bloqueDiv.style.alignItems = 'center';
+        bloqueDiv.style.marginBottom = '120px';
 
-            const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-            bloqueDiv.appendChild(mosaicoDiv);
+        const nombreDiv = document.createElement('div');
+        nombreDiv.className = 'text-4xl font-bold text-gray-800 text-center mb-12';
+        nombreDiv.textContent = sub.displayName || sub.name;
+        bloqueDiv.appendChild(nombreDiv);
 
-            container.appendChild(bloqueDiv);
-            return;
-        }
+        const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+        bloqueDiv.appendChild(mosaicoDiv);
+
+        subDiv.appendChild(bloqueDiv);
+        container.appendChild(subDiv);
+        return;
+    }
+
 
         // Bloque mini carrusel
         const titleSection = document.createElement('div');
