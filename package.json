@@ -5,7 +5,7 @@
     "javascript-obfuscator": "^5.3.0",
     "postcss": "^8.5.8",
     "postcss-cli": "^11.0.1",
-    "tailwindcss": "^4.2.1"
+    "tailwindcss": "^3.4.19"
   },
   "scripts": {
     "dev": "postcss assets/css/style.css -o assets/css/output.css --watch"

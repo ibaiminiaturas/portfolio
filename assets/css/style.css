@@ -1,20 +1,39 @@
-@import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fuente custom */
+@font-face {
+  font-family: 'Akira';
+  src: url('/assets/fonts/Akira.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+.font-miFuente {
+  font-family: 'Akira', sans-serif;
+}
+
+/* Scrollbar hide */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-#dropdown-galerias a {
-  color: white !important;
+/* Animaciones */
+@keyframes zoomIn {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+@keyframes zoomOut {
+  from { transform: scale(1.1); }
+  to { transform: scale(1); }
 }
 
-#dropdown-galerias a:hover {
-  color: white !important;
-}
+/* Lightbox */
 #lightbox {
   display: none;
   position: fixed;
@@ -24,14 +43,12 @@
   justify-content: center;
   z-index: 50;
 }
-
 #lightbox-img {
   max-width: 90vw;
   max-height: 90vh;
   border-radius: 8px;
   transition: opacity 0.3s ease;
 }
-
 #lightbox-prev,
 #lightbox-next {
   top: 50%;
@@ -45,28 +62,98 @@
   z-index: 100;
 }
 
-body {
-  margin: 0;
-  overflow-x: hidden;
-}
-
+/* Galería */
 .gallery {
-  width: 60%;
-  margin: 0 auto;        /* centra la columna */
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-
 .gallery img {
-  width: 100%;           /* ocupa todo el ancho de la columna */
-  height: auto;          /* mantiene proporción */
+  width: 100%;
+  height: auto;
   display: block;
 }
 
-@font-face {
-  font-family: 'Akira';
-  src: url('/assets/fonts/Akira.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+/* Cabecera full width */
+.header-full {
+  width: 100%;
+  background: white;
+  display: flex;
+  align-items: center;
+  height: 6rem; /* 24*2 = 48px aprox */
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 1rem;
+}
+.header-logo img {
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+.header-logo span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1F2937; /* gray-800 */
+}
+
+/* Menú centrado */
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 3rem;
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+.nav-center a {
+  color: #1F2937; /* gris oscuro para links */
+  transition: color 0.2s;
+}
+.nav-center a:hover {
+  color: #9CA3AF; /* gris más claro en hover */
+}
+
+/* Dropdown */
+#dropdown-galerias {
+  position: absolute;
+  display: none;
+  background: #1F2937; /* bg-gray-800 */
+  margin-top: 0.5rem;
+  border-radius: 0.25rem;
+  min-width: max-content;
+  color: white;
+}
+#dropdown-galerias a {
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  color: white;
+}
+#dropdown-galerias a:hover {
+  background: #374151; /* gray-700 */
+}
+
+/* Icono Instagram a la derecha */
+.header-instagram {
+  position: absolute;
+  right: 50px;
+  display: flex;
+  align-items: center;
+}
+.header-instagram img {
+  height: 2.5rem;
+  width: 2.5rem;
+  transition: opacity 0.2s;
+}
+.header-instagram img:hover {
+  opacity: 0.7;
 }
