@@ -96,41 +96,32 @@ fetch('/galeries.json')
       const subDiv = document.createElement('div');
       subDiv.style.marginBottom = '120px';
 
-      if(sub.type === 'mosaic'){
+if(sub.type === 'mosaic'){
 
-          const wrapper = document.createElement('div');
-          wrapper.style.display = 'flex';
-          wrapper.style.justifyContent = 'center'; // centro horizontal
-          wrapper.style.width = '100%';
-          wrapper.style.marginBottom = '120px';
+    const wrapper = document.createElement('div');
+    wrapper.style.display = 'flex';
+    wrapper.style.flexDirection = 'column'; // apilamos nombre arriba y mosaico abajo
+    wrapper.style.alignItems = 'center';     // centrado horizontal
+    wrapper.style.marginBottom = '120px';
+    wrapper.style.width = '100%';
 
-          const innerContainer = document.createElement('div');
-          innerContainer.style.display = 'flex';
-          innerContainer.style.alignItems = 'center'; // centro vertical
-          innerContainer.style.gap = '20px';
+    // NOMBRE centrado encima del mosaico
+    const nombreDiv = document.createElement('div');
+    nombreDiv.textContent = sub.displayName || sub.name;
+    nombreDiv.style.fontSize = '2rem';
+    nombreDiv.style.fontWeight = 'bold';
+    nombreDiv.style.marginBottom = '20px';
+    nombreDiv.style.textAlign = 'center';
+    wrapper.appendChild(nombreDiv);
 
-          // NOMBRE a la izquierda
-          const nombreDiv = document.createElement('div');
-          nombreDiv.textContent = sub.displayName || sub.name;
-          nombreDiv.style.width = '200px';
-          nombreDiv.style.height = '200px';
-          nombreDiv.style.display = 'flex';
-          nombreDiv.style.alignItems = 'center';
-          nombreDiv.style.justifyContent = 'center';
-          nombreDiv.style.fontSize = '2rem';
-          nombreDiv.style.fontWeight = 'bold';
-          innerContainer.appendChild(nombreDiv);
+    // MOSAICO
+    const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+    wrapper.appendChild(mosaicoDiv);
 
-          // MOSAICO
-          const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-          innerContainer.appendChild(mosaicoDiv);
+    container.appendChild(wrapper);
 
-          wrapper.appendChild(innerContainer);
-          container.appendChild(wrapper);
-
-          return;
-      }
-
+    return;
+}
       const titleSection = document.createElement('div');
       titleSection.style.display = 'flex';
       titleSection.style.gap = '20px';
