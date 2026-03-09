@@ -28,16 +28,27 @@ function closeLightbox() {
 }
 
 function updateLightboxImage() {
+  // fade out actual
+  lightboxImg.style.transition = 'opacity 0.5s ease';
   lightboxImg.style.opacity = 0;
-  lightboxImg.src = currentImages[currentIndex];
-  lightboxImg.onload = () => {
-    lightboxImg.style.opacity = 1;
+  if (currentIndex === 0) {
+  prevBtn.style.display = 'none';
+  nextBtn.style.display = 'none';
+  }
+  setTimeout(() => {
+    // cambiar src
+    lightboxImg.src = currentImages[currentIndex];
+    prevBtn.style.display = currentIndex > 0 ? 'block' : 'none';
+    nextBtn.style.display = currentIndex < currentImages.length - 1 ? 'block' : 'none';
     positionButtons();
-  };
-
+    // fade in
+    lightboxImg.onload = () => {
+      lightboxImg.style.opacity = 1;
+          
+    };
+  }, 200); // duración del fade out
   // Mostrar u ocultar flechas según posición
-  prevBtn.style.display = currentIndex > 0 ? 'block' : 'none';
-  nextBtn.style.display = currentIndex < currentImages.length - 1 ? 'block' : 'none';
+  
 }
 
 function showNext() {
