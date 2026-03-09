@@ -98,27 +98,25 @@ fetch('/galeries.json')
 
 if(sub.type === 'mosaic'){
 
-    const wrapper = document.createElement('div');
-    wrapper.style.display = 'flex';
-    wrapper.style.flexDirection = 'column'; // apilamos nombre arriba y mosaico abajo
-    wrapper.style.alignItems = 'center';     // centrado horizontal
-    wrapper.style.marginBottom = '120px';
-    wrapper.style.width = '100%';
+// En tu index.html dentro del if(sub.type === 'mosaic')
+const subDiv = document.createElement('div');
+subDiv.style.display = 'flex';
+subDiv.style.flexDirection = 'column';
+subDiv.style.alignItems = 'center'; // centro horizontalmente todo el bloque
+subDiv.style.marginBottom = '120px';
 
-    // NOMBRE centrado encima del mosaico
-    const nombreDiv = document.createElement('div');
-    nombreDiv.textContent = sub.displayName || sub.name;
-    nombreDiv.style.fontSize = '2rem';
-    nombreDiv.style.fontWeight = 'bold';
-    nombreDiv.style.marginBottom = '20px';
-    nombreDiv.style.textAlign = 'center';
-    wrapper.appendChild(nombreDiv);
+// NOMBRE encima del mosaico, centrado y uniforme
+const nombreDiv = document.createElement('div');
+nombreDiv.className = 'text-4xl font-bold text-gray-800 text-center mb-4';
+nombreDiv.textContent = sub.displayName || sub.name;
+subDiv.appendChild(nombreDiv);
 
-    // MOSAICO
-    const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-    wrapper.appendChild(mosaicoDiv);
+// MOSAICO
+const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+subDiv.appendChild(mosaicoDiv);
 
-    container.appendChild(wrapper);
+// Añadimos todo al contenedor principal
+container.appendChild(subDiv);
 
     return;
 }

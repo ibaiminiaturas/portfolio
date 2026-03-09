@@ -1,16 +1,11 @@
 // mosaico.js
 export function crearMosaico(sub, images, openLightbox) {
-    const subDiv = document.createElement('div');
-    subDiv.style.marginBottom = '120px';
-    subDiv.style.display = 'flex';
-    subDiv.style.justifyContent = 'center';
-    subDiv.style.width = '100%';
-
-    // Contenedor centrado de 800px
     const mosaicContainer = document.createElement('div');
     mosaicContainer.style.width = '800px';
     mosaicContainer.style.position = 'relative';
     mosaicContainer.style.height = 'auto';
+    mosaicContainer.style.display = 'block'; // necesario para centrar si es inline-block
+    mosaicContainer.style.margin = '0 auto'; // centra horizontalmente
 
     const GAP = 15;
     const CONTAINER_WIDTH = 800;
@@ -25,7 +20,6 @@ export function crearMosaico(sub, images, openLightbox) {
         rowWidth += imgSize + (row.length > 1 ? GAP : 0);
 
         if (rowWidth >= CONTAINER_WIDTH || i === images.length - 1) {
-            // Escalamos la fila para ocupar exactamente 800px
             const totalGap = GAP * (row.length - 1);
             const scale = (CONTAINER_WIDTH - totalGap) / (rowWidth - totalGap);
 
@@ -34,7 +28,6 @@ export function crearMosaico(sub, images, openLightbox) {
 
             row.forEach(imgData => {
                 const size = Math.floor(imgData.size * scale);
-
                 const img = document.createElement('img');
                 img.src = imgData.src;
                 img.style.width = size + 'px';
@@ -43,7 +36,6 @@ export function crearMosaico(sub, images, openLightbox) {
                 img.style.borderRadius = '8px';
                 img.style.cursor = 'pointer';
                 img.style.transition = 'transform 0.25s ease-out';
-
                 img.style.position = 'absolute';
                 img.style.left = x + 'px';
                 img.style.top = y + 'px';
@@ -53,7 +45,6 @@ export function crearMosaico(sub, images, openLightbox) {
                 img.addEventListener('mouseleave', () => { img.style.transform = 'scale(1)'; });
 
                 mosaicContainer.appendChild(img);
-
                 x += size + GAP;
                 if (size > maxHeightInRow) maxHeightInRow = size;
             });
@@ -65,7 +56,5 @@ export function crearMosaico(sub, images, openLightbox) {
     }
 
     mosaicContainer.style.height = y + 'px';
-    subDiv.appendChild(mosaicContainer);
-
-    return subDiv;
+    return mosaicContainer;
 }
