@@ -18,84 +18,86 @@
 
 <!-- Estilos generales -->
 <style>
-
 body {
   margin: 0;
   overflow-x: hidden;
-  font-family: 'Inter', sans-serif;
- background: linear-gradient(180deg, #e0f2fe 0%, #f1f5f9 50%, #f9fafb 100%);
-  transition: background 1s ease-in-out;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f3f4f6; /* Tailwind bg-gray-100 */
 }
 
-  body {
-    font-family: 'Montserrat', sans-serif;
-    overflow-x: hidden;
-    margin: 0;
-    background-color: #f3f4f6; /* Tailwind bg-gray-100 */
-  }
+/* Scrollbar hide */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+/* Lightbox */
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+#lightbox-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 8px;
+  transition: opacity 0.3s ease;
+}
+#lightbox-prev, #lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: white;
+  font-size: 2rem;
+  z-index: 100;
+}
 
-  /* Lightbox */
-  #lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-  }
-  #lightbox-img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border-radius: 8px;
-    transition: opacity 0.3s ease;
-  }
-  #lightbox-prev, #lightbox-next {
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    border-radius: 50%;
-    padding: 0.5rem;
-    cursor: pointer;
-    color: white;
-    font-size: 2rem;
-    z-index: 100;
-  }
-
-  /* Galería */
-  .gallery {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  .gallery img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
+/* Galería */
+.gallery {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 </style>
 </head>
 
 <body class="bg-gray-100">
 
-<!-- CABECERA FULL WIDTH -->
-<div id="header-placeholder"></div>
+<!-- HEADER STICKY REAL -->
+<header id="main-header" class="sticky top-0 z-50 bg-white">
+</header>
+
 <script>
 fetch('/components/header.html')
   .then(res => res.text())
   .then(html => {
-    document.getElementById('header-placeholder').innerHTML = html;
+    const header = document.getElementById('main-header');
+    header.innerHTML = html;
 
+    // Shadow al hacer scroll
+    header.style.transition = 'box-shadow 0.3s ease';
+    window.addEventListener('scroll', () => {
+      header.style.boxShadow = window.scrollY > 10 ? '0 2px 8px rgba(0,0,0,0.1)' : 'none';
+    });
+
+    // Cargar el menú flotante
     const script = document.createElement('script');
     script.src = '/assets/js/menu.js';
     document.body.appendChild(script);
@@ -136,12 +138,11 @@ fetch('/galeries.json')
     let subGalerias = data[galeriaSeleccionada];
     let tituloGrande;
 
-    // Si hay subgalería, mostramos su displayName grande y filtramos solo esa
     if (subSeleccionada) {
         const subEncontrada = subGalerias.find(s => s.name === subSeleccionada);
         if (subEncontrada) {
             tituloGrande = subEncontrada.displayName || subEncontrada.name;
-            subGalerias = [subEncontrada]; // Solo cargamos esta subgalería
+            subGalerias = [subEncontrada];
         } else {
             tituloGrande = galeriaSeleccionada;
         }
@@ -149,48 +150,39 @@ fetch('/galeries.json')
         tituloGrande = galeriaSeleccionada;
     }
 
-    // Título grande centrado
     titulo.textContent = tituloGrande;
     titulo.className = "text-8xl font-bold text-center my-12";
 
-subGalerias.forEach((sub, index) => {
-    const images = Array.from({length: sub.images}, (_, j) =>
-        `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
-    );
+    subGalerias.forEach((sub, index) => {
+        const images = Array.from({length: sub.images}, (_, j) =>
+            `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+        );
 
-    const subDiv = document.createElement('div');
+        const subDiv = document.createElement('div');
+        subDiv.style.marginBottom = '120px';
+        if(sub.type === 'mosaic' && sub.name !== 'Other') subDiv.style.marginTop = '10px';
 
-    // Margen inferior general
-    subDiv.style.marginBottom = '120px';
+        const esUltima = index === subGalerias.length - 1;
+        if(sub.type === 'mosaic' || esUltima){
+            const bloqueDiv = document.createElement('div');
+            bloqueDiv.style.display = 'flex';
+            bloqueDiv.style.flexDirection = 'column';
+            bloqueDiv.style.alignItems = 'center';
+            bloqueDiv.style.marginBottom = '120px';
 
-    // Margen extra superior si es mosaico dentro de galería principal
-    if(sub.type === 'mosaic' && sub.name !== 'Other') {
-        subDiv.style.marginTop = '10px';
-    }
+            const nombreDiv = document.createElement('div');
+            nombreDiv.className = 'text-4xl font-bold text-gray-800 text-center mb-12';
+            nombreDiv.textContent = sub.displayName || sub.name;
+            bloqueDiv.appendChild(nombreDiv);
 
-    const esUltima = index === subGalerias.length - 1;
-    if (sub.type === 'mosaic' || esUltima) {
-        const bloqueDiv = document.createElement('div');
-        bloqueDiv.style.display = 'flex';
-        bloqueDiv.style.flexDirection = 'column';
-        bloqueDiv.style.alignItems = 'center';
-        bloqueDiv.style.marginBottom = '120px';
+            const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+            bloqueDiv.appendChild(mosaicoDiv);
 
-        const nombreDiv = document.createElement('div');
-        nombreDiv.className = 'text-4xl font-bold text-gray-800 text-center mb-12';
-        nombreDiv.textContent = sub.displayName || sub.name;
-        bloqueDiv.appendChild(nombreDiv);
+            subDiv.appendChild(bloqueDiv);
+            container.appendChild(subDiv);
+            return;
+        }
 
-        const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-        bloqueDiv.appendChild(mosaicoDiv);
-
-        subDiv.appendChild(bloqueDiv);
-        container.appendChild(subDiv);
-        return;
-    }
-
-
-        // Bloque mini carrusel
         const titleSection = document.createElement('div');
         titleSection.className = "flex gap-5 items-start mb-5";
 
@@ -217,6 +209,17 @@ subGalerias.forEach((sub, index) => {
     console.error('Error cargando galería:', err);
     container.innerHTML = "<p class='text-xl'>Error cargando la galería.</p>";
 });
+</script>
+
+<!-- Footer placeholder -->
+<div id="footer-placeholder"></div>
+
+<script>
+  fetch('/components/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('footer-placeholder').innerHTML = html;
+    });
 </script>
 
 </body>

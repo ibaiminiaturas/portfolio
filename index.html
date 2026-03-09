@@ -4,31 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi Portfolio de Miniaturas</title>
-  <link rel="stylesheet" href="assets/css/output.css">
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f3f4f6; /* Tailwind bg-gray-100 */
+    }
+  </style>
 </head>
 <body class="bg-gray-100 font-sans">
 
-<div id="header-placeholder"></div>
+<!-- HEADER STICKY REAL -->
+<header id="main-header" class="sticky top-0 z-50 bg-white"></header>
 
 <script>
-  fetch('components/header.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('header-placeholder').innerHTML = html;
-      // Cargar el script del menú después de que el header esté en el DOM
-      const script = document.createElement('script');
-      script.src = 'assets/js/menu.js';
-      document.body.appendChild(script);
+fetch('/components/header.html')
+  .then(res => res.text())
+  .then(html => {
+    const header = document.getElementById('main-header');
+    header.innerHTML = html;
+
+    // Shadow al hacer scroll
+    header.style.transition = 'box-shadow 0.3s ease';
+    window.addEventListener('scroll', () => {
+      header.style.boxShadow = window.scrollY > 10 ? '0 2px 8px rgba(0,0,0,0.1)' : 'none';
     });
+
+    // Cargar el menú flotante
+    const script = document.createElement('script');
+    script.src = '/assets/js/menu.js';
+    document.body.appendChild(script);
+  });
 </script>
 
 <main class="max-w-7xl mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold mb-4">Bienvenido a mi portfolio de miniaturas</h1>
-  <p>Selecciona una galería en el menú para ver mis trabajos.</p>
+  <h1 class="text-3xl font-bold mb-4">Hola Mundo</h1>
+  <p>Este es tu index principal con header sticky funcionando igual que galerías.</p>
 </main>
 
-<footer class="bg-white shadow mt-12 py-4 text-center">
-  © 2026 Mi Portfolio de Miniaturas
-</footer>
+<!-- Footer placeholder -->
+<div id="footer-placeholder"></div>
+
+<script>
+  fetch('/components/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('footer-placeholder').innerHTML = html;
+    });
+</script>
+
 </body>
 </html>
