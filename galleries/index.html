@@ -55,21 +55,24 @@ body::before {
   scrollbar-width: none;
 }
 
-/* Lightbox */
 #lightbox {
-  display: none;
   position: fixed;
-  inset: 0;
+  inset: 0; /* ocupa todo el viewport */
+  display: none;
   background: rgba(0,0,0,0.8);
   align-items: center;
   justify-content: center;
   z-index: 50;
+  padding-top: var(--header-height, 0); /* espacio para la cabecera */
+  padding-bottom: 0px;
+  box-sizing: border-box;
 }
+
 #lightbox-img {
+  max-height: calc(100vh - var(--header-height, 0) - 80px);
   max-width: 90vw;
-  max-height: 90vh;
   border-radius: 8px;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease;
 }
 #lightbox-prev, #lightbox-next {
   top: 50%;

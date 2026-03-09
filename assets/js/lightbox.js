@@ -8,17 +8,27 @@ const lightboxImg = document.getElementById('lightbox-img');
 const prevBtn = document.getElementById('lightbox-prev');
 const nextBtn = document.getElementById('lightbox-next');
 
+function adjustLightboxForHeader() {
+  const header = document.getElementById('main-header');
+  const headerHeight = header ? header.offsetHeight : 0;
+  lightbox.style.setProperty('--header-height', headerHeight + 'px');
+  console.log("Ajustando lightbox para header, altura:", headerHeight);
+}
+
 function openLightbox(images, index) {
   currentImages = images;
   currentIndex = index;
   updateLightboxImage();
 
-  // Mostrar lightbox
+  adjustLightboxForHeader(); // actualizar altura cabecera
+
   lightbox.style.display = 'flex';
   lightbox.style.opacity = 0;
   lightbox.style.transition = 'opacity 0.3s ease';
   requestAnimationFrame(() => lightbox.style.opacity = 1);
 }
+
+window.addEventListener('resize', adjustLightboxForHeader);
 
 function closeLightbox() {
   lightbox.style.opacity = 0;
@@ -38,13 +48,13 @@ function updateLightboxImage() {
   setTimeout(() => {
     // cambiar src
     lightboxImg.src = currentImages[currentIndex];
-    prevBtn.style.display = currentIndex > 0 ? 'block' : 'none';
-    nextBtn.style.display = currentIndex < currentImages.length - 1 ? 'block' : 'none';
-    positionButtons();
+    
     // fade in
     lightboxImg.onload = () => {
       lightboxImg.style.opacity = 1;
-          
+          prevBtn.style.display = currentIndex > 0 ? 'block' : 'none';
+    nextBtn.style.display = currentIndex < currentImages.length - 1 ? 'block' : 'none';
+    positionButtons();
     };
   }, 200); // duración del fade out
   // Mostrar u ocultar flechas según posición

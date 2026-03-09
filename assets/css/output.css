@@ -1034,25 +1034,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Lightbox */
-
-#lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-}
-
-#lightbox-img {
-  max-width: 90vw;
-  max-height: 90vh;
-  border-radius: 8px;
-  transition: opacity 0.3s ease;
-}
-
 #lightbox-prev,
 #lightbox-next {
   top: 50%;
