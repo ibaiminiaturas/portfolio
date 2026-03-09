@@ -60,7 +60,8 @@ document.body.appendChild(script);
 
 <script src="/assets/js/lightbox.js"></script>
 
-<script>
+<script type="module">
+import { crearMiniCarrusel } from '/assets/js/minicarrusel.js';
 
 const params = new URLSearchParams(window.location.search);
 const galeriaSeleccionada = params.get('galeria');
@@ -74,8 +75,8 @@ fetch('/galeries.json')
 .then(data => {
 
 if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
-container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
-return;
+    container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
+    return;
 }
 
 titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
@@ -83,204 +84,109 @@ titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSelec
 let subGalerias = data[galeriaSeleccionada];
 
 if(subSeleccionada){
-subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
+    subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
 }
 
 subGalerias.forEach((sub, index) => {
 
-const nombreDiv = document.createElement('div');
-nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
-nombreDiv.style.flexShrink = '0';
-nombreDiv.textContent = sub.displayName || sub.name;
+    const nombreDiv = document.createElement('div');
+    nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+    nombreDiv.style.flexShrink = '0';
+    nombreDiv.textContent = sub.displayName || sub.name;
 
-const images = Array.from({length: sub.images}, (_, j) =>
-`/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
-);
+    const images = Array.from({length: sub.images}, (_, j) =>
+        `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+    );
 
-const subDiv = document.createElement('div');
-subDiv.style.marginBottom = '120px';
+    const subDiv = document.createElement('div');
+    subDiv.style.marginBottom = '120px';
 
-const titleSection = document.createElement('div');
-titleSection.style.display = 'flex';
-titleSection.style.gap = '20px';
-titleSection.style.alignItems = 'flex-start';
-titleSection.style.marginBottom = '20px';
+    const titleSection = document.createElement('div');
+    titleSection.style.display = 'flex';
+    titleSection.style.gap = '20px';
+    titleSection.style.alignItems = 'flex-start';
+    titleSection.style.marginBottom = '20px';
 
-titleSection.appendChild(nombreDiv);
+    titleSection.appendChild(nombreDiv);
 
+    // ================= MOSAICO =================
+    if(sub.type === 'mosaic'){
+        const mosaicLayout = document.createElement('div');
+        mosaicLayout.style.display = 'grid';
+        mosaicLayout.style.gridTemplateColumns = '20% 60% 20%';
+        mosaicLayout.style.width = '100%';
+        mosaicLayout.style.alignItems = 'start';
 
+        const nameContainer = document.createElement('div');
+        nameContainer.appendChild(nombreDiv);
 
-// ================= MOSAICO =================
-if(sub.type === 'mosaic'){
+        const mosaicContainer = document.createElement('div');
+        mosaicContainer.style.display = 'grid';
+        mosaicContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px,1fr))';
+        mosaicContainer.style.gridAutoFlow = 'dense';
+        mosaicContainer.style.gap = '20px';
 
-const mosaicLayout = document.createElement('div');
-mosaicLayout.style.display = 'grid';
-mosaicLayout.style.gridTemplateColumns = '20% 60% 20%';
-mosaicLayout.style.width = '100%';
-mosaicLayout.style.alignItems = 'start';
+        for(let i=0;i<sub.images;i++){
+            const img=document.createElement('img');
+            img.src=images[i];
 
-const nameContainer = document.createElement('div');
-nameContainer.appendChild(nombreDiv);
+            img.style.width='100%';
+            img.style.height='auto';
+            img.style.objectFit='contain';
+            img.style.borderRadius='8px';
+            img.style.cursor='pointer';
+            img.style.transition='transform 0.25s ease-out';
 
-const mosaicContainer = document.createElement('div');
-mosaicContainer.style.display = 'grid';
-mosaicContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px,1fr))';
-mosaicContainer.style.gridAutoFlow = 'dense';
-mosaicContainer.style.gap = '20px';
+            const r=Math.random();
+            if(r<0.65){
+                img.style.gridColumn='span 1';
+                img.style.aspectRatio='1/1';
+            }
+            else if(r<0.9){
+                img.style.gridColumn='span 2';
+                img.style.aspectRatio='2/1';
+            }
+            else{
+                img.style.gridColumn='span 2';
+                img.style.aspectRatio='1/2';
+            }
 
-for(let i=0;i<sub.images;i++){
+            img.addEventListener('click',()=>openLightbox(images,i));
+            img.addEventListener('mouseenter',()=>{ img.style.transform='scale(1.05)'; });
+            img.addEventListener('mouseleave',()=>{ img.style.transform='scale(1)'; });
 
-const img=document.createElement('img');
-img.src=images[i];
+            mosaicContainer.appendChild(img);
+        }
 
-img.style.width='100%';
-img.style.height='auto';
-img.style.objectFit='contain';
-img.style.borderRadius='8px';
-img.style.cursor='pointer';
-img.style.transition='transform 0.25s ease-out';
+        mosaicLayout.appendChild(nameContainer);
+        mosaicLayout.appendChild(mosaicContainer);
+        mosaicLayout.appendChild(document.createElement('div'));
 
-const r=Math.random();
+        subDiv.appendChild(mosaicLayout);
+        container.appendChild(subDiv);
+        return;
+    }
 
-if(r<0.65){
-img.style.gridColumn='span 1';
-img.style.aspectRatio='1/1';
-}
-else if(r<0.9){
-img.style.gridColumn='span 2';
-img.style.aspectRatio='2/1';
-}
-else{
-img.style.gridColumn='span 2';
-img.style.aspectRatio='1/2';
-}
+    // ================= MINI CARRUSEL =================
+    if(index % 2 === 0){
+        subDiv.style.paddingLeft = '15%';
+        subDiv.style.paddingRight = '5%';
+    } else {
+        subDiv.style.paddingLeft = '10%';
+        subDiv.style.paddingRight = '10%';
+    }
 
-img.addEventListener('click',()=>openLightbox(images,i));
-
-img.addEventListener('mouseenter',()=>{
-img.style.transform='scale(1.05)';
-});
-
-img.addEventListener('mouseleave',()=>{
-img.style.transform='scale(1)';
-});
-
-mosaicContainer.appendChild(img);
-}
-
-mosaicLayout.appendChild(nameContainer);
-mosaicLayout.appendChild(mosaicContainer);
-mosaicLayout.appendChild(document.createElement('div'));
-
-subDiv.appendChild(mosaicLayout);
-container.appendChild(subDiv);
-
-return;
-}
-
-
-
-// ================= CARRUSEL =================
-
-if(index % 2 === 0){
-subDiv.style.paddingLeft = '15%';
-subDiv.style.paddingRight = '5%';
-}
-else{
-subDiv.style.paddingLeft = '10%';
-subDiv.style.paddingRight = '10%';
-}
-
-const carruselWrapper = document.createElement('div');
-carruselWrapper.className = 'relative flex items-center';
-carruselWrapper.style.flex = '1';
-carruselWrapper.style.height = '200px';
-
-const carruselDiv = document.createElement('div');
-carruselDiv.className = 'flex h-[200px] overflow-x-auto scrollbar-hide';
-carruselDiv.style.flex = '1';
-carruselDiv.style.scrollBehavior = 'smooth';
-carruselDiv.style.gap = '20px';
-
-const imgs=[];
-
-for(let i=1;i<=sub.images;i++){
-
-const img=document.createElement('img');
-img.src=images[i-1];
-
-img.className='w-[200px] h-[200px] object-cover rounded flex-shrink-0 cursor-pointer';
-
-carruselDiv.appendChild(img);
-imgs.push(img);
-
-img.addEventListener('click',()=>openLightbox(images,i-1));
-
-img.addEventListener('mouseenter',()=>{
-img.style.animation='zoomIn 0.25s ease-out forwards';
-});
-
-img.addEventListener('mouseleave',()=>{
-img.style.animation='zoomOut 0.25s ease-out forwards';
-});
-
-}
-
-const SCROLL_AMOUNT=220;
-
-const leftArrow=document.createElement('div');
-leftArrow.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>`;
-leftArrow.style.position='absolute';
-leftArrow.style.left='0';
-leftArrow.style.top='50%';
-leftArrow.style.transform='translateY(-50%)';
-leftArrow.style.zIndex='10';
-leftArrow.style.display='none';
-
-const rightArrow=document.createElement('div');
-rightArrow.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
-rightArrow.style.position='absolute';
-rightArrow.style.right='0';
-rightArrow.style.top='50%';
-rightArrow.style.transform='translateY(-50%)';
-rightArrow.style.zIndex='10';
-rightArrow.style.display='none';
-
-function updateCarruselArrows(){
-
-const hasScroll=carruselDiv.scrollWidth>carruselDiv.clientWidth;
-const scrollLeft=carruselDiv.scrollLeft;
-const scrollRight=carruselDiv.scrollWidth-carruselDiv.clientWidth-scrollLeft;
-
-leftArrow.style.display=(hasScroll && scrollLeft>0)?'flex':'none';
-rightArrow.style.display=(hasScroll && scrollRight>1)?'flex':'none';
-
-}
-
-carruselDiv.addEventListener('scroll',updateCarruselArrows);
-imgs.forEach(img=>img.addEventListener('load',updateCarruselArrows));
-
-setTimeout(updateCarruselArrows,100);
-
-leftArrow.addEventListener('click',()=>carruselDiv.scrollBy({left:-SCROLL_AMOUNT,behavior:'smooth'}));
-rightArrow.addEventListener('click',()=>carruselDiv.scrollBy({left:SCROLL_AMOUNT,behavior:'smooth'}));
-
-carruselWrapper.appendChild(leftArrow);
-carruselWrapper.appendChild(rightArrow);
-carruselWrapper.appendChild(carruselDiv);
-
-titleSection.appendChild(carruselWrapper);
-subDiv.appendChild(titleSection);
-container.appendChild(subDiv);
+    const carruselWrapper = crearMiniCarrusel(sub, images, openLightbox);
+    titleSection.appendChild(carruselWrapper);
+    subDiv.appendChild(titleSection);
+    container.appendChild(subDiv);
 
 });
-
 })
 .catch(err=>{
-console.error('Error cargando galería:',err);
-container.innerHTML="<p class='text-xl'>Error cargando la galería.</p>";
+    console.error('Error cargando galería:',err);
+    container.innerHTML="<p class='text-xl'>Error cargando la galería.</p>";
 });
-
 </script>
 
 </body>
