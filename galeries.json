@@ -6,9 +6,9 @@
     { "name": "Other", "displayName": "Otros Trabajos", "images": 12, "type": "mosaic" }
   ],
   "Warhammer": [
-    { "name": "Other", "displayName": "Otros Warhammer", "images": 3, "type": "mosaic" }
+    { "name": "Other", "displayName": "Otros Trabajos", "images": 3, "type": "mosaic" }
   ],
   "Warhammer 40k": [
-    { "name": "Other", "displayName": "Otros 40k", "images": 5, "type": "mosaic" }
+    { "name": "Other", "displayName": "Otros Trabajos", "images": 5, "type": "mosaic" }
   ]
 }
