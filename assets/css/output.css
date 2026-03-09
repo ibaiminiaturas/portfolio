@@ -106,6 +106,12 @@
 .object-cover {
   object-fit: cover;
 }
+.px-\[10\%\] {
+  padding-inline: 10%;
+}
+.px-\[15\%\] {
+  padding-inline: 15%;
+}
 .pr-\[5\%\] {
   padding-right: 5%;
 }
@@ -166,8 +172,15 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-body, h1, h2, h3, h4, h5, h6, p, span, a, li, button {
-  font-family: 'Akira', sans-serif;
+body {
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  background-color: #f3f4f6;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
 }
 @keyframes zoomIn {
   from {

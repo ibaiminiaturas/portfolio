@@ -22,9 +22,17 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-/* Fuente Akira para toda la web */
-body, h1, h2, h3, h4, h5, h6, p, span, a, li, button {
-  font-family: 'Akira', sans-serif;
+body {
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  background-color: #f3f4f6; /* Tailwind bg-gray-100 */
+}
+
+/* Opcional: títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; /* un poco más bold para títulos */
 }
 /* Animaciones */
 @keyframes zoomIn {

@@ -3,100 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <title>Galería</title>
+
+<!-- TailwindCSS -->
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Montserrat -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <!-- Macy.js -->
 <script src="https://cdn.jsdelivr.net/npm/macy@2.5.1/dist/macy.min.js"></script>
+
 <!-- imagesLoaded -->
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 
+<!-- Estilos generales -->
 <style>
-@font-face {
-  font-family: 'Akira';
-  src: url('/assets/fonts/Akira.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
+  body {
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    background-color: #f3f4f6; /* Tailwind bg-gray-100 */
+  }
 
-body {
-  font-family: 'Akira', sans-serif;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-@keyframes zoomIn {
-  from { transform: scale(1); }
-  to { transform: scale(1.1); }
-}
-@keyframes zoomOut {
-  from { transform: scale(1.1); }
-  to { transform: scale(1); }
-}
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 
-/* Lightbox */
-#lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-}
-#lightbox-img {
-  max-width: 90vw;
-  max-height: 90vh;
-  border-radius: 8px;
-  transition: opacity 0.3s ease;
-}
-#lightbox-prev,
-#lightbox-next {
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
-  border-radius: 50%;
-  padding: 0.5rem;
-  cursor: pointer;
-  color: white;
-  font-size: 2rem;
-  z-index: 100;
-}
+  /* Lightbox */
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+  #lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    transition: opacity 0.3s ease;
+  }
+  #lightbox-prev, #lightbox-next {
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: white;
+    font-size: 2rem;
+    z-index: 100;
+  }
 
-/* Galería */
-.gallery {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-.gallery img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+  /* Galería */
+  .gallery {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 </style>
 </head>
 
 <body class="bg-gray-100">
 
-<!-- CABECERA -->
+<!-- CABECERA FULL WIDTH -->
 <div id="header-placeholder"></div>
 <script>
 fetch('/components/header.html')
-.then(res => res.text())
-.then(html => {
-  document.getElementById('header-placeholder').innerHTML = html;
-  const script = document.createElement('script');
-  script.src = '/assets/js/menu.js';
-  document.body.appendChild(script);
-});
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('header-placeholder').innerHTML = html;
+
+    const script = document.createElement('script');
+    script.src = '/assets/js/menu.js';
+    document.body.appendChild(script);
+  });
 </script>
 
-<h1 class="text-4xl font-bold mb-6 px-6">Galería</h1>
+<h1 class="text-4xl font-semibold mb-6 px-6" id="titulo-galeria">Galería</h1>
 <div id="galeria-container" class="space-y-6 px-6"></div>
 
 <!-- LIGHTBOX -->
@@ -107,7 +104,81 @@ fetch('/components/header.html')
 </div>
 
 <script src="/assets/js-obfuscated/lightbox.js"></script>
-<script type="module" src="/assets/js/gallery.js"></script>
+
+<script type="module">
+import { crearMiniCarrusel } from '/assets/js-obfuscated/minicarrusel.js';
+import { crearMosaico } from '/assets/js/mosaico.js';
+
+const params = new URLSearchParams(window.location.search);
+const galeriaSeleccionada = params.get('galeria');
+const subSeleccionada = params.get('sub');
+
+const container = document.getElementById('galeria-container');
+const titulo = document.getElementById('titulo-galeria');
+
+fetch('/galeries.json')
+  .then(res => res.json())
+  .then(data => {
+    if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
+      container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
+      return;
+    }
+
+    titulo.textContent = galeriaSeleccionada + (subSeleccionada ? " → " + subSeleccionada : "");
+
+    let subGalerias = data[galeriaSeleccionada];
+    if(subSeleccionada){
+      subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
+    }
+
+    subGalerias.forEach((sub, index) => {
+      const images = Array.from({length: sub.images}, (_, j) =>
+        `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+      );
+
+      const esUltima = index === subGalerias.length - 1;
+
+      // Bloque completo (mosaic o último)
+      if (sub.type === 'mosaic' || esUltima) {
+        const bloqueDiv = document.createElement('div');
+        bloqueDiv.className = 'flex flex-col items-center mb-32';
+
+        const nombreDiv = document.createElement('div');
+        nombreDiv.className = 'text-4xl font-semibold text-gray-800 text-center mb-4';
+        nombreDiv.textContent = sub.displayName || sub.name;
+        bloqueDiv.appendChild(nombreDiv);
+
+        const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+        bloqueDiv.appendChild(mosaicoDiv);
+
+        container.appendChild(bloqueDiv);
+        return;
+      }
+
+      // Bloques con mini-carrusel
+      const subDiv = document.createElement('div');
+      subDiv.className = index % 2 === 0 ? 'px-[15%] pb-32' : 'px-[10%] pb-32';
+
+      const titleSection = document.createElement('div');
+      titleSection.className = 'flex gap-5 items-start mb-5';
+
+      const nombreDiv = document.createElement('div');
+      nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-semibold text-gray-800 break-words text-center';
+      nombreDiv.textContent = sub.displayName || sub.name;
+      titleSection.appendChild(nombreDiv);
+
+      const carruselWrapper = crearMiniCarrusel(sub, images, openLightbox);
+      titleSection.appendChild(carruselWrapper);
+
+      subDiv.appendChild(titleSection);
+      container.appendChild(subDiv);
+    });
+  })
+  .catch(err => {
+    console.error('Error cargando galería:', err);
+    container.innerHTML = "<p class='text-xl'>Error cargando la galería.</p>";
+  });
+</script>
 
 </body>
 </html>
