@@ -63,3 +63,10 @@ body {
   height: auto;          /* mantiene proporción */
   display: block;
 }
+
+@font-face {
+  font-family: 'Akira';
+  src: url('/assets/fonts/Akira.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}

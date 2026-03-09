@@ -9,14 +9,28 @@
 <!-- imagesLoaded -->
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <style>
-body{
-  overflow-x:hidden;
+body {
+  overflow-x: hidden;
+  margin: 0; /* quita todo margen global */
 }
+
+
+@font-face {
+  font-family: 'Akira';
+  src: url('/assets/fonts/Akira.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Clase para usar la fuente */
+.font-miFuente {
+  font-family: 'Akira', sans-serif;
+}
+
 
 .scrollbar-hide::-webkit-scrollbar{
   display:none;
 }
-
 .scrollbar-hide{
   -ms-overflow-style:none;
   scrollbar-width:none;
@@ -26,19 +40,60 @@ body{
   from{transform:scale(1);}
   to{transform:scale(1.1);}
 }
-
 @keyframes zoomOut{
   from{transform:scale(1.1);}
   to{transform:scale(1);}
 }
-</style>
 
+/* Lightbox */
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+#lightbox-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 8px;
+  transition: opacity 0.3s ease;
+}
+#lightbox-prev,
+#lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: white;
+  font-size: 2rem;
+  z-index: 100;
+}
+
+/* Galería */
+.gallery {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+</style>
 </head>
 
-<body class="bg-gray-100 p-6">
+<body class="bg-gray-100">
 
+<!-- CABECERA FULL WIDTH -->
 <div id="header-placeholder"></div>
-
 <script>
 fetch('/components/header.html')
 .then(res => res.text())
@@ -51,14 +106,14 @@ fetch('/components/header.html')
 });
 </script>
 
-<h1 class="text-4xl font-bold mb-6" id="titulo-galeria">Galería</h1>
-<div id="galeria-container" class="space-y-6"></div>
+<h1 class="text-4xl font-bold mb-6 px-6" id="titulo-galeria">Galería</h1>
+<div id="galeria-container" class="space-y-6 px-6"></div> <!-- padding solo para contenido -->
 
 <!-- LIGHTBOX -->
 <div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
   <img id="lightbox-img" class="max-h-[90%] max-w-[90%] rounded shadow-lg">
-  <button id="lightbox-prev" class="absolute text-white text-5xl hover:text-yellow-400">❮</button>
-  <button id="lightbox-next" class="absolute text-white text-5xl hover:text-yellow-400">❯</button>
+  <button id="lightbox-prev" class="absolute text-white text-5xl hover:text-gray-300">❮</button>
+  <button id="lightbox-next" class="absolute text-white text-5xl hover:text-gray-300">❯</button>
 </div>
 
 <script src="/assets/js-obfuscated/lightbox.js"></script>
@@ -77,7 +132,6 @@ const titulo = document.getElementById('titulo-galeria');
 fetch('/galeries.json')
 .then(res => res.json())
 .then(data => {
-
   if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
       container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
       return;
@@ -90,72 +144,59 @@ fetch('/galeries.json')
       subGalerias = subGalerias.filter(s => s.name === subSeleccionada);
   }
 
-subGalerias.forEach((sub, index) => {
+  subGalerias.forEach((sub, index) => {
+      const images = Array.from({length: sub.images}, (_, j) =>
+          `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+      );
 
-    const images = Array.from({length: sub.images}, (_, j) =>
-        `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
-    );
+      const subDiv = document.createElement('div');
+      subDiv.style.marginBottom = '120px';
 
-    const subDiv = document.createElement('div');
-    subDiv.style.marginBottom = '120px';
+      const esUltima = index === subGalerias.length - 1;
+      if (sub.type === 'mosaic' || esUltima) {
+          const bloqueDiv = document.createElement('div');
+          bloqueDiv.style.display = 'flex';
+          bloqueDiv.style.flexDirection = 'column';
+          bloqueDiv.style.alignItems = 'center';
+          bloqueDiv.style.marginBottom = '120px';
 
-    // Determinar si mostrar mosaico:
-    // 1. Si sub.type === 'mosaic'
-    // 2. O si es la última subgalería
-    const esUltima = index === subGalerias.length - 1;
-    if (sub.type === 'mosaic' || esUltima) {
+          const nombreDiv = document.createElement('div');
+          nombreDiv.className = 'text-4xl font-bold text-gray-800 text-center mb-4';
+          nombreDiv.textContent = sub.displayName || sub.name;
+          bloqueDiv.appendChild(nombreDiv);
 
-        // Contenedor principal del bloque
-        const bloqueDiv = document.createElement('div');
-        bloqueDiv.style.display = 'flex';
-        bloqueDiv.style.flexDirection = 'column';
-        bloqueDiv.style.alignItems = 'center'; // centro horizontalmente
-        bloqueDiv.style.marginBottom = '120px';
+          const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+          bloqueDiv.appendChild(mosaicoDiv);
 
-        // Nombre encima del mosaico, centrado
-        const nombreDiv = document.createElement('div');
-        nombreDiv.className = 'text-4xl font-bold text-gray-800 text-center mb-4';
-        nombreDiv.textContent = sub.displayName || sub.name;
-        bloqueDiv.appendChild(nombreDiv);
+          container.appendChild(bloqueDiv);
+          return;
+      }
 
-        // Mosaico
-        const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-        bloqueDiv.appendChild(mosaicoDiv);
+      const titleSection = document.createElement('div');
+      titleSection.style.display = 'flex';
+      titleSection.style.gap = '20px';
+      titleSection.style.alignItems = 'flex-start';
+      titleSection.style.marginBottom = '20px';
 
-        // Añadimos al contenedor principal
-        container.appendChild(bloqueDiv);
+      const nombreDiv = document.createElement('div');
+      nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
+      nombreDiv.style.flexShrink = '0';
+      nombreDiv.textContent = sub.displayName || sub.name;
+      titleSection.appendChild(nombreDiv);
 
-        return; // fin del if
-    }
+      if(index % 2 === 0){
+          subDiv.style.paddingLeft = '15%';
+          subDiv.style.paddingRight = '5%';
+      } else {
+          subDiv.style.paddingLeft = '10%';
+          subDiv.style.paddingRight = '10%';
+      }
 
-    // Mini carrusel (el resto de subgalerías)
-    const titleSection = document.createElement('div');
-    titleSection.style.display = 'flex';
-    titleSection.style.gap = '20px';
-    titleSection.style.alignItems = 'flex-start';
-    titleSection.style.marginBottom = '20px';
-
-    const nombreDiv = document.createElement('div');
-    nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] text-4xl font-bold text-gray-800 break-words text-center';
-    nombreDiv.style.flexShrink = '0';
-    nombreDiv.textContent = sub.displayName || sub.name;
-    titleSection.appendChild(nombreDiv);
-
-    // Alternamos padding para estilo
-    if(index % 2 === 0){
-        subDiv.style.paddingLeft = '15%';
-        subDiv.style.paddingRight = '5%';
-    } else {
-        subDiv.style.paddingLeft = '10%';
-        subDiv.style.paddingRight = '10%';
-    }
-
-    const carruselWrapper = crearMiniCarrusel(sub, images, openLightbox);
-    titleSection.appendChild(carruselWrapper);
-    subDiv.appendChild(titleSection);
-    container.appendChild(subDiv);
-
-});
+      const carruselWrapper = crearMiniCarrusel(sub, images, openLightbox);
+      titleSection.appendChild(carruselWrapper);
+      subDiv.appendChild(titleSection);
+      container.appendChild(subDiv);
+  });
 })
 .catch(err=>{
   console.error('Error cargando galería:',err);
