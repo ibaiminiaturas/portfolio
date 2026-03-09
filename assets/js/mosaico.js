@@ -1,60 +1,60 @@
 // mosaico.js
 export function crearMosaico(sub, images, openLightbox) {
-    const mosaicContainer = document.createElement('div');
-    mosaicContainer.style.width = '800px';
-    mosaicContainer.style.position = 'relative';
-    mosaicContainer.style.height = 'auto';
-    mosaicContainer.style.display = 'block'; // necesario para centrar si es inline-block
-    mosaicContainer.style.margin = '0 auto'; // centra horizontalmente
+    // Contenedor principal centrado
+    const container = document.createElement('div');
+    container.style.width = '100%';
+    container.style.display = 'flex';
+    container.style.justifyContent = 'center'; // centro horizontal
+    container.style.marginBottom = '120px';
 
-    const GAP = 15;
-    const CONTAINER_WIDTH = 800;
-    let y = 0;
+    // Contenedor del grid fijo
+    const grid = document.createElement('div');
+    grid.className = 'masonry-grid';
+    const GRID_WIDTH = 800; // ancho fijo del mosaico
+    const GUTTER = 15;
+    grid.style.width = GRID_WIDTH + 'px';
+    grid.style.position = 'relative';
 
-    let row = [];
-    let rowWidth = 0;
+    container.appendChild(grid);
 
-    for (let i = 0; i < images.length; i++) {
-        const imgSize = 200 + Math.floor(Math.random() * 201); // 200-400px
-        row.push({ src: images[i], size: imgSize });
-        rowWidth += imgSize + (row.length > 1 ? GAP : 0);
+    // Agregamos cada imagen con tamaño random y cuadrada
+    images.forEach((src, i) => {
+        const size = 200 + Math.floor(Math.random() * 201); // 200-400px
 
-        if (rowWidth >= CONTAINER_WIDTH || i === images.length - 1) {
-            const totalGap = GAP * (row.length - 1);
-            const scale = (CONTAINER_WIDTH - totalGap) / (rowWidth - totalGap);
+        const item = document.createElement('div');
+        item.className = 'grid-item';
+        item.style.width = size + 'px';
+        item.style.height = size + 'px';
+        item.style.marginBottom = GUTTER + 'px';
 
-            let x = 0;
-            let maxHeightInRow = 0;
+        const img = document.createElement('img');
+        img.src = src;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '8px';
+        img.style.cursor = 'pointer';
+        img.style.transition = 'transform 0.25s ease-out';
 
-            row.forEach(imgData => {
-                const size = Math.floor(imgData.size * scale);
-                const img = document.createElement('img');
-                img.src = imgData.src;
-                img.style.width = size + 'px';
-                img.style.height = size + 'px';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '8px';
-                img.style.cursor = 'pointer';
-                img.style.transition = 'transform 0.25s ease-out';
-                img.style.position = 'absolute';
-                img.style.left = x + 'px';
-                img.style.top = y + 'px';
+        img.addEventListener('click', () => openLightbox(images, i));
+        img.addEventListener('mouseenter', () => { img.style.transform = 'scale(0.95)'; });
+        img.addEventListener('mouseleave', () => { img.style.transform = 'scale(1)'; });
 
-                img.addEventListener('click', () => openLightbox(images, i));
-                img.addEventListener('mouseenter', () => { img.style.transform = 'scale(1.05)'; });
-                img.addEventListener('mouseleave', () => { img.style.transform = 'scale(1)'; });
+        item.appendChild(img);
+        grid.appendChild(item);
+    });
 
-                mosaicContainer.appendChild(img);
-                x += size + GAP;
-                if (size > maxHeightInRow) maxHeightInRow = size;
-            });
+    // Inicializamos Macy después de que carguen las imágenes
+    imagesLoaded(grid, () => {
+        new Macy({
+            container: grid,
+            trueOrder: false,
+            waitForImages: false,
+            margin: GUTTER,
+            columns: Math.floor((GRID_WIDTH + GUTTER) / (200 + GUTTER)), // columnas según tamaño mínimo
+            breakAt: {}, // sin responsive por ahora
+        });
+    });
 
-            y += maxHeightInRow + GAP;
-            row = [];
-            rowWidth = 0;
-        }
-    }
-
-    mosaicContainer.style.height = y + 'px';
-    return mosaicContainer;
+    return container;
 }
