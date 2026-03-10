@@ -42,7 +42,7 @@ fetch('/components/header.html')
 
     // Cargar script de menú extra si hace falta
     const script = document.createElement('script');
-    script.src = '/assets/js-obfuscated/menu.js';
+    script.src = assets/js-obfuscated/menu.js';
 
     document.body.appendChild(script);
   });
@@ -55,8 +55,8 @@ fetch('/components/header.html')
 <script src="/assets/js-obfuscated/lightbox.js"></script>
 
 <script type="module">
-import { crearMiniCarrusel } from '/assets/js-obfuscated/minicarrusel.js';
-import { crearMosaico } from '/assets/js-obfuscated/mosaico.js';
+import { crearMiniCarrusel } from assets/js-obfuscated/minicarrusel.js';
+import { crearMosaico } from assets/js-obfuscated/mosaico.js';
 
 const params = new URLSearchParams(window.location.search);
 const galeriaSeleccionada = params.get('galeria');
