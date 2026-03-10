@@ -18,7 +18,7 @@ function initializeMenu() {
 
         // Link principal de la galería
         const aMain = document.createElement("a");
-        aMain.href = `/galleries/index.html?galeria=${encodeURIComponent(sectionName)}`;
+        aMain.href = `/portfolio/galleries/index.html?galeria=${encodeURIComponent(sectionName)}`;
         aMain.textContent = translations.galleries?.[sectionName] || sectionName;
         aMain.className = "block px-4 py-2 cursor-pointer rounded hover:bg-gray-700 w-full text-left text-white whitespace-nowrap";
         li.appendChild(aMain);
@@ -36,7 +36,7 @@ function initializeMenu() {
           sectionSubs.forEach(sub => {
             const aSub = document.createElement("a");
 
-            aSub.href = `/galleries/index.html?galeria=${encodeURIComponent(sectionName)}&sub=${encodeURIComponent(sub.name)}`;
+            aSub.href = `/portfolio/galleries/index.html?galeria=${encodeURIComponent(sectionName)}&sub=${encodeURIComponent(sub.name)}`;
            aSub.textContent = translations.galleries?.[sub.name] || sub.displayName || sub.name;
             aSub.className = "block px-4 py-2 rounded text-white bg-gray-700 hover:bg-gray-500 transition-colors duration-200";
             aSub.classList.add("transition-colors", "duration-200"); 
