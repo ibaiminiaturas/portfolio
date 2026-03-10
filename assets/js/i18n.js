@@ -12,7 +12,7 @@ async function loadLanguage(lang) {
     const res = await fetch(`assets/i18n/en.json`);
     translations = await res.json();
 
-    currentLang = lang;
+    currentLang = 'en';
 
     localStorage.setItem("lang", lang);
 
