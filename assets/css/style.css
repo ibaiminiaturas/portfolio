@@ -164,7 +164,7 @@ h1, h2, h3, h4, h5, h6 {
 /* style.css */
 
 /* --- Body --- */
-body {
+/* body {
   margin: 0;
   overflow-x: hidden;
   font-family: 'Montserrat', sans-serif;
@@ -177,7 +177,7 @@ body {
     #82869d 270px,
     #898d96 360px
   );
-}
+} */
 
 /* body::before {
   content: "";
