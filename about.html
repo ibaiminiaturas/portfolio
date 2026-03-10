@@ -8,7 +8,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<script src="/assets/js/i18n.js"></script>
 <style>
 body {
   margin:0;
@@ -29,7 +29,7 @@ fetch('/components/header.html')
 .then(html=>{
   const header=document.getElementById('main-header');
   header.innerHTML=html;
-
+      loadLanguage("es");
   header.style.transition='box-shadow 0.3s ease';
   window.addEventListener('scroll',()=>{
     header.style.boxShadow=window.scrollY>10?'0 2px 8px rgba(0,0,0,0.1)':'none';

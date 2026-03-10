@@ -40,5 +40,50 @@
     "Other": "Otros Trabajos",
     "Warhammer": "Warhammer",
     "Warhammer 40k": "Warhammer 40k"
+  },
+    "about": {
+    "hero": {
+      "title": "Sobre mí",
+      "subtitle": "Pintar miniaturas es para mí mucho más que un hobby. Es creatividad, paciencia, aprendizaje constante… y sobre todo, diversión."
+    },
+    "history": {
+      "title": "Cómo empezó todo",
+      "p1": "Como le ocurre a muchos aficionados a las miniaturas, todo empezó con una simple figura, algunos pinceles básicos y unas cuantas pinturas. Al principio no sabía muy bien lo que hacía, simplemente intentaba que la miniatura no quedara demasiado mal.",
+      "p2": "Pero poco a poco descubrí algo fascinante: en una figura de apenas unos centímetros puedes crear una escena completa. Puedes contar una historia con colores, sombras y pequeños detalles que a simple vista casi pasan desapercibidos.",
+      "p3": "Ahí fue cuando entendí que pintar miniaturas es una mezcla perfecta entre hobby, artesanía y arte.",
+      "p4": "Y sí… también significa pasar diez minutos mirando una hombrera pensando si ese highlight debería ser un poco más claro."
+    },
+    "process": {
+      "title": "El proceso creativo",
+      "p1": "Lo que más me gusta de pintar miniaturas es el proceso. Desde el momento en que eliges la miniatura hasta el último detalle final, cada paso tiene algo especial.",
+      "p2": "Pensar en el esquema de color, probar técnicas nuevas, experimentar con sombras y luces… cada miniatura se convierte en un pequeño proyecto artístico.",
+      "p3": "A veces sale perfecto a la primera. Otras veces hay que repetir, corregir o incluso empezar de nuevo. Pero precisamente eso es lo que hace que el hobby sea tan interesante.",
+      "p4": "Siempre hay algo nuevo que aprender."
+    },
+    "philosophy": {
+      "title": "Lo que más me gusta del hobby",
+      "p1": "Pintar miniaturas combina muchas cosas que me encantan: creatividad, concentración y una cierta obsesión por los detalles. Es una actividad que te obliga a ir despacio, a fijarte en cosas pequeñas y a disfrutar del proceso.",
+      "p2": "En un mundo donde todo va rápido, pintar miniaturas es casi lo contrario. Te sientas, pones música o un podcast, coges el pincel… y durante unas horas solo existe la miniatura que tienes delante.",
+      "p3": "Es una mezcla perfecta entre relajación y desafío creativo."
+    },
+    "community": {
+      "title": "La comunidad del hobby",
+      "p1": "Una de las cosas que más valoro del mundo de las miniaturas es la comunidad. Hay miles de pintores compartiendo técnicas, tutoriales, consejos y proyectos. Gracias a eso todos podemos mejorar.",
+      "p2": "Yo he aprendido muchísimo de otros pintores que han compartido su conocimiento de forma generosa. Vídeos, guías, consejos en foros o redes… todo eso forma parte de cómo evoluciona este hobby.",
+      "p3": "Por eso intento devolver un poco de lo que he recibido.",
+      "p4": "Si alguien está empezando y necesita ayuda, siempre estoy encantado de compartir lo que sé. Todos empezamos pintando miniaturas bastante... cuestionables, pero con práctica y buenos consejos el progreso llega antes de lo que uno imagina."
+    },
+    "teaching": {
+      "title": "Ayudar a otros pintores",
+      "p1": "Me gusta enseñar técnicas, explicar procesos y ayudar a otros pintores a mejorar. No hay nada más satisfactorio que ver cómo alguien progresa en el hobby gracias a un pequeño consejo o una explicación que le ayuda a entender mejor una técnica.",
+      "p2": "A veces basta con aprender a diluir mejor la pintura, entender cómo funcionan las sombras o perder el miedo a experimentar con colores.",
+      "p3": "El hobby es mucho más divertido cuando se comparte."
+    },
+    "closure": {
+      "title": "El viaje continúa",
+      "p1": "Este portfolio es simplemente una forma de compartir una parte de ese viaje. Algunas miniaturas representan técnicas que ya domino, otras son experimentos y proyectos donde estoy probando cosas nuevas.",
+      "p2": "Lo importante no es pintar la miniatura perfecta, sino seguir aprendiendo, seguir mejorando y disfrutar del proceso creativo.",
+      "p3": "Porque al final, cada miniatura cuenta una historia… y cada pintor tiene la suya."
+    }
   }
 }

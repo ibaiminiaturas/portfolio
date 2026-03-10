@@ -16,7 +16,7 @@
 
 <!-- imagesLoaded -->
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-
+<script src="/assets/js/i18n.js"></script>
 <!-- Estilos generales -->
 
 </head>
@@ -38,7 +38,7 @@ fetch('/components/header.html')
   .then(html => {
     document.getElementById('main-header').innerHTML = html;
 
-
+      loadLanguage("es");
 
     // Cargar script de menú extra si hace falta
     const script = document.createElement('script');
