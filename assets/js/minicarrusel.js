@@ -25,13 +25,8 @@ export function crearMiniCarrusel(sub, images) {
 
         img.addEventListener('click', () => openLightbox(images, i));
 
-        img.addEventListener('mouseenter', () => {
-            img.style.animation = 'zoomIn 0.25s ease-out forwards';
-        });
-
-        img.addEventListener('mouseleave', () => {
-            img.style.animation = 'zoomOut 0.25s ease-out forwards';
-        });
+        img.addEventListener('mouseenter', () => { img.style.transform = 'scale(0.95)'; });
+        img.addEventListener('mouseleave', () => { img.style.transform = 'scale(1)'; });
     }
 
     const SCROLL_AMOUNT = 220;

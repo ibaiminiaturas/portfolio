@@ -30,11 +30,16 @@ function initializeMenu() {
           subMenu.style.whiteSpace = "nowrap"; // evitar saltos de línea
           subMenu.style.minWidth = "max-content"; // ancho adaptativo al contenido
 
+  // 🔹 Aseguramos que el padre directo sea relative
+  li.classList.add("relative");
+
           sectionSubs.forEach(sub => {
             const aSub = document.createElement("a");
+
             aSub.href = `/galleries/index.html?galeria=${encodeURIComponent(sectionName)}&sub=${encodeURIComponent(sub.name)}`;
             aSub.textContent = sub.displayName || sub.name;
-            aSub.className = "block px-4 py-2 rounded hover:bg-gray-600 text-white";
+            aSub.className = "block px-4 py-2 rounded text-white bg-gray-700 hover:bg-gray-500 transition-colors duration-200";
+            aSub.classList.add("transition-colors", "duration-200"); 
             subMenu.appendChild(aSub);
           });
 
