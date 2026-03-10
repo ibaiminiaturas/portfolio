@@ -35,10 +35,12 @@ function initializeMenu() {
 
           sectionSubs.forEach(sub => {
             const aSub = document.createElement("a");
+
             aSub.href = `/galleries/index.html?galeria=${encodeURIComponent(sectionName)}&sub=${encodeURIComponent(sub.name)}`;
             aSub.textContent = sub.displayName || sub.name;
-            aSub.className = "block px-4 py-2 rounded hover:bg-gray-600 text-white";
-            subMenu.appendChild(aSub);
+            aSub.className = "block px-4 py-2 rounded text-white bg-gray-700 hover:bg-gray-500 transition-colors duration-200";
+            aSub.classList.add("transition-colors", "duration-200"); 
+           subMenu.appendChild(aSub);
           });
 
           li.appendChild(subMenu);

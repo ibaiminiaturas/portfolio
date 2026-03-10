@@ -133,9 +133,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0.25rem;
   color: white;
 }
-#dropdown-galerias a:hover {
-  background: #374151; /* gray-700 */
-}
+
 
 /* Icono Instagram a la derecha */
 .header-instagram {
