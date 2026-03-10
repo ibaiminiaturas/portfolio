@@ -1,8 +1,36 @@
 {
-  "menu": {
-    "home": "Home",
-    "gallery": "Gallery",
-    "about": "About me",
-    "contact": "Contact"
+  "header": {
+    "logo": "Ibai Miniaturas",
+    "menu": {
+      "home": "Inicio",
+      "gallery": "Galería",
+      "about": "Sobre mí",
+      "contact": "Contacto"
+    }
+  },
+  "main": {
+    "hero": {
+      "title": "El Arte de Pintar Miniaturas",
+      "subtitle": "Explora el mundo donde cada pincelada cuenta una historia, cada sombra da vida, y cada miniatura es un universo en miniatura listo para brillar."
+    },
+    "welcome": {
+      "title": "Bienvenido al Fascinante Mundo de las Miniaturas",
+      "text1": "Pintar miniaturas no es solo hobby, es un arte en miniatura. Cada pincelada aporta vida, cada degradado o sombra transforma la pieza de un objeto estático a un personaje con historia. Aquí aprenderás cómo cada técnica puede contar una narrativa propia, desde un guerrero épico hasta un villano malvado con detalles diminutos que te harán sonreír.",
+      "tip": "Tip: La paciencia es tu mejor aliada, y sí… habrán horas que pensarás “¿por qué me metí en esto?”, pero cuando acabas una miniatura, la satisfacción es indescriptible 😏."
+    },
+    "techniques": {
+      "title": "Explorando las Técnicas de Pintura",
+      "text1": "Desde pincel seco hasta lavados, veladuras y degradados, cada técnica aporta una atmósfera distinta a la miniatura. Un lavado bien aplicado puede resaltar la textura de la armadura, mientras que un degradado suave puede dar vida a túnicas y capas. No es solo pintura: es cómo el color, la luz y la sombra cuentan la historia del personaje que estás creando.",
+      "tip": "Consejo: Mantén siempre la pintura bien diluida y experimenta con capas ligeras; menos es más cuando quieres lograr realismo. Y no te preocupes si manchas la mesa, ¡es parte del proceso! 🎨"
+    },
+    "gallery": {
+      "title": "Galería de Miniaturas Completas",
+      "subtitle": "Observa cómo los pequeños detalles cobran vida en estas miniaturas terminadas. Cada pieza es una mezcla de técnica, paciencia y creatividad. Incluso los detalles que parecen insignificantes, como una cicatriz o un brillo en la armadura, pueden hacer que una figura destaque."
+    },
+    "fun": {
+      "title": "Miniaturas con Personalidad y Humor",
+      "text1": "Algunas miniaturas tienen carácter propio. Quizá un héroe con gesto exagerado, un monstruo que parece estar a punto de lanzar un chiste, o una escena cómica que hace que sonrías incluso antes de acabar la pieza. Añadir humor o narrativas pequeñas en los detalles hace que tu colección sea única.",
+      "tip": "Nota: Mantén a tu gato alejado de la mesa mientras pintas, él podría robar pinceles o dejar “huellas artísticas” inesperadas 😹."
+    }
   }
 }
