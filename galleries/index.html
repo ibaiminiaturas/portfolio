@@ -94,7 +94,7 @@ titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-white";
 
     subGalerias.forEach((sub, index) => {
   const images = Array.from({length: sub.images}, (_, j) =>
-    `/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
+    `galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
   );
 
   const subDiv = document.createElement('div');
