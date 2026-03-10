@@ -7,7 +7,7 @@ function initializeMenu() {
   dropdown.className = "absolute hidden bg-gray-800 mt-2 rounded shadow-lg text-white";
 
   // Cargar galerías desde el JSON
-  fetch('/galeries.json')
+  fetch('./galeries.json')
     .then(res => res.json())
     .then(data => {
       Object.keys(data).forEach(sectionName => {
