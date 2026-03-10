@@ -24,7 +24,7 @@ body {
 <header id="main-header" class="sticky top-0 z-50 bg-white"></header>
 
 <script>
-fetch('/components/header.html')
+fetch('components/header.html')
 .then(res=>res.text())
 .then(html=>{
   const header=document.getElementById('main-header');
@@ -192,7 +192,7 @@ fetch('/components/header.html')
 <div id="footer-placeholder"></div>
 
 <script>
-fetch('/components/footer.html')
+fetch('components/footer.html')
 .then(res=>res.text())
 .then(html=>{
 document.getElementById('footer-placeholder').innerHTML=html;
