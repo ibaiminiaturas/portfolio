@@ -97,7 +97,7 @@ fetch('/portfolio/assets/galeries.json')
     }
 
     titulo.textContent = tituloGrande;
-titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-white";
+titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700";
 
     subGalerias.forEach((sub, index) => {
   const images = Array.from({length: sub.images}, (_, j) =>
@@ -118,7 +118,7 @@ titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-white";
     // Título pequeño solo si NO estamos en subgalería directa
     if(!subSeleccionada){
       const nombreDiv = document.createElement('div');
-      nombreDiv.className = 'text-4xl font-bold text-white text-center mb-12';
+      nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12';
       nombreDiv.textContent = sub.displayName || sub.name;
       bloqueDiv.appendChild(nombreDiv);
     }
@@ -130,6 +130,14 @@ titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-white";
     bloqueDiv.appendChild(mosaicoDiv);
     subDiv.appendChild(bloqueDiv);
     container.appendChild(subDiv);
+
+    // 🔹 Envolvemos solo las imágenes en un contenedor gris
+const wrapperDiv = document.createElement('div');
+wrapperDiv.className = 'bg-gray-500 p-4 rounded-xl';
+wrapperDiv.appendChild(mosaicoDiv);
+
+// 🔹 Añadimos el wrapper en vez del mosaico directo
+bloqueDiv.appendChild(wrapperDiv)
     return;
   }
 
@@ -156,6 +164,8 @@ titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-white";
     bloqueDiv.appendChild(mosaicoDiv);
     subDiv.appendChild(bloqueDiv);
     container.appendChild(subDiv);
+
+
     return;
   }
 
@@ -185,6 +195,12 @@ carruselWrapper.querySelectorAll('img').forEach((img, i) => {
   titleSection.appendChild(carruselWrapper);
   subDiv.appendChild(titleSection);
   container.appendChild(subDiv);
+  // 🔹 Envolver solo las imágenes del carrusel
+const wrapperDivCarrusel = document.createElement('div');
+wrapperDivCarrusel.className = 'bg-gray-500 p-4 rounded-xl';
+wrapperDivCarrusel.appendChild(carruselWrapper);
+
+titleSection.appendChild(wrapperDivCarrusel);
 });
 })
 .catch(err => {
