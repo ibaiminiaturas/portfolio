@@ -133,7 +133,7 @@ titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700";
 
     // 🔹 Envolvemos solo las imágenes en un contenedor gris
 const wrapperDiv = document.createElement('div');
-wrapperDiv.className = 'bg-gray-500 p-4 rounded-xl';
+wrapperDiv.className = 'bg-gray-700 px-12 py-12 rounded-xl';
 wrapperDiv.appendChild(mosaicoDiv);
 
 // 🔹 Añadimos el wrapper en vez del mosaico directo
@@ -197,7 +197,7 @@ carruselWrapper.querySelectorAll('img').forEach((img, i) => {
   container.appendChild(subDiv);
   // 🔹 Envolver solo las imágenes del carrusel
 const wrapperDivCarrusel = document.createElement('div');
-wrapperDivCarrusel.className = 'bg-gray-500 p-4 rounded-xl';
+wrapperDivCarrusel.className = 'bg-gray-700 px-12 py-12 rounded-xl';
 wrapperDivCarrusel.appendChild(carruselWrapper);
 
 titleSection.appendChild(wrapperDivCarrusel);
