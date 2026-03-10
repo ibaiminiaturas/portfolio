@@ -1,0 +1,100 @@
+{
+  "header": {
+    "logo": "Ibai Miniatures",
+    "menu": {
+      "home": "Home",
+      "gallery": "Gallery",
+      "about": "About Me",
+      "contact": "Contact"
+    }
+  },
+  "main": {
+    "hero": {
+      "title": "The Art of Painting Miniatures",
+      "subtitle": "Explore a world where every brushstroke tells a story, every shadow comes to life, and each miniature is a tiny universe ready to shine."
+    },
+    "welcome": {
+      "title": "Welcome to the Fascinating World of Miniatures",
+      "text1": "Painting miniatures is not just a hobby; it's miniature art. Every brushstroke brings life, every shading or gradient transforms the piece from a static object into a character with a story. Here you'll learn how each technique can tell its own narrative, from an epic warrior to a tiny villain with details that will make you smile.",
+      "tip": "Tip: Patience is your best ally, and yes… there will be hours when you think, 'Why did I get into this?' But when you finish a miniature, the satisfaction is indescribable 😏."
+    },
+    "techniques": {
+      "title": "Exploring Painting Techniques",
+      "text1": "From dry brushing to washes, glazes, and gradients, each technique adds a different atmosphere to the miniature. A well-applied wash can highlight armor textures, while a smooth gradient can bring robes and capes to life. It's not just painting: it's how color, light, and shadow tell the story of the character you're creating.",
+      "tip": "Advice: Always keep your paint well-diluted and experiment with light layers; less is more when aiming for realism. And don’t worry if you make a mess on the table—it's part of the process! 🎨"
+    },
+    "gallery": {
+      "title": "Completed Miniatures Gallery",
+      "subtitle": "See how tiny details come to life in these finished miniatures. Each piece is a mix of technique, patience, and creativity. Even details that seem insignificant, like a scar or a shine on the armor, can make a figure stand out."
+    },
+    "fun": {
+      "title": "Miniatures with Personality and Humor",
+      "text1": "Some miniatures have their own character. Perhaps a hero with an exaggerated expression, a monster that seems about to crack a joke, or a comical scene that makes you smile even before finishing the piece. Adding humor or small narratives in the details makes your collection unique.",
+      "tip": "Note: Keep your cat away from the table while painting; it might steal brushes or leave unexpected 'artistic paw prints' 😹."
+    }
+  },
+  "galleries": {
+    "Box Arts": "Box Arts",
+    "MarvelUnited": "Marvel United",
+    "SOIF": "A Song of Ice and Fire",
+    "Other": "Other Works",
+    "Warhammer": "Warhammer",
+    "Warhammer 40k": "Warhammer 40k"
+  },
+  "about": {
+    "hero": {
+      "title": "About Me",
+      "subtitle": "Painting miniatures is for me much more than a hobby. It's creativity, patience, constant learning… and above all, fun."
+    },
+    "history": {
+      "title": "How It All Started",
+      "p1": "Like many miniature enthusiasts, it all started with a simple figure, some basic brushes, and a few paints. At first, I didn’t really know what I was doing; I was just trying not to ruin the miniature too much.",
+      "p2": "But little by little, I discovered something fascinating: in a figure just a few centimeters tall, you can create a complete scene. You can tell a story with colors, shadows, and tiny details that almost go unnoticed at first glance.",
+      "p3": "That's when I realized that painting miniatures is a perfect mix of hobby, craftsmanship, and art.",
+      "p4": "And yes… it also means spending ten minutes staring at a shoulder pad, wondering if that highlight should be just a little brighter."
+    },
+    "process": {
+      "title": "The Creative Process",
+      "p1": "What I enjoy most about painting miniatures is the process. From the moment you choose the miniature to the final tiny details, each step has something special.",
+      "p2": "Thinking about the color scheme, trying new techniques, experimenting with shadows and lights… each miniature becomes a small artistic project.",
+      "p3": "Sometimes it comes out perfect on the first try. Other times, you have to redo, correct, or even start over. But that is exactly what makes the hobby so interesting.",
+      "p4": "There is always something new to learn."
+    },
+    "philosophy": {
+      "title": "What I Love Most About the Hobby",
+      "p1": "Painting miniatures combines many things I love: creativity, focus, and a certain obsession with details. It’s an activity that forces you to slow down, notice small things, and enjoy the process.",
+      "p2": "In a world where everything moves fast, painting miniatures is almost the opposite. You sit down, put on music or a podcast, grab your brush… and for a few hours, only the miniature in front of you exists.",
+      "p3": "It’s the perfect mix of relaxation and creative challenge."
+    },
+    "community": {
+      "title": "The Miniature Painting Community",
+      "p1": "One of the things I value most about the miniature world is the community. There are thousands of painters sharing techniques, tutorials, tips, and projects. Thanks to that, we all improve.",
+      "p2": "I have learned so much from other painters who generously shared their knowledge. Videos, guides, advice on forums or social media… all of that is part of how this hobby evolves.",
+      "p3": "That’s why I try to give back a little of what I’ve received.",
+      "p4": "If someone is just starting out and needs help, I’m always happy to share what I know. We all start with fairly… questionable miniatures, but with practice and good advice, progress comes sooner than you think."
+    },
+    "teaching": {
+      "title": "Helping Other Painters",
+      "p1": "I enjoy teaching techniques, explaining processes, and helping other painters improve. There’s nothing more satisfying than seeing someone progress in the hobby thanks to a small tip or an explanation that helps them understand a technique better.",
+      "p2": "Sometimes it’s enough to learn how to dilute paint properly, understand how shadows work, or lose the fear of experimenting with colors.",
+      "p3": "The hobby is much more fun when shared."
+    },
+    "closure": {
+      "title": "The Journey Continues",
+      "p1": "This portfolio is simply a way to share a part of that journey. Some miniatures represent techniques I’ve already mastered, others are experiments and projects where I’m trying new things.",
+      "p2": "The important thing is not painting the perfect miniature, but continuing to learn, improve, and enjoy the creative process.",
+      "p3": "Because in the end, every miniature tells a story… and every painter has their own."
+    }
+  },
+  "contact": {
+  "title": "Contact",
+  "subtitle": "If you have any questions or want to discuss a project, feel free to send me a message.",
+  "intro1": "I have been painting miniatures for more than 10 years, constantly learning new techniques and exploring different styles. What started as a hobby slowly became a passion for detail, creativity and storytelling through tiny figures.",
+  "intro2": "If you have any questions about painting miniatures, techniques, materials, or even where to start, feel free to ask. No question is too small or too simple — everyone starts somewhere and I'm always happy to help.",
+  "intro3": "Whether you're just getting into the hobby or you've been painting for years, I'm always glad to talk about miniatures, share advice, and connect with other hobbyists.",
+  "name": "Your name",
+  "email": "Your email",
+  "message": "Message",
+  "send": "Send message"
+}
+}

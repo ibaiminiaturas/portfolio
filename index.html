@@ -11,6 +11,8 @@
 <!-- Google Fonts: Montserrat -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="/assets/js-obfuscated/i18n.js"></script>
+
 <style>
   body {
     margin: 0;
@@ -33,6 +35,9 @@ fetch('/components/header.html')
     const header = document.getElementById('main-header');
     header.innerHTML = html;
 
+      loadLanguage("en");
+  
+
     // Shadow dinámico al hacer scroll
     header.style.transition = 'box-shadow 0.3s ease';
     window.addEventListener('scroll', () => {
@@ -41,7 +46,7 @@ fetch('/components/header.html')
 
     // Cargar el menú flotante (submenús)
     const script = document.createElement('script');
-    script.src = '/assets/js/menu.js';
+    script.src = '/assets/js-obfuscated/menu.js';
     document.body.appendChild(script);
   });
 </script>
@@ -51,11 +56,11 @@ fetch('/components/header.html')
 
   <!-- Título principal estilo portada -->
   <section class="text-center mb-16">
-    <h1 class="text-6xl md:text-7xl font-extrabold text-gray-900 leading-tight">
-      El Arte de Pintar Miniaturas
+    <h1 class="text-6xl md:text-7xl font-extrabold text-gray-900 leading-tight"  data-i18n=main.hero.title>
+      
     </h1>
-    <p class="mt-6 text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto">
-      Explora el mundo donde cada pincelada cuenta una historia, cada sombra da vida, y cada miniatura es un universo en miniatura listo para brillar.
+    <p class="mt-6 text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto" data-i18n=main.hero.subtitle>
+      
     </p>
   </section>
 
@@ -64,12 +69,11 @@ fetch('/components/header.html')
   <section class="flex flex-col md:flex-row items-center gap-8">
     <img src="/assets/images/miniatura1.jpg" alt="Miniatura pintada" class="w-full md:w-1/2 rounded-lg shadow-lg">
     <div class="md:w-1/2 space-y-6">
-      <h2 class="text-4xl font-extrabold text-gray-800">Bienvenido al Fascinante Mundo de las Miniaturas</h2>
-      <p class="text-gray-700 text-lg">
-        Pintar miniaturas no es solo hobby, es un arte en miniatura. Cada pincelada aporta vida, cada degradado o sombra transforma la pieza de un objeto estático a un personaje con historia. Aquí aprenderás cómo cada técnica puede contar una narrativa propia, desde un guerrero épico hasta un villano malvado con detalles diminutos que te harán sonreír.
+      <h2 class="text-4xl font-extrabold text-gray-800" data-i18n=main.welcome.title></h2>
+      <p class="text-gray-700 text-lg" data-i18n=main.welcome.text1>
+
       </p>
-      <p class="text-gray-600 italic">
-        Tip: La paciencia es tu mejor aliada, y sí… habrán horas que pensarás “¿por qué me metí en esto?”, pero cuando acabas una miniatura, la satisfacción es indescriptible 😏.
+      <p class="text-gray-600 italic"  data-i18n=main.welcome.tip>
       </p>
     </div>
   </section>
@@ -78,21 +82,19 @@ fetch('/components/header.html')
   <section class="flex flex-col md:flex-row-reverse items-center gap-8">
     <img src="/assets/images/miniatura2.png" alt="Técnica de pincel seco" class="w-full md:w-1/2 rounded-lg shadow-lg">
     <div class="md:w-1/2 space-y-6">
-      <h2 class="text-3xl font-bold text-gray-800">Explorando las Técnicas de Pintura</h2>
-      <p class="text-gray-700 text-lg">
-        Desde pincel seco hasta lavados, veladuras y degradados, cada técnica aporta una atmósfera distinta a la miniatura. Un lavado bien aplicado puede resaltar la textura de la armadura, mientras que un degradado suave puede dar vida a túnicas y capas. No es solo pintura: es cómo el color, la luz y la sombra cuentan la historia del personaje que estás creando.
+      <h2 class="text-3xl font-bold text-gray-800" data-i18n=main.techniques.title></h2>
+      <p class="text-gray-700 text-lg" data-i18n=main.techniques.text1>
       </p>
-      <p class="text-gray-600">
-        Consejo: Mantén siempre la pintura bien diluida y experimenta con capas ligeras; menos es más cuando quieres lograr realismo. Y no te preocupes si manchas la mesa, ¡es parte del proceso! 🎨
+      <p class="text-gray-600"data-i18n=main.techniques.tip>
+        
       </p>
     </div>
   </section>
 
   <!-- Sección artística con collage de miniaturas -->
   <section class="space-y-10">
-    <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Galería de Miniaturas Completas</h2>
-    <p class="text-center text-gray-700 mb-6">
-      Observa cómo los pequeños detalles cobran vida en estas miniaturas terminadas. Cada pieza es una mezcla de técnica, paciencia y creatividad. Incluso los detalles que parecen insignificantes, como una cicatriz o un brillo en la armadura, pueden hacer que una figura destaque.
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-8" data-i18n=main.gallery.title></h2>
+    <p class="text-center text-gray-700 mb-6"  data-i18n=main.gallery.subtitle>
     </p>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       <img src="/assets/images/miniatura3.jpg" alt="Miniatura 3" class="rounded-lg shadow-md hover:scale-105 transition-transform">
@@ -108,12 +110,12 @@ fetch('/components/header.html')
   <section class="bg-yellow-50 p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center gap-6">
     <img src="/assets/images/miniatura9.png" alt="Miniatura divertida" class="w-full md:w-1/3 rounded-lg shadow-md">
     <div class="md:w-2/3 space-y-4">
-      <h2 class="text-3xl font-bold text-gray-800">Miniaturas con Personalidad y Humor</h2>
-      <p class="text-gray-700 text-lg">
-        Algunas miniaturas tienen carácter propio. Quizá un héroe con gesto exagerado, un monstruo que parece estar a punto de lanzar un chiste, o una escena cómica que hace que sonrías incluso antes de acabar la pieza. Añadir humor o narrativas pequeñas en los detalles hace que tu colección sea única.
+      <h2 class="text-3xl font-bold text-gray-800" data-i18n=main.fun.title></h2>
+      <p class="text-gray-700 text-lg" data-i18n=main.fun.text1>
+        
       </p>
-      <p class="text-gray-600 italic">
-        Nota: Mantén a tu gato alejado de la mesa mientras pintas, él podría robar pinceles o dejar “huellas artísticas” inesperadas 😹.
+      <p class="text-gray-600 italic" data-i18n=main.fun.tip>
+
       </p>
     </div>
   </section>
