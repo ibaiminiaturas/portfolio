@@ -637,10 +637,6 @@ video {
   margin-bottom: 4rem;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
-}
-
 .mb-5 {
   margin-bottom: 1.25rem;
 }
@@ -1129,6 +1125,17 @@ video {
 
 .font-miFuente {
   font-family: 'Akira', sans-serif;
+}
+
+/* style.css */
+
+.carrusel-titulo {
+  color: #e5e7eb;
+  /* gris claro, equivalente a Tailwind gray-300 */
+  font-size: 2rem;
+  /* o 4xl si quieres */
+  font-weight: 700;
+  text-align: center;
 }
 
 /* Scrollbar hide */
