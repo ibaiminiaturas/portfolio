@@ -179,7 +179,7 @@ body {
   );
 }
 
-body::before {
+/* body::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -187,7 +187,7 @@ body::before {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2P4z/C/HwAGgwJ/lBzKXwAAAABJRU5ErkJggg==");
   opacity: 0.05;
   z-index: -1;
-}
+} */
 
 /* --- Scrollbar hide --- */
 .scrollbar-hide::-webkit-scrollbar {

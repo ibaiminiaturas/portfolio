@@ -71,9 +71,3 @@ if (document.readyState === 'loading') {
 } else {
   initializeMenu();
 }
-// Inicializar cuando el DOM esté listo
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeMenu);
-} else {
-  initializeMenu();
-}
