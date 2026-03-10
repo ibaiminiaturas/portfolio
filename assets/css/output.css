@@ -612,16 +612,16 @@ video {
   left: 100%;
 }
 
-.right-24 {
-  right: 6rem;
-}
-
 .right-6 {
   right: 1.5rem;
 }
 
 .top-0 {
   top: 0px;
+}
+
+.right-24 {
+  right: 6rem;
 }
 
 .z-50 {
@@ -709,10 +709,6 @@ video {
   height: 200px;
 }
 
-.w-10 {
-  width: 2.5rem;
-}
-
 .w-12 {
   width: 3rem;
 }
@@ -736,6 +732,10 @@ video {
 .w-max {
   width: -moz-max-content;
   width: max-content;
+}
+
+.w-10 {
+  width: 2.5rem;
 }
 
 .max-w-3xl {

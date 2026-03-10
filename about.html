@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +29,7 @@ fetch('/components/header.html')
 .then(html=>{
   const header=document.getElementById('main-header');
   header.innerHTML=html;
-      loadLanguage("es");
+      loadLanguage("en");
   header.style.transition='box-shadow 0.3s ease';
   window.addEventListener('scroll',()=>{
     header.style.boxShadow=window.scrollY>10?'0 2px 8px rgba(0,0,0,0.1)':'none';
@@ -45,12 +45,11 @@ fetch('/components/header.html')
 
 <!-- HERO -->
 <section class="text-center mb-16">
-<h1 class="text-6xl md:text-7xl font-extrabold text-gray-900 leading-tight">
-Sobre mí
+<h1 class="text-6xl md:text-7xl font-extrabold text-gray-900 leading-tight"  data-i18n="about.hero.title">
 </h1>
 
-<p class="mt-6 text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto">
-Pintar miniaturas es para mí mucho más que un hobby. Es creatividad, paciencia, aprendizaje constante… y sobre todo, diversión.
+<p class="mt-6 text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto"  data-i18n="about.hero.subtitle">
+
 </p>
 </section>
 
@@ -62,24 +61,20 @@ Pintar miniaturas es para mí mucho más que un hobby. Es creatividad, paciencia
 
 <div class="md:w-1/2 space-y-6">
 
-<h2 class="text-4xl font-extrabold text-gray-800">
-Cómo empezó todo
+<h2 class="text-4xl font-extrabold text-gray-800" data-i18n="about.history.title">
+
 </h2>
 
-<p class="text-gray-700 text-lg">
-Como le ocurre a muchos aficionados a las miniaturas, todo empezó con una simple figura, algunos pinceles básicos y unas cuantas pinturas. Al principio no sabía muy bien lo que hacía, simplemente intentaba que la miniatura no quedara demasiado mal.
+<p class="text-gray-700 text-lg"  data-i18n="about.history.p1">
 </p>
 
-<p class="text-gray-700 text-lg">
-Pero poco a poco descubrí algo fascinante: en una figura de apenas unos centímetros puedes crear una escena completa. Puedes contar una historia con colores, sombras y pequeños detalles que a simple vista casi pasan desapercibidos.
+<p class="text-gray-700 text-lg"  data-i18n="about.history.p2">
 </p>
 
-<p class="text-gray-700 text-lg">
-Ahí fue cuando entendí que pintar miniaturas es una mezcla perfecta entre hobby, artesanía y arte.
+<p class="text-gray-700 text-lg"   data-i18n="about.history.p3">
 </p>
 
-<p class="text-gray-600 italic">
-Y sí… también significa pasar diez minutos mirando una hombrera pensando si ese highlight debería ser un poco más claro.
+<p class="text-gray-600 italic"   data-i18n="about.history.p4">
 </p>
 
 </div>
@@ -93,24 +88,20 @@ Y sí… también significa pasar diez minutos mirando una hombrera pensando si 
 
 <div class="md:w-1/2 space-y-6">
 
-<h2 class="text-3xl font-bold text-gray-800">
-El proceso creativo
+<h2 class="text-3xl font-bold text-gray-800" data-i18n="about.process.title">
+
 </h2>
 
-<p class="text-gray-700 text-lg">
-Lo que más me gusta de pintar miniaturas es el proceso. Desde el momento en que eliges la miniatura hasta el último detalle final, cada paso tiene algo especial.
+<p class="text-gray-700 text-lg" data-i18n="about.process.p1">
 </p>
 
-<p class="text-gray-700 text-lg">
-Pensar en el esquema de color, probar técnicas nuevas, experimentar con sombras y luces… cada miniatura se convierte en un pequeño proyecto artístico.
+<p class="text-gray-700 text-lg" data-i18n="about.process.p2">
 </p>
 
-<p class="text-gray-700 text-lg">
-A veces sale perfecto a la primera. Otras veces hay que repetir, corregir o incluso empezar de nuevo. Pero precisamente eso es lo que hace que el hobby sea tan interesante.
+<p class="text-gray-700 text-lg" data-i18n="about.process.p3">
 </p>
 
-<p class="text-gray-600">
-Siempre hay algo nuevo que aprender.
+<p class="text-gray-600" data-i18n="about.process.p4">
 </p>
 
 </div>
@@ -120,20 +111,16 @@ Siempre hay algo nuevo que aprender.
 <!-- FILOSOFIA -->
 <section class="space-y-10 text-center">
 
-<h2 class="text-3xl font-bold text-gray-800">
-Lo que más me gusta del hobby
+<h2 class="text-3xl font-bold text-gray-800" data-i18n="about.philosophy.title">
 </h2>
 
-<p class="text-gray-700 text-lg max-w-4xl mx-auto">
-Pintar miniaturas combina muchas cosas que me encantan: creatividad, concentración y una cierta obsesión por los detalles. Es una actividad que te obliga a ir despacio, a fijarte en cosas pequeñas y a disfrutar del proceso.
+<p class="text-gray-700 text-lg max-w-4xl mx-auto" data-i18n="about.philosophy.p1">
 </p>
 
-<p class="text-gray-700 text-lg max-w-4xl mx-auto">
-En un mundo donde todo va rápido, pintar miniaturas es casi lo contrario. Te sientas, pones música o un podcast, coges el pincel… y durante unas horas solo existe la miniatura que tienes delante.
+<p class="text-gray-700 text-lg max-w-4xl mx-auto" data-i18n="about.philosophy.p2">
 </p>
 
-<p class="text-gray-700 text-lg max-w-4xl mx-auto">
-Es una mezcla perfecta entre relajación y desafío creativo.
+<p class="text-gray-700 text-lg max-w-4xl mx-auto" data-i18n="about.philosophy.p3">
 </p>
 
 </section>
@@ -142,24 +129,19 @@ Es una mezcla perfecta entre relajación y desafío creativo.
 <!-- COMUNIDAD -->
 <section class="bg-white p-10 rounded-xl shadow-lg space-y-8">
 
-<h2 class="text-3xl font-bold text-gray-800 text-center">
-La comunidad del hobby
+<h2 class="text-3xl font-bold text-gray-800 text-center" data-i18n="about.community.title">
 </h2>
 
-<p class="text-gray-700 text-lg">
-Una de las cosas que más valoro del mundo de las miniaturas es la comunidad. Hay miles de pintores compartiendo técnicas, tutoriales, consejos y proyectos. Gracias a eso todos podemos mejorar.
+<p class="text-gray-700 text-lg" data-i18n="about.community.p1">
 </p>
 
-<p class="text-gray-700 text-lg">
-Yo he aprendido muchísimo de otros pintores que han compartido su conocimiento de forma generosa. Vídeos, guías, consejos en foros o redes… todo eso forma parte de cómo evoluciona este hobby.
+<p class="text-gray-700 text-lg"  data-i18n="about.community.p2">
 </p>
 
-<p class="text-gray-700 text-lg">
-Por eso intento devolver un poco de lo que he recibido.
+<p class="text-gray-700 text-lg" data-i18n="about.community.p3" >
 </p>
 
-<p class="text-gray-700 text-lg">
-Si alguien está empezando y necesita ayuda, siempre estoy encantado de compartir lo que sé. Todos empezamos pintando miniaturas bastante... cuestionables, pero con práctica y buenos consejos el progreso llega antes de lo que uno imagina.
+<p class="text-gray-700 text-lg" data-i18n="about.community.p4">
 </p>
 
 </section>
@@ -172,20 +154,16 @@ Si alguien está empezando y necesita ayuda, siempre estoy encantado de comparti
 
 <div class="md:w-1/2 space-y-6">
 
-<h2 class="text-3xl font-bold text-gray-800">
-Ayudar a otros pintores
+<h2 class="text-3xl font-bold text-gray-800" data-i18n="about.teaching.title">
 </h2>
 
-<p class="text-gray-700 text-lg">
-Me gusta enseñar técnicas, explicar procesos y ayudar a otros pintores a mejorar. No hay nada más satisfactorio que ver cómo alguien progresa en el hobby gracias a un pequeño consejo o una explicación que le ayuda a entender mejor una técnica.
+<p class="text-gray-700 text-lg" data-i18n="about.teaching.p1">
 </p>
 
-<p class="text-gray-700 text-lg">
-A veces basta con aprender a diluir mejor la pintura, entender cómo funcionan las sombras o perder el miedo a experimentar con colores.
+<p class="text-gray-700 text-lg" data-i18n="about.teaching.p2 ">
 </p>
 
-<p class="text-gray-700 text-lg">
-El hobby es mucho más divertido cuando se comparte.
+<p class="text-gray-700 text-lg" data-i18n="about.teaching.p3">
 </p>
 
 </div>
@@ -195,20 +173,16 @@ El hobby es mucho más divertido cuando se comparte.
 <!-- CIERRE -->
 <section class="bg-yellow-50 p-10 rounded-xl shadow-lg text-center space-y-6">
 
-<h2 class="text-3xl font-bold text-gray-800">
-El viaje continúa
+<h2 class="text-3xl font-bold text-gray-800" data-i18n="about.closure.title">
 </h2>
 
-<p class="text-gray-700 text-lg max-w-3xl mx-auto">
-Este portfolio es simplemente una forma de compartir una parte de ese viaje. Algunas miniaturas representan técnicas que ya domino, otras son experimentos y proyectos donde estoy probando cosas nuevas.
+<p class="text-gray-700 text-lg max-w-3xl mx-auto" data-i18n="about.closure.p1">
 </p>
 
-<p class="text-gray-700 text-lg max-w-3xl mx-auto">
-Lo importante no es pintar la miniatura perfecta, sino seguir aprendiendo, seguir mejorando y disfrutar del proceso creativo.
+<p class="text-gray-700 text-lg max-w-3xl mx-auto" data-i18n="about.closure.p2">
 </p>
 
-<p class="text-gray-600 italic">
-Porque al final, cada miniatura cuenta una historia… y cada pintor tiene la suya.
+<p class="text-gray-600 italic" data-i18n="about.closure.p3">
 </p>
 
 </section>
