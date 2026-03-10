@@ -65,7 +65,7 @@ const subSeleccionada = params.get('sub');
 const container = document.getElementById('galeria-container');
 const titulo = document.getElementById('titulo-galeria');
 
-fetch('./galeries.json')
+fetch('./assets/galeries.json')
 .then(res => res.json())
 .then(data => {
     if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {

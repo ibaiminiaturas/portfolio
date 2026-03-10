@@ -15,7 +15,7 @@
       <!-- Submenú generado desde JSON -->
       <div id="dropdown-galerias" class="absolute hidden bg-gray-400 mt-2 rounded w-max text-white">
         <script>
-          fetch('./galeries.json')
+          fetch('./assets/galeries.json')
             .then(res => res.json())
             .then(data => {
               const dropdown = document.getElementById('dropdown-galerias');
