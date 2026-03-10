@@ -2,7 +2,7 @@
 
   <!-- Logo + nombre a la izquierda -->
   <div class="flex items-center gap-3">
-    <img src="assets/images/ibai-miniaturas-circle.png" alt="Logo" class="h-20 w-20 rounded-full">
+    <img src="/portfolio/assets/images/ibai-miniaturas-circle.png" alt="Logo" class="h-20 w-20 rounded-full">
     <span class="text-3xl font-bold text-gray-800">Ibai Miniaturas</span>
   </div>
 
@@ -15,7 +15,7 @@
       <!-- Submenú generado desde JSON -->
       <div id="dropdown-galerias" class="absolute hidden bg-gray-400 mt-2 rounded w-max text-white">
         <script>
-          fetch('./assets/galeries.json')
+          fetch('/portfolio/assets/galeries.json')
             .then(res => res.json())
             .then(data => {
               const dropdown = document.getElementById('dropdown-galerias');
@@ -85,7 +85,7 @@
   <!-- Icono de Instagram a la derecha -->
   <div class="absolute right-6 flex items-center">
     <a href="https://www.instagram.com/ibaiminiaturas" target="_blank" rel="noopener noreferrer" class="hover:opacity-70 transition-opacity duration-200">
-      <img src="assets/images/instagram.png" alt="Instagram" class="h-12 w-12">
+      <img src="/portfolio/assets/images/instagram.png" alt="Instagram" class="h-12 w-12">
     </a>
   </div>
 

@@ -24,7 +24,7 @@ body {
 <header id="main-header" class="sticky top-0 z-50 bg-white"></header>
 
 <script>
-fetch('components/header.html')
+fetch('/portfolio/components/header.html')
 .then(res=>res.text())
 .then(html=>{
   const header=document.getElementById('main-header');
@@ -36,7 +36,7 @@ fetch('components/header.html')
   });
 
   const script=document.createElement('script');
-  script.src='assets/js/menu.js';
+  script.src='/porfolio/assets/js/menu.js';
   document.body.appendChild(script);
 });
 </script>
@@ -57,7 +57,7 @@ fetch('components/header.html')
 <!-- HISTORIA -->
 <section class="flex flex-col md:flex-row items-center gap-10">
 
-<img src="assets/images/about1.jpg" class="w-full md:w-1/2 rounded-lg shadow-lg">
+<img src="/portfolio/assets/images/about1.jpg" class="w-full md:w-1/2 rounded-lg shadow-lg">
 
 <div class="md:w-1/2 space-y-6">
 
@@ -84,7 +84,7 @@ fetch('components/header.html')
 <!-- EL PROCESO -->
 <section class="flex flex-col md:flex-row-reverse items-center gap-10">
 
-<img src="assets/images/about2.jpg" class="w-full md:w-1/2 rounded-lg shadow-lg">
+<img src="/portfolio/assets/images/about2.jpg" class="w-full md:w-1/2 rounded-lg shadow-lg">
 
 <div class="md:w-1/2 space-y-6">
 
@@ -150,7 +150,7 @@ fetch('components/header.html')
 <!-- ENSEÑAR -->
 <section class="flex flex-col md:flex-row items-center gap-10">
 
-<img src="assets/images/about3.jpg" class="w-full md:w-1/2 rounded-lg shadow-lg">
+<img src="/portfolio/assets/images/about3.jpg" class="w-full md:w-1/2 rounded-lg shadow-lg">
 
 <div class="md:w-1/2 space-y-6">
 
@@ -192,7 +192,7 @@ fetch('components/header.html')
 <div id="footer-placeholder"></div>
 
 <script>
-fetch('components/footer.html')
+fetch('/portfolio/components/footer.html')
 .then(res=>res.text())
 .then(html=>{
 document.getElementById('footer-placeholder').innerHTML=html;

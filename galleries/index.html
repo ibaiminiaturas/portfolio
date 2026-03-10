@@ -5,8 +5,8 @@
 <title>Galería</title>
 
 <!-- TailwindCSS -->
-<link rel="stylesheet" href="assets/css/output.css">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="/portfolio/assets/css/output.css">
+<link rel="stylesheet" href="/portfolio/assets/css/style.css">
 
 <!-- Google Fonts: Montserrat -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
 </header>
 
 <script>
-fetch('components/header.html')
+fetch('/portfolio/components/header.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('main-header').innerHTML = html;
@@ -42,7 +42,7 @@ fetch('components/header.html')
 
     // Cargar script de menú extra si hace falta
     const script = document.createElement('script');
-    script.src = 'assets/js/menu.js';
+    script.src = '/portfolio/assets/js/menu.js';
 
     document.body.appendChild(script);
   });
@@ -52,11 +52,11 @@ fetch('components/header.html')
 <div id="galeria-container" class="space-y-6 px-6"></div>
 
 
-<script src="../assets/js/lightbox.js"></script>
+<script src="/portfolio/assets/js/lightbox.js"></script>
 
 <script type="module">
-import { crearMiniCarrusel } from '../assets/js/minicarrusel.js';
-import { crearMosaico } from '../assets/js/mosaico.js';
+import { crearMiniCarrusel } from '/portfolio/assets/js/minicarrusel.js';
+import { crearMosaico } from '/portfolio/assets/js/mosaico.js';
 
 const params = new URLSearchParams(window.location.search);
 let galeriaSeleccionada = params.get('galeria');
@@ -66,7 +66,7 @@ const subSeleccionada = params.get('sub');
 const container = document.getElementById('galeria-container');
 const titulo = document.getElementById('titulo-galeria');
 
-fetch('../assets/galeries.json')
+fetch('/portfolio//assets/galeries.json')
 .then(res => res.json())
 .then(data => {
     if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
@@ -190,7 +190,7 @@ carruselWrapper.querySelectorAll('img').forEach((img, i) => {
 <div id="footer-placeholder"></div>
 
 <script>
-  fetch('components/footer.html')
+  fetch('/portfolio/components/footer.html')
     .then(res => res.text())
     .then(html => {
       document.getElementById('footer-placeholder').innerHTML = html;

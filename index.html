@@ -27,7 +27,7 @@
 <header id="main-header" class="sticky top-0 z-50 bg-white"></header>
 
 <script>
-fetch('components/header.html')
+fetch('/portfolio/components/header.html')
   .then(res => res.text())
   .then(html => {
     const header = document.getElementById('main-header');
@@ -42,7 +42,7 @@ fetch('components/header.html')
 
       // 2️⃣ Cargar menú.js después de i18n
       const menuScript = document.createElement('script');
-      menuScript.src = 'assets/js/menu.js';
+      menuScript.src = '/portfolio/assets/js/menu.js';
       document.body.appendChild(menuScript);
     };
     document.body.appendChild(i18nScript);
@@ -66,7 +66,7 @@ fetch('components/header.html')
 
   <!-- Sección de bienvenida -->
   <section class="flex flex-col md:flex-row items-center gap-8">
-    <img src="assets/images/miniatura1.jpg" alt="Miniatura pintada" class="w-full md:w-1/2 rounded-lg shadow-lg">
+    <img src="/portfolio/assets/images/miniatura1.jpg" alt="Miniatura pintada" class="w-full md:w-1/2 rounded-lg shadow-lg">
     <div class="md:w-1/2 space-y-6">
       <h2 class="text-4xl font-extrabold text-gray-800" data-i18n="main.welcome.title"></h2>
       <p class="text-gray-700 text-lg" data-i18n="main.welcome.text1"></p>
@@ -76,7 +76,7 @@ fetch('components/header.html')
 
   <!-- Sección técnica con imagen a la derecha -->
   <section class="flex flex-col md:flex-row-reverse items-center gap-8">
-    <img src="assets/images/miniatura2.png" alt="Técnica de pincel seco" class="w-full md:w-1/2 rounded-lg shadow-lg">
+    <img src="/portfolio/assets/images/miniatura2.png" alt="Técnica de pincel seco" class="w-full md:w-1/2 rounded-lg shadow-lg">
     <div class="md:w-1/2 space-y-6">
       <h2 class="text-3xl font-bold text-gray-800" data-i18n="main.techniques.title"></h2>
       <p class="text-gray-700 text-lg" data-i18n="main.techniques.text1"></p>
@@ -89,18 +89,18 @@ fetch('components/header.html')
     <h2 class="text-3xl font-bold text-gray-800 text-center mb-8" data-i18n="main.gallery.title"></h2>
     <p class="text-center text-gray-700 mb-6" data-i18n="main.gallery.subtitle"></p>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <img src="assets/images/miniatura3.jpg" alt="Miniatura 3" class="rounded-lg shadow-md hover:scale-105 transition-transform">
-      <img src="assets/images/miniatura4.jpg" alt="Miniatura 4" class="rounded-lg shadow-md hover:scale-105 transition-transform">
-      <img src="assets/images/miniatura5.jpg" alt="Miniatura 5" class="rounded-lg shadow-md hover:scale-105 transition-transform">
-      <img src="assets/images/miniatura6.jpg" alt="Miniatura 6" class="rounded-lg shadow-md hover:scale-105 transition-transform">
-      <img src="assets/images/miniatura7.jpg" alt="Miniatura 7" class="rounded-lg shadow-md hover:scale-105 transition-transform">
-      <img src="assets/images/miniatura8.jpg" alt="Miniatura 8" class="rounded-lg shadow-md hover:scale-105 transition-transform">
+      <img src="/portfolio/assets/images/miniatura3.jpg" alt="Miniatura 3" class="rounded-lg shadow-md hover:scale-105 transition-transform">
+      <img src="/portfolio/assets/images/miniatura4.jpg" alt="Miniatura 4" class="rounded-lg shadow-md hover:scale-105 transition-transform">
+      <img src="/portfolio/assets/images/miniatura5.jpg" alt="Miniatura 5" class="rounded-lg shadow-md hover:scale-105 transition-transform">
+      <img src="/portfolio/assets/images/miniatura6.jpg" alt="Miniatura 6" class="rounded-lg shadow-md hover:scale-105 transition-transform">
+      <img src="/portfolio/assets/images/miniatura7.jpg" alt="Miniatura 7" class="rounded-lg shadow-md hover:scale-105 transition-transform">
+      <img src="/portfolio/assets/images/miniatura8.jpg" alt="Miniatura 8" class="rounded-lg shadow-md hover:scale-105 transition-transform">
     </div>
   </section>
 
   <!-- Sección divertida y narrativa -->
   <section class="bg-yellow-50 p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center gap-6">
-    <img src="assets/images/miniatura9.png" alt="Miniatura divertida" class="w-full md:w-1/3 rounded-lg shadow-md">
+    <img src="/portfolio/assets/images/miniatura9.png" alt="Miniatura divertida" class="w-full md:w-1/3 rounded-lg shadow-md">
     <div class="md:w-2/3 space-y-4">
       <h2 class="text-3xl font-bold text-gray-800" data-i18n="main.fun.title"></h2>
       <p class="text-gray-700 text-lg" data-i18n="main.fun.text1"></p>
@@ -114,7 +114,7 @@ fetch('components/header.html')
 <div id="footer-placeholder"></div>
 
 <script>
-fetch('components/footer.html')
+fetch('/portfolio/components/footer.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('footer-placeholder').innerHTML = html;
