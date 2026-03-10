@@ -5,7 +5,7 @@
 <title>Galería</title>
 
 <!-- TailwindCSS -->
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/assets/css/output.css">
 
 <!-- Google Fonts: Montserrat -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -124,18 +124,17 @@ body::before {
 fetch('/components/header.html')
   .then(res => res.text())
   .then(html => {
-    const header = document.getElementById('main-header');
-    header.innerHTML = html;
+    document.getElementById('main-header').innerHTML = html;
 
-    // Shadow al hacer scroll
-    header.style.transition = 'box-shadow 0.3s ease';
-    window.addEventListener('scroll', () => {
-      header.style.boxShadow = window.scrollY > 10 ? '0 2px 8px rgba(0,0,0,0.1)' : 'none';
-    });
 
-    // Cargar el menú flotante
+
+    // Cargar script de menú extra si hace falta
     const script = document.createElement('script');
     script.src = '/assets/js/menu.js';
+        script.onload = () => {
+      // ✅ Llamamos a la función solo después de que el script se cargue
+      initializeMenu();
+    };
     document.body.appendChild(script);
   });
 </script>

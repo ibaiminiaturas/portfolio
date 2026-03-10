@@ -121,7 +121,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Dropdown */
 #dropdown-galerias {
   position: absolute;
-  display: none;
+
   background: #1F2937; /* bg-gray-800 */
   margin-top: 0.5rem;
   border-radius: 0.25rem;

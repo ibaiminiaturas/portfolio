@@ -30,6 +30,9 @@ function initializeMenu() {
           subMenu.style.whiteSpace = "nowrap"; // evitar saltos de línea
           subMenu.style.minWidth = "max-content"; // ancho adaptativo al contenido
 
+  // 🔹 Aseguramos que el padre directo sea relative
+  li.classList.add("relative");
+
           sectionSubs.forEach(sub => {
             const aSub = document.createElement("a");
             aSub.href = `/galleries/index.html?galeria=${encodeURIComponent(sectionName)}&sub=${encodeURIComponent(sub.name)}`;
