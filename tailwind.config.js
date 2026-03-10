@@ -2,28 +2,28 @@
 module.exports = {
   content: [
     "./index.html",
-    "./galleries/**/*.html",
+    "./galeria/*.html",
     "./components/**/*.html",
     "./assets/js/**/*.js",
+    "./assets/css/style.css", // 🔹 agregar
   ],
-  safelist: [
-  "hidden",
-  "block",
-  "absolute",
-  "relative",
-  "bg-gray-800",
-  "text-white",
-  "mt-2",
-  "rounded",
-  "w-max",
-  "hover:text-gray-300"
-],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'], // <-- aquí Montserrat
+        sans: ['Montserrat', 'sans-serif'],
       },
     },
   },
+safelist: [
+  "hidden","block","absolute","relative",
+  "bg-gray-800","bg-gray-700","bg-gray-600",
+  "text-white","mt-2","rounded","w-max",
+  "hover:text-gray-300","hover:bg-gray-700",
+  "hover:bg-gray-600",
+  "text-8xl","text-4xl","text-xl","text-5xl", // tamaños de texto
+  "mb-12","mb-5", // márgenes
+  "h-[200px]","w-[200px]", // tamaños del minicarrusel
+  "gap-5","gap-2","flex","flex-col","flex-row","items-start","items-center","justify-center","flex-shrink-0"
+],
   plugins: [],
 }
