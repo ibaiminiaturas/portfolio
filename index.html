@@ -11,6 +11,8 @@
 <!-- Google Fonts: Montserrat -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="/assets/js/i18n.js"></script>
+
 <style>
   body {
     margin: 0;
@@ -32,6 +34,9 @@ fetch('/components/header.html')
   .then(html => {
     const header = document.getElementById('main-header');
     header.innerHTML = html;
+
+      loadLanguage("es");
+  
 
     // Shadow dinámico al hacer scroll
     header.style.transition = 'box-shadow 0.3s ease';
