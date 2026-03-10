@@ -35,7 +35,7 @@ fetch('components/header.html')
 
     // 1️⃣ Cargamos i18n.js dinámicamente
     const i18nScript = document.createElement('script');
-    i18nScript.src = 'assets/js/i18n.js';
+    i18nScript.src = '/portfolio/assets/js/i18n.js';
     i18nScript.onload = () => {
       // ✅ Solo aquí loadLanguage existe
       loadLanguage("en");
