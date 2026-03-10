@@ -3,16 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fuente custom */
-@font-face {
-  font-family: 'Akira';
-  src: url(assets/fonts/Akira.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-.font-miFuente {
-  font-family: 'Akira', sans-serif;
-}
 
 /* style.css */
 .carrusel-titulo {
