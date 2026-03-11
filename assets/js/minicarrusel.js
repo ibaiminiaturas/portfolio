@@ -32,16 +32,31 @@ export function crearMiniCarrusel(sub, images) {
     const SCROLL_AMOUNT = 220;
 
     const leftArrow = document.createElement('div');
-    leftArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>`;
+    leftArrow.innerHTML = `
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="60"
+     height="60"
+     class="text-gray-800 hover:text-fuchsia-600 cursor-pointer"
+     fill="none"
+     viewBox="0 0 24 24"
+     stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M15 19l-7-7 7-7"/>
+</svg>`;
+
     leftArrow.style.position = 'absolute';
-    leftArrow.style.left = '0';
+    leftArrow.style.left = '-10px';
     leftArrow.style.top = '50%';
     leftArrow.style.transform = 'translateY(-50%)';
     leftArrow.style.zIndex = '10';
     leftArrow.style.display = 'none';
 
+
     const rightArrow = document.createElement('div');
-    rightArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-800 hover:text-yellow-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
+    rightArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" 
+         width="60"
+     height="60"
+    class="text-gray-800 hover:text-fuchsia-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
     rightArrow.style.position = 'absolute';
     rightArrow.style.right = '0';
     rightArrow.style.top = '50%';

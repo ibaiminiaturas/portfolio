@@ -131,8 +131,9 @@ subGalerias.forEach((sub, index) => {
 
         // 🔹 Contenedor gris para las imágenes del mosaico
         const wrapperDiv = document.createElement('div');
-        wrapperDiv.className = 'bg-gray-700   p-8 rounded-xl w-full'; // 🔹 w-full para respetar padding de subDiv
-        wrapperDiv.style.maxWidth = '1001px'; // 🔹 opcional: limitar ancho si quieres
+        wrapperDiv.className = 'bg-gray-700 rounded-xl w-full'; // 🔹 w-full para respetar padding de subDiv
+        wrapperDiv.style.padding = '10px';
+        wrapperDiv.style.maxWidth = '800px'; // 🔹 opcional: limitar ancho si quieres
         wrapperDiv.style.display = 'flex';
         wrapperDiv.style.display = 'inline-block';
 
@@ -184,12 +185,14 @@ const nombreDiv = document.createElement('div');
 nombreDiv.textContent = sub.displayName || sub.name;
 nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
 
-// Contenedor gris para las imágenes del carrusel
 const wrapperDivCarrusel = document.createElement('div');
-wrapperDivCarrusel.className = 'bg-gray-700 p-8 rounded-xl w-full'; // 🔹 w-full para respetar padding de subDiv
-wrapperDivCarrusel.style.maxWidth = '1000px'; // 🔹 opcional: limitar ancho si quieres
+// Eliminamos overflow-hidden si el carrusel necesita mostrar sombras o flechas
+wrapperDivCarrusel.className = 'bg-gray-700  rounded-xl flex-grow box-border'; 
+wrapperDivCarrusel.style.maxWidth = '1000px';
 wrapperDivCarrusel.style.display = 'flex';
 wrapperDivCarrusel.style.justifyContent = 'center';
+wrapperDivCarrusel.style.padding = '10px';
+wrapperDivCarrusel.style.alignItems = 'center'; // Centrar verticalmente el carrusel
 
 const carruselWrapper = crearMiniCarrusel(sub, images);
 carruselWrapper.querySelectorAll('img').forEach((img, i) => {
