@@ -9,7 +9,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<script src="assets/js/i18n.js"></script>
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/utils.js"></script>
 
 <style>
 body{
@@ -34,7 +35,7 @@ const header=document.getElementById('main-header');
 header.innerHTML=html;
 
 loadLanguage("en");
-
+loadHeader("");
 header.style.transition='box-shadow 0.3s ease';
 window.addEventListener('scroll',()=>{
 header.style.boxShadow=window.scrollY>10?'0 2px 8px rgba(0,0,0,0.1)':'none';

@@ -3,7 +3,7 @@
 
   <!-- Logo + nombre a la izquierda -->
   <div class="flex items-center gap-3">
-    <img src="${BASE_PATH}/assets/images/ibai-miniaturas-circle.png" alt="Logo" class="h-20 w-20 rounded-full">
+    <img  id="header-logo"  alt="Logo" class="h-20 w-20 rounded-full">
     <span class="text-3xl font-bold text-gray-800">Ibai Miniaturas</span>
   </div>
 
@@ -28,6 +28,7 @@
 
                 // Link principal de la galería
                 const aMain = document.createElement("a");
+               
                 aMain.href = `${BASE_PATH}/galleries/index.html?galeria=${encodeURIComponent(sectionName)}`;
                 aMain.textContent = sectionName;
                 aMain.className = "block px-4 py-2 cursor-pointer rounded hover:bg-gray-700 w-full text-left text-white whitespace-nowrap";
@@ -80,14 +81,25 @@
   </ul>
 <!-- Selector de idiomas -->
 <div class="absolute right-24 flex items-center gap-3">
-  <img src="${BASE_PATH}/assets/images/flag-es.svg" alt="Español" class="h-8 w-10 cursor-pointer hover:opacity-70 transition-opacity duration-200" onclick="loadLanguage('es');">
-  <img src="${BASE_PATH}/assets/images/flag-uk.png" alt="English" class="h-8 w-10 cursor-pointer hover:opacity-70 transition-opacity duration-200" onclick="loadLanguage('en');">
+  <img  id="flag-es" alt="Español" class="h-8 w-10 cursor-pointer hover:opacity-70 transition-opacity duration-200" onclick="loadLanguage('es');">
+  <img  id="flag-uk" alt="English" class="h-8 w-10 cursor-pointer hover:opacity-70 transition-opacity duration-200" onclick="loadLanguage('en');">
 </div>
   <!-- Icono de Instagram a la derecha -->
   <div class="absolute right-6 flex items-center">
     <a href="https://www.instagram.com/ibaiminiaturas" target="_blank" rel="noopener noreferrer" class="hover:opacity-70 transition-opacity duration-200">
-      <img src="${BASE_PATH}/assets/images/instagram.png" alt="Instagram" class="h-12 w-12">
+      <img  id="ig-icon" alt="Instagram" class="h-12 w-12">
     </a>
   </div>
-
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const base = location.hostname.includes("github.io") ? "/portfolio/" : "";
+  var test  =  `${base}assets/images/ibai-miniaturas-circle.png`;
+  console.log(test);
+  document.getElementById('header-logo').src = `${base}assets/images/ibai-miniaturas-circle.png`;
+  document.getElementById('flag-es').src = `${base}assets/images/flag-es.svg`;
+  document.getElementById('flag-uk').src = `${base}assets/images/flag-uk.png`;
+  document.getElementById('ig-icon').src = `${base}assets/images/instagram.png`;
+});
+</script>
 </header>
+

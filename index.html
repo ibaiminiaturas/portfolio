@@ -8,6 +8,7 @@
 <!-- TailwindCSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="assets/js/config.js"></script>
+<script src="../assets/js/utils.js"></script>
 <!-- Google Fonts: Montserrat -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -46,7 +47,7 @@ fetch(`${BASE_PATH}/components/header.html`)
       document.body.appendChild(menuScript);
     };
     document.body.appendChild(i18nScript);
-
+    loadHeader("");
     // Shadow dinámico al hacer scroll
     header.style.transition = 'box-shadow 0.3s ease';
     window.addEventListener('scroll', () => {

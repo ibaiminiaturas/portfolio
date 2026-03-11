@@ -18,6 +18,7 @@
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="../assets/js/i18n.js"></script>
 <script src="../assets/js/config.js"></script> <!-- define BASE_PATH -->
+<script src="../assets/js/utils.js"></script>
 <!-- Estilos generales -->
 
 </head>
@@ -56,6 +57,7 @@ fetch(`${BASE_PATH}/components/header.html`)
     script.src = '../assets/js/menu.js';
 
     document.body.appendChild(script);
+    loadHeader("../");
   });
 </script>
 
