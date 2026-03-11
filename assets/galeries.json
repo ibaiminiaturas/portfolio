@@ -5,7 +5,7 @@
     { "name": "SOIF", "displayName": "Song of Ice And Fire", "images": 6 },
     { "name": "Other", "displayName": "Otros Trabajos", "images": 12, "type": "mosaic" }
   ],
-  "Warhammer": [
+  "warhammer": [
     { "name": "Other", "displayName": "Otros Trabajos", "images": 3, "type": "mosaic" }
   ],
   "Warhammer 40k": [
