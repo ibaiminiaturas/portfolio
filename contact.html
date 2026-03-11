@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact - Ibai Miniaturas</title>
-
+<script src="../assets/js/config.js"></script> <!-- define BASE_PATH -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<script src="/portfolio/assets/js/i18n.js"></script>
+<script src="assets/js/i18n.js"></script>
 
 <style>
 body{
@@ -27,7 +27,7 @@ background-color:#f3f4f6;
 <header id="main-header" class="sticky top-0 z-50 bg-white"></header>
 
 <script>
-fetch('/portfolio/components/header.html')
+fetch(`${BASE_PATH}/components/header.html`)
 .then(res=>res.text())
 .then(html=>{
 const header=document.getElementById('main-header');
@@ -41,7 +41,7 @@ header.style.boxShadow=window.scrollY>10?'0 2px 8px rgba(0,0,0,0.1)':'none';
 });
 
 const script=document.createElement('script');
-script.src='/portfolio/assets/js/menu.js';
+script.src='/assets/js/menu.js';
 document.body.appendChild(script);
 });
 </script>
@@ -126,7 +126,7 @@ data-i18n="contact.send">
 <div id="footer-placeholder"></div>
 
 <script>
-fetch('/portfolio/components/footer.html')
+fetch(`${BASE_PATH}/components/footer.html`)
 .then(res=>res.text())
 .then(html=>{
 document.getElementById('footer-placeholder').innerHTML=html;

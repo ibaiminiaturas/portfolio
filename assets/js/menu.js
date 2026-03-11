@@ -8,7 +8,7 @@ function initializeMenu() {
   dropdown.className = "absolute hidden bg-gray-800 mt-2 rounded shadow-lg text-white";
 
   // Cargar galerías desde el JSON
-  fetch('/portfolio/assets/galeries.json') // 🔹 ruta relativa desde el header
+  fetch(`${BASE_PATH}/assets/galeries.json`) // 🔹 ruta relativa desde el header
     .then(res => res.json())
     .then(data => {
       Object.keys(data).forEach(sectionName => {
