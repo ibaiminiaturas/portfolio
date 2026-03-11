@@ -2,7 +2,7 @@ let translations = {};
 let currentLang = "es";
 
 function getNested(obj, key) {
-  return key.split('.').reduce((o, i) => o ? o[i] : null, obj);
+ return key.split('.').reduce((obj, i) => obj?.[i], translations);
 }
 
 async function loadLanguage(lang) {
@@ -17,7 +17,6 @@ async function loadLanguage(lang) {
     localStorage.setItem("lang", lang);
 
     translatePage();
-console.log("pasa");
   } catch (err) {
 
     console.error("Error cargando idioma:", err);
@@ -39,3 +38,4 @@ function translatePage() {
   });
 
 }
+
