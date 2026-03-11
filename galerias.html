@@ -68,8 +68,8 @@ fetch(`${BASE_PATH}/components/header.html`)
 <script src="assets/js/lightbox.js"></script>
 
 <script type="module">
-import { crearMiniCarrusel } from '../assets/js/minicarrusel.js';
-import { crearMosaico } from '../assets/js/mosaico.js';
+import { crearMiniCarrusel } from './assets/js/minicarrusel.js';
+import { crearMosaico } from './assets/js/mosaico.js';
 
 const params = new URLSearchParams(window.location.search);
 let galeriaSeleccionada = params.get('galeria');
