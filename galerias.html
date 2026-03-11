@@ -5,8 +5,8 @@
 <title>Galería</title>
 
 <!-- TailwindCSS -->
-<link rel="stylesheet" href="../assets/css/output.css">
-<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="assets/css/output.css">
+<link rel="stylesheet" href="assets/css/style.css">
 
 <!-- Google Fonts: Montserrat -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,9 +16,9 @@
 
 <!-- imagesLoaded -->
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script src="../assets/js/i18n.js"></script>
-<script src="../assets/js/config.js"></script> <!-- define BASE_PATH -->
-<script src="../assets/js/utils.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/config.js"></script> <!-- define BASE_PATH -->
+<script src="assets/js/utils.js"></script>
 <!-- Estilos generales -->
 
 </head>
@@ -54,10 +54,10 @@ fetch(`${BASE_PATH}/components/header.html`)
 
     // Cargar script de menú extra si hace falta
     const script = document.createElement('script');
-    script.src = '../assets/js/menu.js';
+    script.src =  `${BASE_PATH}/assets/js/menu.js`;
 
     document.body.appendChild(script);
-    loadHeader("../");
+    loadHeader("");
   });
 </script>
 
@@ -65,11 +65,11 @@ fetch(`${BASE_PATH}/components/header.html`)
 <div id="galeria-container" class="space-y-6 px-6"></div>
 
 
-<script src="../assets/js/lightbox.js"></script>
+<script src="assets/js/lightbox.js"></script>
 
 <script type="module">
-import { crearMiniCarrusel } from '../assets/js/minicarrusel.js';
-import { crearMosaico } from '../assets/js/mosaico.js';
+import { crearMiniCarrusel } from './assets/js/minicarrusel.js';
+import { crearMosaico } from './assets/js/mosaico.js';
 
 const params = new URLSearchParams(window.location.search);
 let galeriaSeleccionada = params.get('galeria');
@@ -131,8 +131,9 @@ subGalerias.forEach((sub, index) => {
 
         // 🔹 Contenedor gris para las imágenes del mosaico
         const wrapperDiv = document.createElement('div');
-        wrapperDiv.className = 'bg-gray-700   p-8 rounded-xl w-full'; // 🔹 w-full para respetar padding de subDiv
-        wrapperDiv.style.maxWidth = '1001px'; // 🔹 opcional: limitar ancho si quieres
+        wrapperDiv.className = 'bg-gray-700 rounded-xl w-full'; // 🔹 w-full para respetar padding de subDiv
+        wrapperDiv.style.padding = '10px';
+        wrapperDiv.style.maxWidth = '800px'; // 🔹 opcional: limitar ancho si quieres
         wrapperDiv.style.display = 'flex';
         wrapperDiv.style.display = 'inline-block';
 
@@ -184,12 +185,14 @@ const nombreDiv = document.createElement('div');
 nombreDiv.textContent = sub.displayName || sub.name;
 nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
 
-// Contenedor gris para las imágenes del carrusel
 const wrapperDivCarrusel = document.createElement('div');
-wrapperDivCarrusel.className = 'bg-gray-700 p-8 rounded-xl w-full'; // 🔹 w-full para respetar padding de subDiv
-wrapperDivCarrusel.style.maxWidth = '1000px'; // 🔹 opcional: limitar ancho si quieres
+// Eliminamos overflow-hidden si el carrusel necesita mostrar sombras o flechas
+wrapperDivCarrusel.className = 'bg-gray-700  rounded-xl flex-grow box-border'; 
+wrapperDivCarrusel.style.maxWidth = '1000px';
 wrapperDivCarrusel.style.display = 'flex';
 wrapperDivCarrusel.style.justifyContent = 'center';
+wrapperDivCarrusel.style.padding = '10px';
+wrapperDivCarrusel.style.alignItems = 'center'; // Centrar verticalmente el carrusel
 
 const carruselWrapper = crearMiniCarrusel(sub, images);
 carruselWrapper.querySelectorAll('img').forEach((img, i) => {
@@ -229,7 +232,7 @@ container.appendChild(subDiv);
     .then(res => res.text())
     .then(html => {
       document.getElementById('footer-placeholder').innerHTML = html;
-           loadFooter("../");
+           loadFooter("");
     });
 
 </script>
