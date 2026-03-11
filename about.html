@@ -9,6 +9,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/utils.js"></script>
 <style>
 body {
   margin:0;
@@ -30,6 +31,7 @@ fetch(`${BASE_PATH}/components/header.html`)
   const header=document.getElementById('main-header');
   header.innerHTML=html;
       loadLanguage("en");
+          loadHeader("");
   header.style.transition='box-shadow 0.3s ease';
   window.addEventListener('scroll',()=>{
     header.style.boxShadow=window.scrollY>10?'0 2px 8px rgba(0,0,0,0.1)':'none';
@@ -196,7 +198,9 @@ fetch(`${BASE_PATH}/components/footer.html`)
 .then(res=>res.text())
 .then(html=>{
 document.getElementById('footer-placeholder').innerHTML=html;
+loadFooter("");
 });
+    
 </script>
 
 </body>
