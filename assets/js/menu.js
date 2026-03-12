@@ -1,12 +1,8 @@
-// Inicialización del menú de galerías desde el JSON
 function createMenuItem(name, data, parentPath = "") {
     const li = document.createElement("div");
-    // Usamos 'relative' y una clase propia 'menu-item-nivel'
-    li.className = "relative menu-item-nivel"; 
+    li.className = "relative menu-item-nivel";
+    li.style.width = "100%";
 
-    // Construcción de la URL: 
-    // Si no hay parentPath, es nivel raíz (galeria=)
-    // Si hay parentPath, es un subnivel (&sub=)
     const currentPath = parentPath 
         ? `${parentPath}&sub=${encodeURIComponent(name)}` 
         : `galeria=${encodeURIComponent(name)}`;
@@ -14,24 +10,41 @@ function createMenuItem(name, data, parentPath = "") {
     const a = document.createElement("a");
     a.href = `${BASE_PATH}/galerias.html?${currentPath}`;
     
-    // --- 1. CLAVE PARA TRADUCCIÓN DINÁMICA ---
-    // Añadimos data-i18n para que translatePage() pueda actualizarlo luego
-    const claveI18n = `galeries.${name}`;
-    a.setAttribute('data-i18n', claveI18n);
+    // FORZADO POR ESTILO DIRECTO
+    a.style.display = "flex";
+    a.style.alignItems = "center";
+    a.style.justifyContent = "between"; // Esto lo manejaremos con el span
+    a.style.width = "100%";
+    a.style.padding = "8px 16px";
+    a.style.color = "white";
+    a.style.textDecoration = "none";
+    a.style.whiteSpace = "nowrap"; // PROHIBIDO SALTAR DE LÍNEA
+    
+    a.className = "hover:bg-gray-700 transition-colors duration-200";
 
-    // --- 2. LÓGICA DE TEXTO INICIAL ---
+    // Contenedor del texto
+    const textSpan = document.createElement("span");
+    const claveI18n = `galeries.${name}`;
+    textSpan.setAttribute('data-i18n', claveI18n);
+
     const textoTraducido = (typeof t === 'function') ? t(claveI18n) : null;
-    // Si t() devuelve la clave (no encontró traducción), usamos el displayName o name original
-    a.textContent = (textoTraducido && textoTraducido !== claveI18n) 
+    textSpan.textContent = (textoTraducido && textoTraducido !== claveI18n) 
                     ? textoTraducido 
                     : (data.displayName || name);
     
-    a.className = "block px-4 py-2 cursor-pointer hover:bg-gray-700 w-full text-left text-white whitespace-nowrap flex justify-between items-center transition-colors duration-200";
+    // Este span empujará a la flecha gracias al flex-grow
+    textSpan.style.flexGrow = "1";
+    textSpan.style.textAlign = "left";
+    
+    a.appendChild(textSpan);
 
     if (data.subs && data.subs.length > 0) {
         const arrow = document.createElement("span");
         arrow.textContent = "❯";
-        arrow.className = "ml-3 text-[10px] opacity-50";
+        arrow.style.fontSize = "20px";
+        arrow.style.opacity = "0.5";
+        arrow.style.marginLeft = "15px"; // Espacio mínimo con el texto
+        arrow.style.flexShrink = "0";    // Que no se aplaste
         a.appendChild(arrow);
     }
 
@@ -39,8 +52,8 @@ function createMenuItem(name, data, parentPath = "") {
 
     if (data.subs && data.subs.length > 0) {
         const subMenu = document.createElement("div");
-        // Estilos para el submenú flotante a la derecha
-        subMenu.className = "submenu-flotante absolute left-full top-0 hidden bg-gray-800 py-2 rounded shadow-lg min-w-max border-l border-gray-600";
+        subMenu.className = "submenu-flotante absolute left-full top-0 hidden bg-gray-800 py-2 rounded shadow-lg border-l border-gray-600 z-[110]";
+        subMenu.style.minWidth = "200px";
         
         data.subs.forEach(sub => {
             subMenu.appendChild(createMenuItem(sub.name, sub, currentPath));
@@ -48,9 +61,8 @@ function createMenuItem(name, data, parentPath = "") {
 
         li.appendChild(subMenu);
 
-        // Lógica de mostrar/ocultar solo el HIJO DIRECTO
         li.addEventListener("mouseenter", (e) => {
-            e.stopPropagation(); // Evita que el evento suba a los padres
+            e.stopPropagation();
             subMenu.classList.remove("hidden");
         });
         li.addEventListener("mouseleave", (e) => {
