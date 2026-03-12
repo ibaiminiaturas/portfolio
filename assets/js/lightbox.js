@@ -18,16 +18,22 @@ function adjustLightboxForHeader() {
 function openLightbox(images, index) {
   currentImages = images;
   currentIndex = index;
+  
+  // Escondemos flechas antes de mostrar el lightbox
+  prevBtn.style.opacity = 0;
+  nextBtn.style.opacity = 0;
+  prevBtn.style.pointerEvents = 'none';
+  nextBtn.style.pointerEvents = 'none';
+
   updateLightboxImage();
 
-  adjustLightboxForHeader(); // actualizar altura cabecera
+  adjustLightboxForHeader();
 
   lightbox.style.display = 'flex';
   lightbox.style.opacity = 0;
   lightbox.style.transition = 'opacity 0.3s ease';
   requestAnimationFrame(() => lightbox.style.opacity = 1);
 }
-
 window.addEventListener('resize', adjustLightboxForHeader);
 
 function closeLightbox() {
@@ -38,36 +44,35 @@ function closeLightbox() {
 }
 
 function updateLightboxImage() {
-  // 1. Solo la IMAGEN hace el fade out
   lightboxImg.style.transition = 'opacity 0.2s ease';
   lightboxImg.style.opacity = 0;
 
-  // 2. Las flechas se actualizan de inmediato (sin desaparecer)
-  // Decidimos si deben existir o no antes de que cargue la foto
+  // No tocamos la opacidad de las flechas aquí si ya se están mostrando,
+  // solo manejamos la visibilidad lógica (flecha izq en foto 1, etc)
   prevBtn.style.visibility = currentIndex > 0 ? 'visible' : 'hidden';
   nextBtn.style.visibility = currentIndex < currentImages.length - 1 ? 'visible' : 'hidden';
-  
-  // Las flechas NO se ocultan, solo se bloquean un momento para evitar spam
-  prevBtn.style.pointerEvents = 'none';
-  nextBtn.style.pointerEvents = 'none';
 
   setTimeout(() => {
     lightboxImg.src = currentImages[currentIndex];
     
     lightboxImg.onload = () => {
-      // 3. Cuando la imagen carga, las flechas se deslizan a su nueva posición
-      // pero como ya eran visibles, solo verás que "viajan" suavemente si la foto cambia de tamaño
+      // 1. Calculamos posición (aquí es donde se "teletransportan" internamente)
       positionButtons(); 
       
+      // 2. Mostramos imagen
       lightboxImg.style.opacity = 1;
-      
-      // Rehabilitamos el click
-      prevBtn.style.pointerEvents = 'auto';
-      nextBtn.style.pointerEvents = 'auto';
-    };
-  }, 150); // Un pelín más rápido para que sea fluido
-}
 
+      // 3. REVELACIÓN FINAL: Si las flechas estaban en opacity 0 (primera apertura), 
+      // las mostramos suavemente YA en su sitio.
+      requestAnimationFrame(() => {
+        prevBtn.style.opacity = 1;
+        nextBtn.style.opacity = 1;
+        prevBtn.style.pointerEvents = 'auto';
+        nextBtn.style.pointerEvents = 'auto';
+      });
+    };
+  }, 150);
+}
 function showNext() {
   if (currentIndex < currentImages.length - 1) {
     currentIndex++;
