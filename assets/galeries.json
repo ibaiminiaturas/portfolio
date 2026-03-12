@@ -4,12 +4,19 @@
       "name": "Big Child",
       "displayName": "Big Child",
       "images": 12,
-      "type": "mosaic",
+      "type": "",
       "subs":[
       {
         "name": "CP",
         "displayName": "Cyber Punk 2077",
-        "images": 8
+        "images": 8,
+        "type": ""
+      },
+       {
+        "name": "MOTU",
+        "displayName": "Master of the universe",
+        "images": 2,
+        "type": ""
       }
     ]}
   ]

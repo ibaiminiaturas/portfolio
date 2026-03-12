@@ -84,43 +84,57 @@ import { crearMosaico } from './assets/js/mosaico.js';
 const params = new URLSearchParams(window.location.search);
 let galeriaSeleccionada = params.get('galeria');
 if (galeriaSeleccionada) galeriaSeleccionada = decodeURIComponent(galeriaSeleccionada);
-const subSeleccionada = params.get('sub');
+
+const allSubs = params.getAll('sub');
+const subSeleccionada = allSubs.length > 0 ? allSubs[allSubs.length - 1] : null;
 
 const container = document.getElementById('galeria-container');
 const titulo = document.getElementById('titulo-galeria');
+
+// Función de búsqueda recursiva
+function buscarSubgaleria(lista, nombreBusqueda) {
+    for (const item of lista) {
+        if (item.name === nombreBusqueda) return item;
+        if (item.subs && item.subs.length > 0) {
+            const encontrado = buscarSubgaleria(item.subs, nombreBusqueda);
+            if (encontrado) return encontrado;
+        }
+    }
+    return null;
+}
 
 fetch(`${BASE_PATH}/assets/galeries.json`)
 .then(res => res.json())
 .then(data => {
     if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
-        container.innerHTML = "<p class='text-xl'>No se encontró la galería.</p>";
+        container.innerHTML = "<p class='text-xl text-center'>No se encontró la categoría principal.</p>";
         return;
     }
 
     let subGaleriasParaMostrar = [];
     let tituloGrande = galeriaSeleccionada;
-    let pathBaseImagenes = `${BASE_PATH}/galleries/data/${galeriaSeleccionada}`;
+    let pathBase = `${BASE_PATH}/galleries/data/${galeriaSeleccionada}`;
 
     if (subSeleccionada) {
-        // Buscamos la subgalería en cualquier nivel de profundidad
         const subEncontrada = buscarSubgaleria(data[galeriaSeleccionada], subSeleccionada);
-        
         if (subEncontrada) {
             tituloGrande = subEncontrada.displayName || subEncontrada.name;
             
-            // Si la subgalería tiene sus propios "subs", mostramos esos como carruseles/mosaicos
-            // Si NO tiene subs, mostramos la subgalería misma como un bloque
+            // Reconstruir pathBase para niveles profundos
+            if (allSubs.length > 1) {
+                for (let i = 0; i < allSubs.length - 1; i++) {
+                    pathBase += `/${allSubs[i]}`;
+                }
+            }
+
             if (subEncontrada.subs && subEncontrada.subs.length > 0) {
                 subGaleriasParaMostrar = subEncontrada.subs;
-                // Actualizamos el path para que las imágenes se busquen dentro de esta subcarpeta
-                pathBaseImagenes += `/${subEncontrada.name}`;
+                pathBase += `/${subEncontrada.name}`;
             } else {
                 subGaleriasParaMostrar = [subEncontrada];
-                // El path ya se completará en el loop de imágenes
             }
         }
     } else {
-        // Si no hay sub seleccionada, mostramos el primer nivel de la categoría
         subGaleriasParaMostrar = data[galeriaSeleccionada];
     }
 
@@ -128,120 +142,95 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
     titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700";
 
     subGaleriasParaMostrar.forEach((sub, index) => {
-        // OJO: Aquí construimos la ruta. 
-        // Si estamos visualizando una subgalería específica, la ruta debe ser precisa.
+        // Construcción de rutas de imagen
         const images = Array.from({length: sub.images}, (_, j) =>
-            `${pathBaseImagenes}/${sub.name}/${j+1}.jpg`
+            `${pathBase}/${sub.name}/${j+1}.jpg`
         );
 
-        // ... AQUÍ SIGUE TU LÓGICA DE CREAR MOSAICO / CARRUSEL ...
+        const subDiv = document.createElement('div');
+        subDiv.style.marginBottom = '120px';
 
-    const subDiv = document.createElement('div');
-    subDiv.style.marginBottom = '120px';
+        // LÓGICA DE MOSAICO (Tipo mosaic o Última subgalería)
+        const esUltima = index === subGaleriasParaMostrar.length - 1;
+        
+        if (sub.type === 'mosaic' || esUltima) {
+            const bloqueDiv = document.createElement('div');
+            bloqueDiv.style.display = 'flex';
+            bloqueDiv.style.flexDirection = 'column';
+            bloqueDiv.style.alignItems = 'center';
+            bloqueDiv.style.marginBottom = '120px';
 
-    // BLOQUE MOSAICO
-    if(sub.type === 'mosaic'){
-        const bloqueDiv = document.createElement('div');
-        bloqueDiv.style.display = 'flex';
-        bloqueDiv.style.flexDirection = 'column';
-        bloqueDiv.style.alignItems = 'center';
-        bloqueDiv.style.marginBottom = '120px';
+            if (!subSeleccionada) {
+                const nombreDiv = document.createElement('div');
+                // Mantengo tu distinción de color si es última o mosaico normal
+                nombreDiv.className = sub.type === 'mosaic' 
+                    ? 'text-4xl font-bold text-gray-500 text-center mb-12'
+                    : 'text-4xl font-bold my-12 text-black !important text-center mb-12';
+                nombreDiv.textContent = sub.displayName || sub.name;
+                bloqueDiv.appendChild(nombreDiv);
+            }
 
-        // Título pequeño solo si NO estamos en subgalería directa
-        if(!subSeleccionada){
-            const nombreDiv = document.createElement('div');
-            nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12';
-            nombreDiv.textContent = sub.displayName || sub.name;
-            bloqueDiv.appendChild(nombreDiv);
+            const wrapperDiv = document.createElement('div');
+            // Aplicamos tu estilo de contenedor gris
+            wrapperDiv.className = (sub.type === 'mosaic') 
+                ? 'bg-gray-700 rounded-xl w-full p-[10px] max-w-[800px] inline-block'
+                : ''; // La última subgalería dijiste que iba sin wrapper
+
+            const mosaicoDiv = crearMosaico(sub, images, openLightbox);
+            mosaicoDiv.querySelectorAll('img').forEach((img, i) => {
+                img.addEventListener('click', () => openLightbox(images, i));
+            });
+
+            if (sub.type === 'mosaic') {
+                wrapperDiv.appendChild(mosaicoDiv);
+                bloqueDiv.appendChild(wrapperDiv);
+            } else {
+                bloqueDiv.appendChild(mosaicoDiv);
+            }
+
+            subDiv.appendChild(bloqueDiv);
+            container.appendChild(subDiv);
+            return;
         }
 
-        // 🔹 Contenedor gris para las imágenes del mosaico
-        const wrapperDiv = document.createElement('div');
-        wrapperDiv.className = 'bg-gray-700 rounded-xl w-full'; // 🔹 w-full para respetar padding de subDiv
-        wrapperDiv.style.padding = '10px';
-        wrapperDiv.style.maxWidth = '800px'; // 🔹 opcional: limitar ancho si quieres
-        wrapperDiv.style.display = 'flex';
-        wrapperDiv.style.display = 'inline-block';
+        // LÓGICA DE MINI CARRUSEL (Si no es mosaico ni la última)
+        const titleSection = document.createElement('div');
+        titleSection.className = 'flex gap-5 items-center mb-5';
 
-        const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-        mosaicoDiv.querySelectorAll('img').forEach((img, i) => {
+        const nombreDiv = document.createElement('div');
+        nombreDiv.textContent = sub.displayName || sub.name;
+        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
+
+        const wrapperDivCarrusel = document.createElement('div');
+        wrapperDivCarrusel.className = 'bg-gray-700 rounded-xl flex-grow box-border'; 
+        wrapperDivCarrusel.style.maxWidth = '1000px';
+        wrapperDivCarrusel.style.display = 'flex';
+        wrapperDivCarrusel.style.justifyContent = 'center';
+        wrapperDivCarrusel.style.padding = '10px';
+        wrapperDivCarrusel.style.alignItems = 'center';
+
+        const carruselWrapper = crearMiniCarrusel(sub, images);
+        carruselWrapper.querySelectorAll('img').forEach((img, i) => {
+            img.classList.add('carrusel-img');
             img.addEventListener('click', () => openLightbox(images, i));
         });
 
-        wrapperDiv.appendChild(mosaicoDiv);
-        bloqueDiv.appendChild(wrapperDiv);
-        subDiv.appendChild(bloqueDiv);
-        container.appendChild(subDiv);
-        return;
-    }
+        wrapperDivCarrusel.appendChild(carruselWrapper);
 
-    // ÚLTIMA SUBGALERÍA (igual que mosaico pero sin wrapper)
-    const esUltima = index === subGalerias.length - 1;
-    if(esUltima){
-        const bloqueDiv = document.createElement('div');
-        bloqueDiv.style.display = 'flex';
-        bloqueDiv.style.flexDirection = 'column';
-        bloqueDiv.style.alignItems = 'center';
-        bloqueDiv.style.marginBottom = '120px';
-
-        if(!subSeleccionada){
-            const nombreDiv = document.createElement('div');
-            nombreDiv.className = 'text-4xl font-bold my-12 text-black !important text-center mb-12';
-            nombreDiv.textContent = sub.displayName || sub.name;
-            bloqueDiv.appendChild(nombreDiv);
+        // Tu lógica de padding alterno
+        if (index % 2 === 0) {
+            subDiv.style.paddingLeft = '15%';
+            subDiv.style.paddingRight = '5%';
+        } else {
+            subDiv.style.paddingLeft = '10%';
+            subDiv.style.paddingRight = '10%';
         }
 
-        const mosaicoDiv = crearMosaico(sub, images, openLightbox);
-        mosaicoDiv.querySelectorAll('img').forEach((img, i) => {
-            img.addEventListener('click', () => openLightbox(images, i));
-        });
-
-        bloqueDiv.appendChild(mosaicoDiv);
-        subDiv.appendChild(bloqueDiv);
+        titleSection.appendChild(nombreDiv);
+        titleSection.appendChild(wrapperDivCarrusel);
+        subDiv.appendChild(titleSection);
         container.appendChild(subDiv);
-        return;
-    }
-
-    // MINI CARRUSEL
-   // MINI CARRUSEL
-const titleSection = document.createElement('div');
-titleSection.className = 'flex gap-5 items-center mb-5'; // 🔹 items-center en vez de items-start
-
-const nombreDiv = document.createElement('div');
-nombreDiv.textContent = sub.displayName || sub.name;
-nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
-
-const wrapperDivCarrusel = document.createElement('div');
-// Eliminamos overflow-hidden si el carrusel necesita mostrar sombras o flechas
-wrapperDivCarrusel.className = 'bg-gray-700  rounded-xl flex-grow box-border'; 
-wrapperDivCarrusel.style.maxWidth = '1000px';
-wrapperDivCarrusel.style.display = 'flex';
-wrapperDivCarrusel.style.justifyContent = 'center';
-wrapperDivCarrusel.style.padding = '10px';
-wrapperDivCarrusel.style.alignItems = 'center'; // Centrar verticalmente el carrusel
-
-const carruselWrapper = crearMiniCarrusel(sub, images);
-carruselWrapper.querySelectorAll('img').forEach((img, i) => {
-    img.classList.add('carrusel-img');
-    img.addEventListener('click', () => openLightbox(images, i));
-});
-
-wrapperDivCarrusel.appendChild(carruselWrapper);
-
-// Ajustar padding lateral del bloque
-if (index % 2 === 0) {
-    subDiv.style.paddingLeft = '15%';
-    subDiv.style.paddingRight = '5%';
-} else {
-    subDiv.style.paddingLeft = '10%';
-    subDiv.style.paddingRight = '10%';
-}
-
-titleSection.appendChild(nombreDiv);
-titleSection.appendChild(wrapperDivCarrusel);
-subDiv.appendChild(titleSection);
-container.appendChild(subDiv);
-});
+    });
 })
 .catch(err => {
     console.error('Error cargando galería:', err);
