@@ -6,23 +6,43 @@
       "type": "",
       "subs":[
       {
-        "name": "CP",
+        "name": "Cyberpunk",
         "displayName": "Cyber Punk 2077",
-        "images": 8,
+        "images": 11,
+        "type": ""
+      },
+      {
+        "name": "Army Of The Dead",
+        "displayName": "Army Of The Dead",
+        "images": 10,
         "type": ""
       },
        {
         "name": "MOTU",
-        "displayName": "Master of the universe",
-        "images": 2,
+        "displayName": "Master of the Universe",
+        "images": 9,
         "type": ""
-      }
-    ]},
+      },
+    
      {
-      "name": "SOIF",
-      "displayName": "Ice",
-      "images": 6,
+      "name": "OTHERS",
+      "displayName": "Otras",
+      "images": 3,
       "type": ""
-    }
+    }]
+     },
+
+     {
+      "name": "Aradia",
+      "displayName": "Aradia Miniatures",
+      "type": "",
+      "images": 20
+     },
+     {
+      "name": "Art-W",
+      "displayName": "Art-W",
+      "type": "",
+      "images": 7
+     }
   ]
 }
