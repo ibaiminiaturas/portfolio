@@ -1,14 +1,28 @@
-
 {
   "Box Arts": [
-    { "name": "MarvelUnited", "displayName": "Marvel United", "images": 8 },
-    { "name": "SOIF", "displayName": "Song of Ice And Fire", "images": 6 },
-    { "name": "Other", "displayName": "Otros Trabajos", "images": 12, "type": "mosaic" }
-  ],
-  "warhammer": [
-    { "name": "Other", "displayName": "Otros Trabajos", "images": 3, "type": "mosaic" }
-  ],
-  "Warhammer 40k": [
-    { "name": "Other", "displayName": "Otros Trabajos", "images": 5, "type": "mosaic" }
+    {
+      "name": "Big Child",
+      "displayName": "Big Child",
+      "type": "",
+      "subs":[
+      {
+        "name": "CP",
+        "displayName": "Cyber Punk 2077",
+        "images": 8,
+        "type": ""
+      },
+       {
+        "name": "MOTU",
+        "displayName": "Master of the universe",
+        "images": 2,
+        "type": ""
+      }
+    ]},
+     {
+      "name": "SOIF",
+      "displayName": "Ice",
+      "images": 6,
+      "type": ""
+    }
   ]
-} 
+}
