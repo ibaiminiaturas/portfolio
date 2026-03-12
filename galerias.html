@@ -111,48 +111,82 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
         return;
     }
 
-    let subGaleriasParaMostrar = [];
+    let subGaleriasFinales = [];
     let tituloGrande = galeriaSeleccionada;
-    let pathBase = `${BASE_PATH}/galleries/data/${galeriaSeleccionada}`;
+    const basePathRaiz = `${BASE_PATH}/galleries/data/${galeriaSeleccionada}`;
 
+    // --- LÓGICA DE RECOLECCIÓN ---
     if (subSeleccionada) {
-        const subEncontrada = buscarSubgaleria(data[galeriaSeleccionada], subSeleccionada);
-        if (subEncontrada) {
-            tituloGrande = subEncontrada.displayName || subEncontrada.name;
-            
-            // Reconstruir pathBase para niveles profundos
+        // MODO SUBGALERÍA (Igual que antes, para niveles profundos)
+        const encontrada = buscarSubgaleria(data[galeriaSeleccionada], subSeleccionada);
+        if (encontrada) {
+            tituloGrande = encontrada.displayName || encontrada.name;
+            let pathAcumulado = basePathRaiz;
             if (allSubs.length > 1) {
                 for (let i = 0; i < allSubs.length - 1; i++) {
-                    pathBase += `/${allSubs[i]}`;
+                    pathAcumulado += `/${allSubs[i]}`;
                 }
             }
-
-            if (subEncontrada.subs && subEncontrada.subs.length > 0) {
-                subGaleriasParaMostrar = subEncontrada.subs;
-                pathBase += `/${subEncontrada.name}`;
+            if (encontrada.subs && encontrada.subs.length > 0) {
+                pathAcumulado += `/${encontrada.name}`;
+                subGaleriasFinales = encontrada.subs.map(s => ({
+                    ...s, 
+                    calculatedPath: `${pathAcumulado}/${s.name}`
+                }));
             } else {
-                subGaleriasParaMostrar = [subEncontrada];
+                subGaleriasFinales = [{
+                    ...encontrada, 
+                    calculatedPath: `${pathAcumulado}/${encontrada.name}`
+                }];
             }
         }
     } else {
-        subGaleriasParaMostrar = data[galeriaSeleccionada];
+        // MODO RAÍZ (BOX ARTS): Un mosaico por cada hijo directo, pero PROFUNDO
+        // Si Box Arts tiene "SOIF" y "Big Child", saldrán 2 bloques.
+        // El bloque "Big Child" contendrá sus fotos Y las de sus hijos (Cyberpunk, etc)
+        subGaleriasFinales = data[galeriaSeleccionada].map(hijoDirecto => {
+            let todasLasFotos = [];
+            
+            const recolectarFotosRecursivo = (item, pathActual) => {
+                const miPath = `${pathActual}/${item.name}`;
+                // Añadir fotos de este nivel
+                for (let i = 1; i <= (item.images || 0); i++) {
+                    todasLasFotos.push(`${miPath}/${i}.jpg`);
+                }
+                // Bajar a los hijos
+                if (item.subs) {
+                    item.subs.forEach(s => recolectarFotosRecursivo(s, miPath));
+                }
+            };
+
+            recolectarFotosRecursivo(hijoDirecto, basePathRaiz);
+
+            return {
+                ...hijoDirecto,
+                type: 'mosaic', // Forzamos mosaico para la vista general
+                listaFotosCombinada: todasLasFotos
+            };
+        });
     }
 
     titulo.textContent = tituloGrande;
     titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700";
 
-    subGaleriasParaMostrar.forEach((sub, index) => {
-        // Construcción de rutas de imagen
-        const images = Array.from({length: sub.images}, (_, j) =>
-            `${pathBase}/${sub.name}/${j+1}.jpg`
-        );
+    // --- RENDERIZADO (RESPETANDO PADDINGS Y DISEÑO AL 100%) ---
+    subGaleriasFinales.forEach((sub, index) => {
+        // Si estamos en modo raíz, usamos la lista combinada. Si no, generamos la normal.
+        const images = sub.listaFotosCombinada || 
+            Array.from({length: sub.images}, (_, j) => `${sub.calculatedPath}/${j+1}.jpg`);
+
+        if (images.length === 0) return;
 
         const subDiv = document.createElement('div');
         subDiv.style.marginBottom = '120px';
 
-        // 1. SOLO SI ES TIPO MOSAICO (Independientemente de si es la última o no)
         if (sub.type === 'mosaic') {
             const bloqueDiv = document.createElement('div');
+            bloqueDiv.className = 'flex flex-col items-center mb-[120px]';
+            bloqueDiv.style.padding = '10px';  
             bloqueDiv.style.display = 'flex';
             bloqueDiv.style.flexDirection = 'column';
             bloqueDiv.style.alignItems = 'center';
@@ -166,8 +200,13 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
             }
 
             const wrapperDiv = document.createElement('div');
-            wrapperDiv.className = 'bg-gray-700 rounded-xl w-full p-[10px] max-w-[800px] inline-block';
-
+            wrapperDiv.className = 'bg-gray-700 rounded-xl  p-[10px] max-w-[800px] inline-block';
+        wrapperDiv.style.maxWidth = '1000px';
+        wrapperDiv.style.display = 'flex';
+        wrapperDiv.style.justifyContent = 'center';
+        wrapperDiv.style.padding = '10px';
+        wrapperDiv.style.alignItems = 'center';
+            // Pasamos el array de imágenes directamente
             const mosaicoDiv = crearMosaico(sub, images, openLightbox);
             mosaicoDiv.querySelectorAll('img').forEach((img, i) => {
                 img.addEventListener('click', () => openLightbox(images, i));
@@ -177,46 +216,45 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
             bloqueDiv.appendChild(wrapperDiv);
             subDiv.appendChild(bloqueDiv);
             container.appendChild(subDiv);
-            return; // Salimos de esta iteración para que no pinte carrusel abajo
-        }
-
-        // 2. TODO LO DEMÁS (Carruseles, incluida la última si no es mosaico)
-        const titleSection = document.createElement('div');
-        titleSection.className = 'flex gap-5 items-center mb-5';
-
-        const nombreDiv = document.createElement('div');
-        nombreDiv.textContent = sub.displayName || sub.name;
-        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
-
-        const wrapperDivCarrusel = document.createElement('div');
-        wrapperDivCarrusel.className = 'bg-gray-700 rounded-xl flex-grow box-border'; 
-        wrapperDivCarrusel.style.maxWidth = '1000px';
-        wrapperDivCarrusel.style.display = 'flex';
-        wrapperDivCarrusel.style.justifyContent = 'center';
-        wrapperDivCarrusel.style.padding = '10px';
-        wrapperDivCarrusel.style.alignItems = 'center';
-
-        const carruselWrapper = crearMiniCarrusel(sub, images);
-        carruselWrapper.querySelectorAll('img').forEach((img, i) => {
-            img.classList.add('carrusel-img');
-            img.addEventListener('click', () => openLightbox(images, i));
-        });
-
-        wrapperDivCarrusel.appendChild(carruselWrapper);
-
-        // Padding alterno (zig-zag)
-        if (index % 2 === 0) {
-            subDiv.style.paddingLeft = '15%';
-            subDiv.style.paddingRight = '5%';
         } else {
-            subDiv.style.paddingLeft = '10%';
-            subDiv.style.paddingRight = '10%';
-        }
+            // CARRUSEL CON ZIG-ZAG Y PADDINGS EXACTOS
+            const titleSection = document.createElement('div');
+            titleSection.className = 'flex gap-5 items-center mb-5';
 
-        titleSection.appendChild(nombreDiv);
-        titleSection.appendChild(wrapperDivCarrusel);
-        subDiv.appendChild(titleSection);
-        container.appendChild(subDiv);
+            const nombreDiv = document.createElement('div');
+            nombreDiv.textContent = sub.displayName || sub.name;
+            nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
+
+            const wrapperDivCarrusel = document.createElement('div');
+            wrapperDivCarrusel.className = 'bg-gray-700 rounded-xl flex-grow box-border max-w-[1000px] flex justify-center p-[10px] items-center';
+            wrapperDivCarrusel.style.maxWidth = '1000px';
+            wrapperDivCarrusel.style.display = 'flex';
+            wrapperDivCarrusel.style.justifyContent = 'center';
+            wrapperDivCarrusel.style.padding = '10px';
+            wrapperDivCarrusel.style.alignItems = 'center';
+
+            const carruselWrapper = crearMiniCarrusel(sub, images);
+            carruselWrapper.querySelectorAll('img').forEach((img, i) => {
+                img.classList.add('carrusel-img');
+                img.addEventListener('click', () => openLightbox(images, i));
+            });
+
+            wrapperDivCarrusel.appendChild(carruselWrapper);
+
+            // RESPETO ABSOLUTO A TUS PADDINGS
+            if (index % 2 === 0) {
+                subDiv.style.paddingLeft = '15%';
+                subDiv.style.paddingRight = '5%';
+            } else {
+                subDiv.style.paddingLeft = '10%';
+                subDiv.style.paddingRight = '10%';
+            }
+
+            titleSection.appendChild(nombreDiv);
+            titleSection.appendChild(wrapperDivCarrusel);
+            subDiv.appendChild(titleSection);
+            container.appendChild(subDiv);
+        }
     });
 })
 .catch(err => {
