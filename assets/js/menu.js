@@ -1,71 +1,96 @@
 // Inicialización del menú de galerías desde el JSON
 // Inicialización del menú de galerías desde el JSON
+function createMenuItem(name, data, parentPath = "") {
+    const li = document.createElement("div");
+    // Usamos 'relative' y una clase propia 'menu-item-nivel'
+    li.className = "relative menu-item-nivel"; 
 
-function initializeMenu() {
-  const dropdown = document.getElementById("dropdown-galerias");
-  if (!dropdown) return;
+    const currentPath = parentPath 
+        ? `${parentPath}&sub=${encodeURIComponent(name)}` 
+        : `galeria=${encodeURIComponent(name)}`;
 
-  // Estilos base del dropdown
-  dropdown.className = "absolute hidden bg-gray-800 mt-2 rounded shadow-lg text-white";
+    const a = document.createElement("a");
+    a.href = `${BASE_PATH}/galerias.html?${currentPath}`;
+    a.textContent = (typeof translations !== 'undefined' && translations.galleries?.[name]) 
+                    || data.displayName 
+                    || name;
+    
+    a.className = "block px-4 py-2 cursor-pointer hover:bg-gray-700 w-full text-left text-white whitespace-nowrap flex justify-between items-center transition-colors duration-200";
 
-  // Cargar galerías desde el JSON
-  fetch(`${BASE_PATH}/assets/galeries.json`) // 🔹 ruta relativa desde el header
-    .then(res => res.json())
-    .then(data => {
-      Object.keys(data).forEach(sectionName => {
-        const sectionSubs = data[sectionName];
+    if (data.subs && data.subs.length > 0) {
+        const arrow = document.createElement("span");
+        arrow.textContent = "❯";
+        arrow.className = "ml-3 text-[10px] opacity-50";
+        a.appendChild(arrow);
+    }
 
-        const li = document.createElement("div");
-        li.className = "relative";
+    li.appendChild(a);
 
-        // Link principal de la galería
-        const aMain = document.createElement("a");
-        aMain.href = `${BASE_PATH}/galerias.html?galeria=${encodeURIComponent(sectionName)}`;
-        aMain.textContent = translations.galleries?.[sectionName] || sectionName;
-        aMain.className = "block px-4 py-2 cursor-pointer rounded hover:bg-gray-700 w-full text-left text-white whitespace-nowrap";
-        li.appendChild(aMain);
+    if (data.subs && data.subs.length > 0) {
+        const subMenu = document.createElement("div");
+        // IMPORTANTE: Quitamos 'group-hover:block' y usamos una clase que controlaremos por CSS o JS
+        subMenu.className = "submenu-flotante absolute left-full top-0 hidden bg-gray-800 py-2 rounded shadow-lg min-w-max border-l border-gray-600";
+        
+        data.subs.forEach(sub => {
+            subMenu.appendChild(createMenuItem(sub.name, sub, currentPath));
+        });
 
-        // Submenú si hay subgalerías
-        if (sectionSubs.length > 0) {
-          const subMenu = document.createElement("div");
-          subMenu.className = "absolute top-0 left-full hidden bg-gray-700 py-2 rounded shadow-lg";
-          subMenu.style.whiteSpace = "nowrap";
-          subMenu.style.minWidth = "max-content";
+        li.appendChild(subMenu);
 
-          sectionSubs.forEach(sub => {
-            const aSub = document.createElement("a");
-            aSub.href = `${BASE_PATH}/galerias.html?galeria=${encodeURIComponent(sectionName)}&sub=${encodeURIComponent(sub.name)}`;
-            aSub.textContent = translations.galleries?.[sub.name] || sub.displayName || sub.name;
-            aSub.className = "block px-4 py-2 rounded text-white bg-gray-700 hover:bg-gray-500 transition-colors duration-200";
-            subMenu.appendChild(aSub);
-          });
+        // Lógica de mostrar/ocultar solo el HIJO DIRECTO
+        li.addEventListener("mouseenter", (e) => {
+            e.stopPropagation(); // Evita que el evento suba a los padres
+            subMenu.classList.remove("hidden");
+        });
+        li.addEventListener("mouseleave", (e) => {
+            e.stopPropagation();
+            subMenu.classList.add("hidden");
+        });
+    }
 
-          li.appendChild(subMenu);
-
-          // Mostrar/ocultar submenú
-          li.addEventListener("mouseenter", () => subMenu.classList.remove("hidden"));
-          li.addEventListener("mouseleave", () => subMenu.classList.add("hidden"));
-        }
-
-        dropdown.appendChild(li);
-      });
-
-      // Hover persistente del dropdown principal
-      const menu = document.getElementById("menu-galerias");
-      let timeout;
-      menu.addEventListener("mouseenter", () => {
-        clearTimeout(timeout);
-        dropdown.classList.remove("hidden");
-      });
-      menu.addEventListener("mouseleave", () => {
-        timeout = setTimeout(() => {
-          dropdown.classList.add("hidden");
-        }, 100);
-      });
-    })
-    .catch(err => console.error('Error cargando galerías:', err));
+    return li;
 }
 
+function initializeMenu() {
+    const dropdown = document.getElementById("dropdown-galerias");
+    if (!dropdown) return;
+
+    // Estilos base de tu dropdown principal
+    dropdown.className = "absolute hidden bg-gray-800 mt-2 rounded shadow-lg text-white z-[100] min-w-[200px]";
+
+    fetch(`${BASE_PATH}/assets/galeries.json`)
+        .then(res => res.json())
+        .then(data => {
+            dropdown.innerHTML = ""; // Limpiamos
+
+            Object.keys(data).forEach(sectionName => {
+                // El primer nivel del JSON son arrays, los normalizamos para la función
+                const sectionData = { 
+                    subs: data[sectionName], 
+                    displayName: sectionName 
+                };
+                
+                const menuElement = createMenuItem(sectionName, sectionData);
+                dropdown.appendChild(menuElement);
+            });
+
+            // Lógica de hover del menú principal (tu código original)
+            const menuContainer = document.getElementById("menu-galerias");
+            let timeout;
+            
+            menuContainer.addEventListener("mouseenter", () => {
+                clearTimeout(timeout);
+                dropdown.classList.remove("hidden");
+            });
+
+            menuContainer.addEventListener("mouseleave", () => {
+                timeout = setTimeout(() => {
+                    dropdown.classList.add("hidden");
+                }, 150);
+            });
+        })
+        .catch(err => console.error('Error cargando el menú:', err));
+}
 // Inicializar cuando el DOM esté listo
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeMenu);

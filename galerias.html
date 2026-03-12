@@ -43,7 +43,17 @@ body {
 
 <script>
 
-
+// Función para buscar una subgalería recursivamente por su "name"
+function buscarSubgaleria(lista, nombreBusqueda) {
+    for (const item of lista) {
+        if (item.name === nombreBusqueda) return item;
+        if (item.subs && item.subs.length > 0) {
+            const encontrado = buscarSubgaleria(item.subs, nombreBusqueda);
+            if (encontrado) return encontrado;
+        }
+    }
+    return null;
+}
 
 fetch(`${BASE_PATH}/components/header.html`)
   .then(res => res.text())
@@ -87,28 +97,44 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
         return;
     }
 
-    let subGalerias = data[galeriaSeleccionada];
-    let tituloGrande;
+    let subGaleriasParaMostrar = [];
+    let tituloGrande = galeriaSeleccionada;
+    let pathBaseImagenes = `${BASE_PATH}/galleries/data/${galeriaSeleccionada}`;
 
     if (subSeleccionada) {
-        const subEncontrada = subGalerias.find(s => s.name === subSeleccionada);
+        // Buscamos la subgalería en cualquier nivel de profundidad
+        const subEncontrada = buscarSubgaleria(data[galeriaSeleccionada], subSeleccionada);
+        
         if (subEncontrada) {
             tituloGrande = subEncontrada.displayName || subEncontrada.name;
-            subGalerias = [subEncontrada];
-        } else {
-            tituloGrande = galeriaSeleccionada;
+            
+            // Si la subgalería tiene sus propios "subs", mostramos esos como carruseles/mosaicos
+            // Si NO tiene subs, mostramos la subgalería misma como un bloque
+            if (subEncontrada.subs && subEncontrada.subs.length > 0) {
+                subGaleriasParaMostrar = subEncontrada.subs;
+                // Actualizamos el path para que las imágenes se busquen dentro de esta subcarpeta
+                pathBaseImagenes += `/${subEncontrada.name}`;
+            } else {
+                subGaleriasParaMostrar = [subEncontrada];
+                // El path ya se completará en el loop de imágenes
+            }
         }
     } else {
-        tituloGrande = galeriaSeleccionada;
+        // Si no hay sub seleccionada, mostramos el primer nivel de la categoría
+        subGaleriasParaMostrar = data[galeriaSeleccionada];
     }
 
     titulo.textContent = tituloGrande;
-titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700";
+    titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700";
 
-subGalerias.forEach((sub, index) => {
-    const images = Array.from({length: sub.images}, (_, j) =>
-        `${BASE_PATH}/galleries/data/${galeriaSeleccionada}/${sub.name}/${j+1}.jpg`
-    );
+    subGaleriasParaMostrar.forEach((sub, index) => {
+        // OJO: Aquí construimos la ruta. 
+        // Si estamos visualizando una subgalería específica, la ruta debe ser precisa.
+        const images = Array.from({length: sub.images}, (_, j) =>
+            `${pathBaseImagenes}/${sub.name}/${j+1}.jpg`
+        );
+
+        // ... AQUÍ SIGUE TU LÓGICA DE CREAR MOSAICO / CARRUSEL ...
 
     const subDiv = document.createElement('div');
     subDiv.style.marginBottom = '120px';
