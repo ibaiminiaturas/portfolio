@@ -150,10 +150,8 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
         const subDiv = document.createElement('div');
         subDiv.style.marginBottom = '120px';
 
-        // LÓGICA DE MOSAICO (Tipo mosaic o Última subgalería)
-        const esUltima = index === subGaleriasParaMostrar.length - 1;
-        
-        if (sub.type === 'mosaic' || esUltima) {
+        // 1. SOLO SI ES TIPO MOSAICO (Independientemente de si es la última o no)
+        if (sub.type === 'mosaic') {
             const bloqueDiv = document.createElement('div');
             bloqueDiv.style.display = 'flex';
             bloqueDiv.style.flexDirection = 'column';
@@ -162,38 +160,27 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
 
             if (!subSeleccionada) {
                 const nombreDiv = document.createElement('div');
-                // Mantengo tu distinción de color si es última o mosaico normal
-                nombreDiv.className = sub.type === 'mosaic' 
-                    ? 'text-4xl font-bold text-gray-500 text-center mb-12'
-                    : 'text-4xl font-bold my-12 text-black !important text-center mb-12';
+                nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12';
                 nombreDiv.textContent = sub.displayName || sub.name;
                 bloqueDiv.appendChild(nombreDiv);
             }
 
             const wrapperDiv = document.createElement('div');
-            // Aplicamos tu estilo de contenedor gris
-            wrapperDiv.className = (sub.type === 'mosaic') 
-                ? 'bg-gray-700 rounded-xl w-full p-[10px] max-w-[800px] inline-block'
-                : ''; // La última subgalería dijiste que iba sin wrapper
+            wrapperDiv.className = 'bg-gray-700 rounded-xl w-full p-[10px] max-w-[800px] inline-block';
 
             const mosaicoDiv = crearMosaico(sub, images, openLightbox);
             mosaicoDiv.querySelectorAll('img').forEach((img, i) => {
                 img.addEventListener('click', () => openLightbox(images, i));
             });
 
-            if (sub.type === 'mosaic') {
-                wrapperDiv.appendChild(mosaicoDiv);
-                bloqueDiv.appendChild(wrapperDiv);
-            } else {
-                bloqueDiv.appendChild(mosaicoDiv);
-            }
-
+            wrapperDiv.appendChild(mosaicoDiv);
+            bloqueDiv.appendChild(wrapperDiv);
             subDiv.appendChild(bloqueDiv);
             container.appendChild(subDiv);
-            return;
+            return; // Salimos de esta iteración para que no pinte carrusel abajo
         }
 
-        // LÓGICA DE MINI CARRUSEL (Si no es mosaico ni la última)
+        // 2. TODO LO DEMÁS (Carruseles, incluida la última si no es mosaico)
         const titleSection = document.createElement('div');
         titleSection.className = 'flex gap-5 items-center mb-5';
 
@@ -217,7 +204,7 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
 
         wrapperDivCarrusel.appendChild(carruselWrapper);
 
-        // Tu lógica de padding alterno
+        // Padding alterno (zig-zag)
         if (index % 2 === 0) {
             subDiv.style.paddingLeft = '15%';
             subDiv.style.paddingRight = '5%';
