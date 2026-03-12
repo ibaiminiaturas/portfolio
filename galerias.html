@@ -91,11 +91,13 @@ const subSeleccionada = allSubs.length > 0 ? allSubs[allSubs.length - 1] : null;
 const container = document.getElementById('galeria-container');
 const titulo = document.getElementById('titulo-galeria');
 
-function buscarSubgaleria(lista, nombreBusqueda) {
+// Función de búsqueda recursiva adaptada a la nueva estructura
+function buscarEnItems(lista, nombreBusqueda) {
+    if (!lista) return null;
     for (const item of lista) {
         if (item.name === nombreBusqueda) return item;
-        if (item.subs && item.subs.length > 0) {
-            const encontrado = buscarSubgaleria(item.subs, nombreBusqueda);
+        if (item.subs) {
+            const encontrado = buscarEnItems(item.subs, nombreBusqueda);
             if (encontrado) return encontrado;
         }
     }
@@ -105,22 +107,31 @@ function buscarSubgaleria(lista, nombreBusqueda) {
 fetch(`${BASE_PATH}/assets/galeries.json`)
 .then(res => res.json())
 .then(data => {
-    if (!galeriaSeleccionada || !data[galeriaSeleccionada]) {
+    // 1. BUSCAR LA CATEGORÍA RAÍZ (Nivel 1: Box Arts, Art-W...)
+    const categoriaRaiz = data.find(c => c.category === galeriaSeleccionada);
+
+    if (!galeriaSeleccionada || !categoriaRaiz) {
         container.innerHTML = "<p class='text-xl text-center'>No se encontró la categoría principal.</p>";
         return;
     }
 
     let itemsParaRenderizar = [];
     let tituloGrande = galeriaSeleccionada;
-    const basePathRaiz = `${BASE_PATH}/galleries/data/${galeriaSeleccionada}`;
+    // Usamos 'folder' si existe, si no 'category'
+    const folderRaiz = categoriaRaiz.folder || categoriaRaiz.category;
+    const basePathRaiz = `${BASE_PATH}/galleries/data/${folderRaiz}`;
 
-    // --- 1. DETERMINAR QUÉ PINTAR ---
+    // --- 2. DETERMINAR QUÉ PINTAR ---
     if (subSeleccionada) {
-        // ESTAMOS EN NIVEL 2 O MÁS (Ej: Big Child)
-        const encontrada = buscarSubgaleria(data[galeriaSeleccionada], subSeleccionada);
+        // Buscamos la subgalería (Big Child, Aradia...) dentro de la categoría
+        // Buscamos tanto en 'items' como en 'subs' de forma recursiva
+        const listaBusqueda = categoriaRaiz.items || [];
+        const encontrada = buscarEnItems(listaBusqueda, subSeleccionada);
+        
         if (encontrada) {
-        const textoTraducido = t(`galeries.${encontrada.name}`);
-        tituloGrande = textoTraducido || encontrada.displayName || encontrada.name;
+            const textoTraducido = t(`galeries.${encontrada.name}`);
+            tituloGrande = textoTraducido || encontrada.displayName || encontrada.name;
+            
             let pathAcumulado = basePathRaiz;
             if (allSubs.length > 1) {
                 for (let i = 0; i < allSubs.length - 1; i++) {
@@ -129,7 +140,6 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
             }
 
             if (encontrada.subs && encontrada.subs.length > 0) {
-                // Si Big Child tiene hijos, pintamos sus hijos (CP, MOTU) como CARRUSELES
                 const pathHijos = `${pathAcumulado}/${encontrada.name}`;
                 itemsParaRenderizar = encontrada.subs.map(s => ({
                     ...s,
@@ -137,7 +147,6 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
                     renderType: 'carousel' 
                 }));
             } else {
-                // Si es el nivel final absoluto (no hay más subs abajo), MOSAICO
                 itemsParaRenderizar = [{
                     ...encontrada,
                     calculatedPath: `${pathAcumulado}/${encontrada.name}`,
@@ -146,29 +155,39 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
             }
         }
     } else {
-        // ESTAMOS EN NIVEL 1 (Box Arts): Mosaico profundo por cada hijo directo
-        itemsParaRenderizar = data[galeriaSeleccionada].map(hijoDirecto => {
+        // NIVEL 1: Si no hay subseleccionada, mostramos lo que haya en la raíz
+        const listaAProcesar = categoriaRaiz.items || [categoriaRaiz];
+        
+        itemsParaRenderizar = listaAProcesar.map(hijo => {
             let fotosFucionadas = [];
             const recolectar = (item, pathActual) => {
-                const miPath = `${pathActual}/${item.name}`;
+                // Si el item tiene name, lo añadimos al path. Si es la raíz (category), no.
+                const miPath = item.name ? `${pathActual}/${item.name}` : pathActual;
+                
                 for (let i = 1; i <= (item.images || 0); i++) {
                     fotosFucionadas.push(`${miPath}/${i}.jpg`);
                 }
                 if (item.subs) item.subs.forEach(s => recolectar(s, miPath));
+                if (item.items) item.items.forEach(s => recolectar(s, miPath));
             };
-            recolectar(hijoDirecto, basePathRaiz);
+
+            recolectar(hijo, basePathRaiz);
+            
             return {
-                ...hijoDirecto,
+                ...hijo,
+                name: hijo.name || hijo.category,
                 forcedImages: fotosFucionadas,
                 renderType: 'mosaic'
             };
         });
     }
 
-    titulo.textContent = tituloGrande;
-    titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700";
+    // --- 3. ACTUALIZAR TÍTULO ---
+    const tRaiz = t(`galeries.${galeriaSeleccionada}`);
+    titulo.textContent = subSeleccionada ? tituloGrande : (tRaiz || tituloGrande);
+    titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700 uppercase";
 
-    // --- 2. RENDERIZADO ---
+    // --- 4. RENDERIZADO (Se mantiene tu lógica de diseño) ---
     itemsParaRenderizar.forEach((item, index) => {
         const images = item.forcedImages || 
             Array.from({length: item.images}, (_, j) => `${item.calculatedPath}/${j+1}.jpg`);
@@ -180,87 +199,82 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
 
         if (item.renderType === 'mosaic') {
             const bloqueDiv = document.createElement('div');
-            bloqueDiv.className = 'flex flex-col items-center mb-[120px]';
-            bloqueDiv.style.padding = '10px';  
+            bloqueDiv.className = 'flex flex-col items-center';
 
-            if (!subSeleccionada) {
+            // Nombre del bloque si estamos en el nivel raíz
+            if (!subSeleccionada && itemsParaRenderizar.length > 1) {
                 const nombreDiv = document.createElement('div');
-                nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12';
-                 const textoTraducido = t(`galeries.${item.name}`);
-                nombreDiv.textContent = textoTraducido|| item.displayName || item.name;
+                nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12 uppercase';
+                            bloqueDiv.className = 'flex flex-col items-center mb-[120px]';
+            bloqueDiv.style.padding = '10px';  
+            bloqueDiv.style.display = 'flex';
+            bloqueDiv.style.flexDirection = 'column';
+            bloqueDiv.style.alignItems = 'center';
+            bloqueDiv.style.marginBottom = '120px';
+                nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
+                const tName = t(`galeries.${item.name}`);
+                nombreDiv.textContent = tName || item.displayName || item.name;
                 bloqueDiv.appendChild(nombreDiv);
             }
 
             const wrapperDiv = document.createElement('div');
-            wrapperDiv.className = 'bg-gray-700 rounded-xl p-[10px] max-w-[1000px] flex justify-center items-center';
-            wrapperDiv.className = 'bg-gray-700 rounded-xl flex-grow box-border max-w-[1000px] flex justify-center p-[10px] items-center';
+            // wrapperDiv.className = 'bg-gray-700 rounded-xl p-[10px] max-w-[1000px] w-full flex justify-center items-center box-border';
+                        wrapperDiv.className = 'bg-gray-700 rounded-xl p-[10px] max-w-[800px] inline-block';
             wrapperDiv.style.maxWidth = '1000px';
             wrapperDiv.style.display = 'flex';
             wrapperDiv.style.justifyContent = 'center';
             wrapperDiv.style.padding = '10px';
             wrapperDiv.style.alignItems = 'center';
             const mosaicoDiv = crearMosaico(item, images, openLightbox);
-            mosaicoDiv.querySelectorAll('img').forEach((img, i) => {
-                img.addEventListener('click', () => openLightbox(images, i));
-            });
-
             wrapperDiv.appendChild(mosaicoDiv);
             bloqueDiv.appendChild(wrapperDiv);
             subDiv.appendChild(bloqueDiv);
-            container.appendChild(subDiv);
         } else {
-            // CARRUSEL: Nivel 2 que tiene hijos debajo
-// CARRUSEL: Nivel 2 que tiene hijos debajo
+            // Lógica de Carrusel con Zig-Zag
             const titleSection = document.createElement('div');
-            // Añadimos items-center para centrar verticalmente el título con el carrusel
             titleSection.className = 'flex gap-5 items-center mb-5'; 
 
             const nombreDiv = document.createElement('div');
-            const textoTraducido = t(`galeries.${item.name}`);
-            nombreDiv.textContent = textoTraducido || item.displayName || item.name;
-            // Quitamos h-[200px] si quieres que se adapte exactamente al centro, 
-            // pero mantenemos el estilo para que sea legible.
-            nombreDiv.className = 'flex items-center justify-center w-[200px] flex-shrink-0 break-words carrusel-titulo text-center';
+            nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
+            const tName = t(`galeries.${item.name}`);
+            nombreDiv.textContent = tName || item.displayName || item.name;
+            nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
 
             const wrapperDivCarrusel = document.createElement('div');
-            // Mantenemos el fondo y el redondeado, quitamos el margin-bottom de aquí que debe ir en el subDiv
             wrapperDivCarrusel.className = 'bg-gray-700 rounded-xl flex-grow box-border max-w-[1000px] flex justify-center p-[10px] items-center';
-            wrapperDivCarrusel.style.padding = '10px';  
+            wrapperDivCarrusel.style.maxWidth = '1000px';
             wrapperDivCarrusel.style.display = 'flex';
             wrapperDivCarrusel.style.justifyContent = 'center';
+            wrapperDivCarrusel.style.padding = '10px';
             wrapperDivCarrusel.style.alignItems = 'center';
 
             const carruselWrapper = crearMiniCarrusel(item, images);
             carruselWrapper.querySelectorAll('img').forEach((img, i) => {
-                img.classList.add('carrusel-img');
                 img.addEventListener('click', () => openLightbox(images, i));
             });
 
             wrapperDivCarrusel.appendChild(carruselWrapper);
 
-            // RESPETO TOTAL A TUS PADDINGS ZIG-ZAG
             if (index % 2 === 0) {
                 subDiv.style.paddingLeft = '15%';
                 subDiv.style.paddingRight = '5%';
-                // En índice par, el título queda a la izquierda por defecto
                 titleSection.style.flexDirection = 'row';
             } else {
                 subDiv.style.paddingLeft = '10%';
                 subDiv.style.paddingRight = '10%';
-                // Si quieres que el título también alterne de lado (derecha), descomenta la siguiente línea:
-                // titleSection.style.flexDirection = 'row-reverse';
+                
             }
 
             titleSection.appendChild(nombreDiv);
             titleSection.appendChild(wrapperDivCarrusel);
             subDiv.appendChild(titleSection);
-            container.appendChild(subDiv);
         }
+        container.appendChild(subDiv);
     });
 })
 .catch(err => {
     console.error('Error cargando galería:', err);
-    container.innerHTML = "<p class='text-xl text-center'>Error cargando la galería.</p>";
+    container.innerHTML = "<p class='text-xl text-center'>Error de conexión con los datos.</p>";
 });
 </script>
 <!-- Footer placeholder -->

@@ -33,13 +33,15 @@
       "tip": "Nota: Mantén a tu gato alejado de la mesa mientras pintas, él podría robar pinceles o dejar “huellas artísticas” inesperadas 😹."
     }
   },
-    "galeries": {
+  "galeries": {
     "Box Arts": "Box Arts",
-    "MarvelUnited": "Marvel United",
-    "SOIF": "Canción de Hielo y Fuego",
-    "Other": "Otros Trabajos",
-    "Warhammer": "Warhammer",
-    "Warhammer 40k": "Warhammer 40k"
+    "Big Child": "Big Child Creatives",
+    "Army Of The Dead": "Army Of The Dead",
+    "OTHERS": "Otros Trabajos",
+    "Cyberpunk": "Cyber Punk 2077",
+    "Aradia": "Aradia Miniatures",
+    "Art-W": "Art-W Studios",
+    "MOTU": "Masters Del Universo"
   },
     "about": {
     "hero": {

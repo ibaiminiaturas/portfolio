@@ -1,48 +1,39 @@
-{
-  "Box Arts": [
-    {
-      "name": "Big Child",
-      "displayName": "Big Child",
-      "type": "",
-      "subs":[
+[
+  {
+    "category": "Box Arts",
+    "folder": "Box Arts",
+    "items": [
       {
-        "name": "Cyberpunk",
-        "displayName": "Cyber Punk 2077",
-        "images": 11,
-        "type": ""
+        "name": "Big Child",
+        "displayName": "Big Child Studios",
+        "subs": [
+          { "name": "Cyberpunk", "displayName": "Cyber Punk 2077", "images": 11 },
+          { "name": "MOTU", "images": 9 },
+                  {
+          "name": "Army Of The Dead",
+          "displayName": "Army Of The Dead",
+          "images": 10,
+          "type": ""
+        },
+                {
+          "name": "OTHERS",
+          "displayName": "Otras",
+          "images": 3,
+          "type": ""
+        }
+        ]
       },
       {
-        "name": "Army Of The Dead",
-        "displayName": "Army Of The Dead",
-        "images": 10,
-        "type": ""
-      },
-       {
-        "name": "MOTU",
-        "displayName": "Master of the Universe",
-        "images": 9,
-        "type": ""
-      },
-    
-     {
-      "name": "OTHERS",
-      "displayName": "Otras",
-      "images": 3,
-      "type": ""
-    }]
-     },
-     {
-      "name": "Art-W",
-      "displayName": "Art-W",
-      "type": "",
-      "images": 7
-     }
-  ],
-  "Aradia": [
-    {
-      "name": "Aradia",
-      "displayName": "Aradia Miniatures",
-      "images": 20
-    }
-  ]
-}
+        "name": "Aradia",
+        "displayName": "Aradia Miniatures",
+        "images": 20
+      }
+    ]
+  },
+  {
+    "category": "Art-W",
+    "folder": "Art-W",
+    "images": 7,
+    "displayName": "Art-W Collection"
+  }
+]
