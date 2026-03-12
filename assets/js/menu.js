@@ -11,9 +11,11 @@ function createMenuItem(name, data, parentPath = "") {
 
     const a = document.createElement("a");
     a.href = `${BASE_PATH}/galerias.html?${currentPath}`;
-    a.textContent = (typeof translations !== 'undefined' && translations.galleries?.[name]) 
-                    || data.displayName 
-                    || name;
+                const textoTraducido = t(`galeries.${name}`);
+                a.textContent = textoTraducido || name;
+    // a.textContent = (typeof translations !== 'undefined' && translations.galleries?.[name]) 
+    //                 || data.displayName 
+    //                 || name;
     
     a.className = "block px-4 py-2 cursor-pointer hover:bg-gray-700 w-full text-left text-white whitespace-nowrap flex justify-between items-center transition-colors duration-200";
 

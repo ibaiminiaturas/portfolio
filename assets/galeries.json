@@ -31,18 +31,18 @@
       "type": ""
     }]
      },
-
-     {
-      "name": "Aradia",
-      "displayName": "Aradia Miniatures",
-      "type": "",
-      "images": 20
-     },
      {
       "name": "Art-W",
       "displayName": "Art-W",
       "type": "",
       "images": 7
      }
+  ],
+  "Aradia": [
+    {
+      "name": "Aradia",
+      "displayName": "Aradia Miniatures",
+      "images": 20
+    }
   ]
 }

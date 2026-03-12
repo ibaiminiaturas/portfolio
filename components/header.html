@@ -44,7 +44,8 @@
                   sectionSubs.forEach(sub => {
                     const aSub = document.createElement("a");
                     aSub.href = `${BASE_PATH}/galerias/index.html?galeria=${encodeURIComponent(sectionName)}&sub=${encodeURIComponent(sub.name)}`;
-                    aSub.textContent = sub.displayName || sub.name;
+                                const textoTraducido = t(`galeries.${ sub.name}`);
+                    aSub.textContent = textoTraducido || sub.name;
                     aSub.className = "block px-4 py-2 rounded hover:bg-gray-600 text-white";
                     subMenu.appendChild(aSub);
                   });

@@ -35,11 +35,13 @@
   },
   "galeries": {
     "Box Arts": "Box Arts",
-    "MarvelUnited": "Marvel United",
-    "SOIF": "A Song of Ice and Fire",
-    "Other": "Other Works",
-    "Warhammer": "Warhammer",
-    "Warhammer 40k": "Warhammer 40k"
+    "Big Child": "Big Child Creatives",
+    "Army Of The Dead": "Army Of The Dead",
+    "OTHERS": "Other Works",
+    "Cyberpunk": "Cyber Punk 2077",
+    "Aradia": "Aradia Miniatures",
+    "Art-W": "Art-W Studios",
+    "MOTU": "Masters Of The Universe"
   },
   "about": {
     "hero": {

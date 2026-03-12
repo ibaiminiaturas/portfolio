@@ -4,6 +4,11 @@ let currentLang = "es";
 function getNested(obj, key) {
  return key.split('.').reduce((obj, i) => obj?.[i], translations);
 }
+// Función para obtener una traducción manualmente desde JS
+function t(key) {
+    const text = getNested(translations, key);
+    return text || key; // Si no existe la traducción, devuelve la clave (ej: "menu.home")
+}
 
 async function loadLanguage(lang) {
 
@@ -36,6 +41,8 @@ function translatePage() {
     }
 
   });
+
+
 
 }
 

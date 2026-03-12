@@ -119,7 +119,8 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
         // ESTAMOS EN NIVEL 2 O MÁS (Ej: Big Child)
         const encontrada = buscarSubgaleria(data[galeriaSeleccionada], subSeleccionada);
         if (encontrada) {
-            tituloGrande = encontrada.displayName || encontrada.name;
+        const textoTraducido = t(`galeries.${encontrada.name}`);
+        tituloGrande = textoTraducido || encontrada.displayName || encontrada.name;
             let pathAcumulado = basePathRaiz;
             if (allSubs.length > 1) {
                 for (let i = 0; i < allSubs.length - 1; i++) {
@@ -185,7 +186,8 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
             if (!subSeleccionada) {
                 const nombreDiv = document.createElement('div');
                 nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12';
-                nombreDiv.textContent = item.displayName || item.name;
+                 const textoTraducido = t(`galeries.${item.name}`);
+                nombreDiv.textContent = textoTraducido|| item.displayName || item.name;
                 bloqueDiv.appendChild(nombreDiv);
             }
 
@@ -214,7 +216,8 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
             titleSection.className = 'flex gap-5 items-center mb-5'; 
 
             const nombreDiv = document.createElement('div');
-            nombreDiv.textContent = item.displayName || item.name;
+            const textoTraducido = t(`galeries.${item.name}`);
+            nombreDiv.textContent = textoTraducido || item.displayName || item.name;
             // Quitamos h-[200px] si quieres que se adapte exactamente al centro, 
             // pero mantenemos el estilo para que sea legible.
             nombreDiv.className = 'flex items-center justify-center w-[200px] flex-shrink-0 break-words carrusel-titulo text-center';
