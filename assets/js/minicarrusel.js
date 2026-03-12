@@ -19,7 +19,8 @@ export function crearMiniCarrusel(sub, images) {
         const img = document.createElement('img');
         img.src = images[i];
         img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0 cursor-pointer';
-
+// --- ESTA LÍNEA ES LA QUE FALTA ---
+    img.style.transition = 'transform 0.3s ease-out';
         carruselDiv.appendChild(img);
         imgs.push(img);
 
