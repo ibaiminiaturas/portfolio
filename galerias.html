@@ -208,20 +208,24 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
             container.appendChild(subDiv);
         } else {
             // CARRUSEL: Nivel 2 que tiene hijos debajo
+// CARRUSEL: Nivel 2 que tiene hijos debajo
             const titleSection = document.createElement('div');
-            titleSection.className = 'flex gap-5 items-center mb-5';
+            // Añadimos items-center para centrar verticalmente el título con el carrusel
+            titleSection.className = 'flex gap-5 items-center mb-5'; 
 
             const nombreDiv = document.createElement('div');
             nombreDiv.textContent = item.displayName || item.name;
-            nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
+            // Quitamos h-[200px] si quieres que se adapte exactamente al centro, 
+            // pero mantenemos el estilo para que sea legible.
+            nombreDiv.className = 'flex items-center justify-center w-[200px] flex-shrink-0 break-words carrusel-titulo text-center';
 
             const wrapperDivCarrusel = document.createElement('div');
+            // Mantenemos el fondo y el redondeado, quitamos el margin-bottom de aquí que debe ir en el subDiv
             wrapperDivCarrusel.className = 'bg-gray-700 rounded-xl flex-grow box-border max-w-[1000px] flex justify-center p-[10px] items-center';
             wrapperDivCarrusel.style.padding = '10px';  
             wrapperDivCarrusel.style.display = 'flex';
-            wrapperDivCarrusel.style.flexDirection = 'column';
+            wrapperDivCarrusel.style.justifyContent = 'center';
             wrapperDivCarrusel.style.alignItems = 'center';
-            wrapperDivCarrusel.style.marginBottom = '120px';
 
             const carruselWrapper = crearMiniCarrusel(item, images);
             carruselWrapper.querySelectorAll('img').forEach((img, i) => {
@@ -231,13 +235,17 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
 
             wrapperDivCarrusel.appendChild(carruselWrapper);
 
-            // RESPETO TOTAL A TUS PADDINGS
+            // RESPETO TOTAL A TUS PADDINGS ZIG-ZAG
             if (index % 2 === 0) {
                 subDiv.style.paddingLeft = '15%';
                 subDiv.style.paddingRight = '5%';
+                // En índice par, el título queda a la izquierda por defecto
+                titleSection.style.flexDirection = 'row';
             } else {
                 subDiv.style.paddingLeft = '10%';
                 subDiv.style.paddingRight = '10%';
+                // Si quieres que el título también alterne de lado (derecha), descomenta la siguiente línea:
+                // titleSection.style.flexDirection = 'row-reverse';
             }
 
             titleSection.appendChild(nombreDiv);
