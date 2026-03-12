@@ -129,8 +129,8 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
         const encontrada = buscarEnItems(listaBusqueda, subSeleccionada);
         
         if (encontrada) {
-            const textoTraducido = t(`galeries.${encontrada.name}`);
-            tituloGrande = textoTraducido || encontrada.displayName || encontrada.name;
+
+            tituloGrande = encontrada.displayName || encontrada.name;
             
             let pathAcumulado = basePathRaiz;
             if (allSubs.length > 1) {
@@ -182,10 +182,21 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
         });
     }
 
-    // --- 3. ACTUALIZAR TÍTULO ---
-    const tRaiz = t(`galeries.${galeriaSeleccionada}`);
-    titulo.textContent = subSeleccionada ? tituloGrande : (tRaiz || tituloGrande);
-    titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700 uppercase";
+// --- 3. ACTUALIZAR TÍTULO ---
+// Determinamos la clave de traducción y el texto por defecto
+const claveI18n = subSeleccionada ? `galeries.${subSeleccionada}` : `galeries.${galeriaSeleccionada}`;
+const fallbackTexto = subSeleccionada ? subSeleccionada : galeriaSeleccionada;
+
+// 1. Marcamos el elemento para que translatePage() lo encuentre en el futuro
+titulo.setAttribute('data-i18n', claveI18n);
+
+// 2. Obtenemos la traducción actual
+const textoTraducido = t(claveI18n);
+
+// 3. Asignamos: si t() devuelve la clave (porque no existe), usamos el nombre de la galería/sub
+titulo.textContent = (textoTraducido !== claveI18n) ? textoTraducido : fallbackTexto;
+
+titulo.className = "text-8xl font-bold text-center mt-6 mb-12 text-gray-700 uppercase";
 
     // --- 4. RENDERIZADO (Se mantiene tu lógica de diseño) ---
     itemsParaRenderizar.forEach((item, index) => {

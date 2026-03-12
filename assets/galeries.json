@@ -8,6 +8,8 @@
         "displayName": "Big Child Studios",
         "subs": [
           { "name": "Cyberpunk", "displayName": "Cyber Punk 2077", "images": 11 },
+          { "name": "DKM", "displayName": "DKM", "images": 2 },
+                    { "name": "GOT", "displayName": "Game of Thrones", "images": 24 },
           { "name": "MOTU", "images": 9 },
                   {
           "name": "Army Of The Dead",
@@ -16,8 +18,8 @@
           "type": ""
         },
                 {
-          "name": "OTHERS",
-          "displayName": "Otras",
+          "name": "others",
+          "displayName": "others",
           "images": 3,
           "type": ""
         }
