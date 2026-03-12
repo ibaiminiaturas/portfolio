@@ -38,27 +38,34 @@ function closeLightbox() {
 }
 
 function updateLightboxImage() {
-  // fade out actual
-  lightboxImg.style.transition = 'opacity 0.5s ease';
+  // 1. Solo la IMAGEN hace el fade out
+  lightboxImg.style.transition = 'opacity 0.2s ease';
   lightboxImg.style.opacity = 0;
-  if (currentIndex === 0) {
-  prevBtn.style.display = 'none';
-  nextBtn.style.display = 'none';
-  }
+
+  // 2. Las flechas se actualizan de inmediato (sin desaparecer)
+  // Decidimos si deben existir o no antes de que cargue la foto
+  prevBtn.style.visibility = currentIndex > 0 ? 'visible' : 'hidden';
+  nextBtn.style.visibility = currentIndex < currentImages.length - 1 ? 'visible' : 'hidden';
+  
+  // Las flechas NO se ocultan, solo se bloquean un momento para evitar spam
+  prevBtn.style.pointerEvents = 'none';
+  nextBtn.style.pointerEvents = 'none';
+
   setTimeout(() => {
-    // cambiar src
     lightboxImg.src = currentImages[currentIndex];
     
-    // fade in
     lightboxImg.onload = () => {
+      // 3. Cuando la imagen carga, las flechas se deslizan a su nueva posición
+      // pero como ya eran visibles, solo verás que "viajan" suavemente si la foto cambia de tamaño
+      positionButtons(); 
+      
       lightboxImg.style.opacity = 1;
-          prevBtn.style.display = currentIndex > 0 ? 'block' : 'none';
-    nextBtn.style.display = currentIndex < currentImages.length - 1 ? 'block' : 'none';
-    positionButtons();
+      
+      // Rehabilitamos el click
+      prevBtn.style.pointerEvents = 'auto';
+      nextBtn.style.pointerEvents = 'auto';
     };
-  }, 200); // duración del fade out
-  // Mostrar u ocultar flechas según posición
-  
+  }, 150); // Un pelín más rápido para que sea fluido
 }
 
 function showNext() {
@@ -95,6 +102,20 @@ nextBtn.addEventListener('click', showNext);
 prevBtn.addEventListener('click', showPrev);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
 window.addEventListener('resize', () => { if (lightbox.style.display === 'flex') positionButtons(); });
+
+// Manejo de teclado para navegar y cerrar
+document.addEventListener('keydown', (e) => {
+  // Solo actuar si el lightbox está visible
+  if (lightbox.style.display === 'flex') {
+    if (e.key === 'ArrowRight') {
+      showNext();
+    } else if (e.key === 'ArrowLeft') {
+      showPrev();
+    } else if (e.key === 'Escape') {
+      closeLightbox();
+    }
+  }
+});
 
 // Exponer globalmente
 window.openLightbox = openLightbox;
