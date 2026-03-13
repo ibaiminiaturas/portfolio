@@ -1,4 +1,4 @@
-console.log("LIGHTBOX JS CARGADO");
+console.log("LIGHTBOX JS CARGADO - MODO FULLSCREEN");
 
 let currentImages = [];
 let currentIndex = 0;
@@ -8,12 +8,7 @@ const lightboxImg = document.getElementById('lightbox-img');
 const prevBtn = document.getElementById('lightbox-prev');
 const nextBtn = document.getElementById('lightbox-next');
 
-function adjustLightboxForHeader() {
-  const header = document.getElementById('main-header');
-  const headerHeight = header ? header.offsetHeight : 0;
-  lightbox.style.setProperty('--header-height', headerHeight + 'px');
-  console.log("Ajustando lightbox para header, altura:", headerHeight);
-}
+// Eliminada la función adjustLightboxForHeader para usar todo el espacio real
 
 function openLightbox(images, index) {
   currentImages = images;
@@ -27,14 +22,13 @@ function openLightbox(images, index) {
 
   updateLightboxImage();
 
-  adjustLightboxForHeader();
-
+  // Aseguramos que el z-index sea altísimo para tapar el header
+  lightbox.style.zIndex = "9999";
   lightbox.style.display = 'flex';
   lightbox.style.opacity = 0;
   lightbox.style.transition = 'opacity 0.3s ease';
   requestAnimationFrame(() => lightbox.style.opacity = 1);
 }
-window.addEventListener('resize', adjustLightboxForHeader);
 
 function closeLightbox() {
   lightbox.style.opacity = 0;
@@ -47,8 +41,6 @@ function updateLightboxImage() {
   lightboxImg.style.transition = 'opacity 0.2s ease';
   lightboxImg.style.opacity = 0;
 
-  // No tocamos la opacidad de las flechas aquí si ya se están mostrando,
-  // solo manejamos la visibilidad lógica (flecha izq en foto 1, etc)
   prevBtn.style.visibility = currentIndex > 0 ? 'visible' : 'hidden';
   nextBtn.style.visibility = currentIndex < currentImages.length - 1 ? 'visible' : 'hidden';
 
@@ -56,14 +48,9 @@ function updateLightboxImage() {
     lightboxImg.src = currentImages[currentIndex];
     
     lightboxImg.onload = () => {
-      // 1. Calculamos posición (aquí es donde se "teletransportan" internamente)
       positionButtons(); 
-      
-      // 2. Mostramos imagen
       lightboxImg.style.opacity = 1;
 
-      // 3. REVELACIÓN FINAL: Si las flechas estaban en opacity 0 (primera apertura), 
-      // las mostramos suavemente YA en su sitio.
       requestAnimationFrame(() => {
         prevBtn.style.opacity = 1;
         nextBtn.style.opacity = 1;
@@ -73,6 +60,7 @@ function updateLightboxImage() {
     };
   }, 150);
 }
+
 function showNext() {
   if (currentIndex < currentImages.length - 1) {
     currentIndex++;
@@ -89,39 +77,33 @@ function showPrev() {
 
 function positionButtons() {
   const imgRect = lightboxImg.getBoundingClientRect();
-  const containerRect = lightbox.getBoundingClientRect(); // contenedor relativo
+  
+  // Si la imagen no tiene tamaño aún, salimos
+  if (imgRect.width === 0) return;
 
-  const margin = 20;
+  const margin = 30; // Un poco más de margen para que respiren
 
-  // izquierda
-  prevBtn.style.left = (imgRect.left - containerRect.left - prevBtn.offsetWidth - margin) + 'px';
-  prevBtn.style.top = (imgRect.top - containerRect.top + imgRect.height / 2 - prevBtn.offsetHeight / 2) + 'px';
-
-  // derecha
-  nextBtn.style.left = (imgRect.right - containerRect.left + margin) + 'px';
-  nextBtn.style.top = (imgRect.top - containerRect.top + imgRect.height / 2 - nextBtn.offsetHeight / 2) + 'px';
+  // Posicionamos respecto a los bordes de la IMAGEN real
+  prevBtn.style.left = (imgRect.left - prevBtn.offsetWidth - margin) + 'px';
+  nextBtn.style.left = (imgRect.right + margin) + 'px';
+  
+  // Centrado vertical perfecto
+  const topPos = (imgRect.top + imgRect.height / 2 - prevBtn.offsetHeight / 2) + 'px';
+  prevBtn.style.top = topPos;
+  nextBtn.style.top = topPos;
 }
-
 // Eventos
 nextBtn.addEventListener('click', showNext);
 prevBtn.addEventListener('click', showPrev);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
 window.addEventListener('resize', () => { if (lightbox.style.display === 'flex') positionButtons(); });
 
-// Manejo de teclado para navegar y cerrar
 document.addEventListener('keydown', (e) => {
-  // Solo actuar si el lightbox está visible
   if (lightbox.style.display === 'flex') {
-    if (e.key === 'ArrowRight') {
-      showNext();
-    } else if (e.key === 'ArrowLeft') {
-      showPrev();
-    } else if (e.key === 'Escape') {
-      closeLightbox();
-    }
+    if (e.key === 'ArrowRight') showNext();
+    else if (e.key === 'ArrowLeft') showPrev();
+    else if (e.key === 'Escape') closeLightbox();
   }
 });
 
-// Exponer globalmente
 window.openLightbox = openLightbox;
-console.log("openLightbox global:", window.openLightbox);

@@ -31,11 +31,14 @@ body {
 }
 </style>
 <body class="bg-gray-100">
-<!-- LIGHTBOX (SIEMPRE EN EL HTML, NO DINÁMICO) -->
-<div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
-  <img id="lightbox-img" class="max-h-[90%] max-w-[90%] rounded shadow-lg">
-  <button id="lightbox-prev" class="absolute text-white text-5xl hover:text-gray-300">❮</button>
-  <button id="lightbox-next" class="absolute text-white text-5xl hover:text-gray-300">❯</button>
+<div id="lightbox" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[9999]">
+  
+  <img id="lightbox-img" 
+       class="rounded shadow-2xl object-contain" 
+       style="max-height: 95vh; max-width: 95vw; width: auto; height: auto;">
+
+  <button id="lightbox-prev" class="absolute text-white text-6xl hover:text-gray-300 z-[10000] p-4 select-none">❮</button>
+  <button id="lightbox-next" class="absolute text-white text-6xl hover:text-gray-300 z-[10000] p-4 select-none">❯</button>
 </div>
 <!-- HEADER STICKY REAL -->
 <header id="main-header" class="sticky top-0 z-50 bg-white">
