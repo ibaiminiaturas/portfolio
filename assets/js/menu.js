@@ -10,19 +10,16 @@ function createMenuItem(name, data, parentPath = "") {
     const a = document.createElement("a");
     a.href = `${BASE_PATH}/galerias.html?${currentPath}`;
     
-    // FORZADO POR ESTILO DIRECTO
     a.style.display = "flex";
     a.style.alignItems = "center";
-    a.style.justifyContent = "between"; // Esto lo manejaremos con el span
     a.style.width = "100%";
     a.style.padding = "8px 16px";
     a.style.color = "white";
     a.style.textDecoration = "none";
-    a.style.whiteSpace = "nowrap"; // PROHIBIDO SALTAR DE LÍNEA
+    a.style.whiteSpace = "nowrap"; 
     
     a.className = "hover:bg-gray-700 transition-colors duration-200";
 
-    // Contenedor del texto
     const textSpan = document.createElement("span");
     const claveI18n = `galeries.${name}`;
     textSpan.setAttribute('data-i18n', claveI18n);
@@ -32,10 +29,8 @@ function createMenuItem(name, data, parentPath = "") {
                     ? textoTraducido 
                     : (data.displayName || name);
     
-    // Este span empujará a la flecha gracias al flex-grow
     textSpan.style.flexGrow = "1";
     textSpan.style.textAlign = "left";
-    
     a.appendChild(textSpan);
 
     if (data.subs && data.subs.length > 0) {
@@ -43,8 +38,8 @@ function createMenuItem(name, data, parentPath = "") {
         arrow.textContent = "❯";
         arrow.style.fontSize = "20px";
         arrow.style.opacity = "0.5";
-        arrow.style.marginLeft = "15px"; // Espacio mínimo con el texto
-        arrow.style.flexShrink = "0";    // Que no se aplaste
+        arrow.style.marginLeft = "15px"; 
+        arrow.style.flexShrink = "0";
         a.appendChild(arrow);
     }
 
@@ -52,8 +47,9 @@ function createMenuItem(name, data, parentPath = "") {
 
     if (data.subs && data.subs.length > 0) {
         const subMenu = document.createElement("div");
-        subMenu.className = "submenu-flotante absolute left-full top-0 hidden bg-gray-800 py-2 rounded shadow-lg border-l border-gray-600 z-[110]";
-        subMenu.style.minWidth = "200px";
+        // Quitamos clases de posicionamiento fijo de Tailwind
+        subMenu.className = "submenu-flotante absolute top-0 hidden bg-gray-800 py-2 rounded shadow-lg border border-gray-600 z-[110]";
+        subMenu.style.minWidth = "220px"; // Un poco más de margen para nombres largos
         
         data.subs.forEach(sub => {
             subMenu.appendChild(createMenuItem(sub.name, sub, currentPath));
@@ -63,8 +59,32 @@ function createMenuItem(name, data, parentPath = "") {
 
         li.addEventListener("mouseenter", (e) => {
             e.stopPropagation();
+            
+            // 1. Lo hacemos visible pero invisible al ojo para que el navegador lo calcule
+            subMenu.style.visibility = "hidden";
             subMenu.classList.remove("hidden");
+
+            // 2. Medimos
+            const rectLi = li.getBoundingClientRect();
+            const anchoSubMenu = subMenu.offsetWidth || 220; // Si falla el cálculo, usamos el min-width
+            const anchoVentana = window.innerWidth;
+
+            // 3. ¿Cae fuera de la pantalla si abrimos a la derecha?
+            // Dejamos un margen de seguridad de 20px
+            if (rectLi.right + anchoSubMenu > anchoVentana - 20) {
+                // A LA IZQUIERDA
+                subMenu.style.left = "auto";
+                subMenu.style.right = "100%";
+            } else {
+                // A LA DERECHA
+                subMenu.style.left = "100%";
+                subMenu.style.right = "auto";
+            }
+
+            // 4. Lo mostramos de verdad
+            subMenu.style.visibility = "visible";
         });
+
         li.addEventListener("mouseleave", (e) => {
             e.stopPropagation();
             subMenu.classList.add("hidden");
