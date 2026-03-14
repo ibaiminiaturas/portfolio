@@ -75,6 +75,9 @@ function createMenuItem(name, data, parentPath = "") {
                 // A LA IZQUIERDA
                 subMenu.style.left = "auto";
                 subMenu.style.right = "100%";
+                subMenu.style.backgroundColor =  "#4B5563"; // bg-gray-600
+                subMenu.style.zIndex = "110"; // Aseguramos que esté por encima del menú principal
+                // subMenu.className = "submenu-flotante absolute top-0 hidden bg-gray-800 py-2 rounded shadow-lg border border-gray-600 z-[110]";
             } else {
                 // A LA DERECHA
                 subMenu.style.left = "100%";
