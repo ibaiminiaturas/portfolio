@@ -36,14 +36,19 @@
   "galeries": {
     "Box Arts": "Box Arts",
     "Big Child": "Big Child Creatives",
-    "Army Of The Dead": "Army Of The Dead",
     "others": "Other Works",
-    "DKM": "Dark Knights Metal",
-    "GOT": "A Song Of Ice And Fire",
-    "Cyberpunk": "Cyber Punk 2077",
-    "Aradia": "Aradia Miniatures",
+    "dark-knights-metal-boardgame-painted-miniatures": "Dark Knights Metal",
+    "a-song-of-ice-andfire-boardgame-painted-miniatures": "A Song Of Ice And Fire",
+    "cyberpunk-2077-boardgame-miniatures": "Cyber Punk 2077",
+    "aradia-wizard-dwarf-dragon-miniatures": "Aradia Miniatures",
+    "zombicide-army-of-the-dead-miniatures": "Army of the Dead",
     "art-w-sanguinius-blood-angel": "Art-W Studios",
-    "MOTU": "Masters Of The Universe"
+    "supernatural-boardgame-painted-miniatures1": "Supernatural",
+    "thundercats-boardgame-painted-miniatures": "Thundercats",
+    "masters-of-the-universe-clash-for-eternia-painted-miniatures": "Masters Of The Universe",
+    "household-ttrpg-boardgame-rpg-painted-miniaures": "Household TTRPG",
+    "marvel_united_boardgame_chibis_painted-miniatures": "Marvel United",
+    "marvel-zombies-boardgame-miniatures-painted": "Marvel Zombies"
   },
   "about": {
     "hero": {
