@@ -53,7 +53,14 @@
       });
 </script>
 
-<h1 class="text-8xl font-bold text-center mt-6 mb-12 text-gray-700 uppercase" id="titulo-galeria">Galería</h1>
+<div class="w-full px-4 md:px-10 max-w-[100%]" style="box-sizing: border-box;">
+    <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold text-center mt-6 mb-12 text-gray-700 uppercase break-words leading-none" 
+        id="titulo-galeria" 
+        style="overflow-wrap: break-word; word-wrap: break-word; hyphens: auto;">
+        Galería
+    </h1>
+</div>
+
 <div id="galeria-container" class="space-y-6 px-6"></div>
 
 <script src="assets/js/lightbox.js"></script>
@@ -72,12 +79,17 @@ const subSeleccionada = allSubs.length > 0 ? allSubs[allSubs.length - 1] : null;
 const container = document.getElementById('galeria-container');
 const titulo = document.getElementById('titulo-galeria');
 
+// Función de búsqueda mejorada para no perder el rastro
 function buscarEnItems(lista, nombreBusqueda) {
     if (!lista) return null;
     for (const item of lista) {
         if (item.name === nombreBusqueda) return item;
         if (item.subs) {
             const encontrado = buscarEnItems(item.subs, nombreBusqueda);
+            if (encontrado) return encontrado;
+        }
+        if (item.items) {
+            const encontrado = buscarEnItems(item.items, nombreBusqueda);
             if (encontrado) return encontrado;
         }
     }
@@ -98,76 +110,68 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
     const basePathRaiz = `${BASE_PATH}/galleries/data/${folderRaiz}`;
 
     if (subSeleccionada) {
-        const listaBusqueda = categoriaRaiz.items || [];
-        const encontrada = buscarEnItems(listaBusqueda, subSeleccionada);
+        // Buscamos el objeto de la subgalería (ej. GoT)
+        const encontrada = buscarEnItems(categoriaRaiz.items || [], subSeleccionada);
+        
         if (encontrada) {
+            // Calculamos su path real en el servidor
             let pathAcumulado = basePathRaiz;
             if (allSubs.length > 1) {
                 for (let i = 0; i < allSubs.length - 1; i++) {
                     pathAcumulado += `/${allSubs[i]}`;
                 }
             }
-if (encontrada) {
-    let pathAcumulado = basePathRaiz;
-    if (allSubs.length > 1) {
-        for (let i = 0; i < allSubs.length - 1; i++) {
-            pathAcumulado += `/${allSubs[i]}`;
-        }
-    }
+            const pathActual = `${pathAcumulado}/${encontrada.name}`;
 
-    const pathActual = `${pathAcumulado}/${encontrada.name}`;
-    itemsParaRenderizar = [];
+            // 1. Añadimos la galería principal donde estamos (GoT)
+            if (encontrada.images && encontrada.images > 0) {
+                itemsParaRenderizar.push({
+                    ...encontrada,
+                    calculatedPath: pathActual,
+                    renderType: 'carousel'
+                });
+            }
 
-    // 1. ¿TIENE IMÁGENES PROPIAS? (Las 24 de GoT)
-   if (encontrada) {
-    let pathAcumulado = basePathRaiz;
-    if (allSubs.length > 1) {
-        for (let i = 0; i < allSubs.length - 1; i++) {
-            pathAcumulado += `/${allSubs[i]}`;
-        }
-    }
+            // 2. BUSQUEDA PROFUNDA: Añadimos CUALQUIER subgalería que esté dentro
+            const recolectarSubs = (parentItem, currentPath) => {
+                const subLista = parentItem.subs || parentItem.items || [];
+                subLista.forEach(s => {
+                    const miPath = `${currentPath}/${s.name}`;
+                    if (s.images && s.images > 0) {
+                        itemsParaRenderizar.push({
+                            ...s,
+                            calculatedPath: miPath,
+                            renderType: 'carousel'
+                        });
+                    }
+                    // Seguimos bajando si hay más niveles
+                    recolectarSubs(s, miPath);
+                });
+            };
 
-    const pathActual = `${pathAcumulado}/${encontrada.name}`;
-    itemsParaRenderizar = [];
-
-    // 1. EL PADRE COMO CARRUSEL (Tus 24 fotos de GoT)
-    if (encontrada.images && encontrada.images > 0) {
-        itemsParaRenderizar.push({
-            ...encontrada,
-            calculatedPath: pathActual,
-            renderType: 'carousel', // <--- Forzamos carrusel
-            displayName: encontrada.displayName || encontrada.name
-        });
-    }
-
-    // 2. LOS HIJOS COMO CARRUSELES (El "others")
-    if (encontrada.subs && encontrada.subs.length > 0) {
-        const hijos = encontrada.subs.map(s => ({
-            ...s,
-            calculatedPath: `${pathActual}/${s.name}`,
-            renderType: 'carousel' // <--- Coherencia visual
-        }));
-        itemsParaRenderizar = [...itemsParaRenderizar, ...hijos];
-    }
-}
-}
+            recolectarSubs(encontrada, pathActual);
         }
     } else {
+        // --- VISTA GENERAL (MOSAICOS) ---
         const listaAProcesar = categoriaRaiz.items || [categoriaRaiz];
         itemsParaRenderizar = listaAProcesar.map(hijo => {
             let fotosFucionadas = [];
-            const recolectar = (item, pathActual) => {
-                const idNombre = item.name || item.category || "";
-                if (!idNombre) return;
-                const nombreLimpio = idNombre.toLowerCase().replace(/\s+/g, '-');
-                const miPath = item.name ? `${pathActual}/${item.name}` : pathActual;
-                for (let i = 1; i <= (item.images || 0); i++) {
-                    fotosFucionadas.push(`${miPath}/${nombreLimpio}-${i}.webp`);
+            const recolectarTodo = (item, pathPadre) => {
+                const nombreItem = item.name || item.category;
+                const miPath = `${pathPadre}/${nombreItem}`;
+                const nombreLimpio = nombreItem.toLowerCase().replace(/\s+/g, '-');
+
+                if (item.images > 0) {
+                    for (let i = 1; i <= item.images; i++) {
+                        fotosFucionadas.push(`${miPath}/${nombreLimpio}-${i}.webp`);
+                    }
                 }
-                if (item.subs) item.subs.forEach(s => recolectar(s, miPath));
-                if (item.items) item.items.forEach(s => recolectar(s, miPath));
+                const subItems = item.subs || item.items || [];
+                subItems.forEach(s => recolectarTodo(s, miPath));
             };
-            recolectar(hijo, basePathRaiz);
+            const inicioPath = basePathRaiz.substring(0, basePathRaiz.lastIndexOf('/'));
+            recolectarTodo(hijo, inicioPath);
+
             return {
                 ...hijo,
                 name: hijo.name || hijo.category,
@@ -177,131 +181,117 @@ if (encontrada) {
         });
     }
 
-    // Actualizar Título con i18n
+    // Título i18n
     const claveI18n = subSeleccionada ? `galeries.${subSeleccionada}` : `galeries.${galeriaSeleccionada}`;
     titulo.setAttribute('data-i18n', claveI18n);
-    const textoTraducido = (typeof t === 'function') ? t(claveI18n) : claveI18n;
-    titulo.textContent = (textoTraducido !== claveI18n) ? textoTraducido : (subSeleccionada || galeriaSeleccionada);
 
-itemsParaRenderizar.forEach((item, index) => {
-    const idParaArchivo = item.name || item.category || "image";
-    const prefix = idParaArchivo.toLowerCase().replace(/\s+/g, '-');
+    // --- RENDERIZADO (PADDINGS MANTENIDOS AL 100%) ---
+    itemsParaRenderizar.forEach((item, index) => {
+        const idParaArchivo = item.name || item.category || "image";
+        const prefix = idParaArchivo.toLowerCase().replace(/\s+/g, '-');
 
-    const images = item.forcedImages || 
-        Array.from({length: item.images}, (_, j) => `${item.calculatedPath}/${prefix}-${j+1}.webp`);
+        const images = item.forcedImages || 
+            Array.from({length: item.images}, (_, j) => `${item.calculatedPath}/${prefix}-${j+1}.webp`);
 
-    if (images.length === 0) return;
+        if (images.length === 0) return;
 
-    const subDiv = document.createElement('div');
-    subDiv.style.marginBottom = '120px';
+        const subDiv = document.createElement('div');
+        subDiv.style.marginBottom = '120px'; // TU MARGEN
 
-if (item.renderType === 'mosaic') {
-        const bloqueDiv = document.createElement('div');
-        bloqueDiv.className = 'flex flex-col items-center mb-[120px] w-full px-4 lg:px-0';
-        // Estilos de estructura
-        bloqueDiv.style.display = 'flex';
-        bloqueDiv.style.flexDirection = 'column';
-        bloqueDiv.style.alignItems = 'center';
+        if (item.renderType === 'mosaic') {
+            const bloqueDiv = document.createElement('div');
+            bloqueDiv.style.padding = '10px'; // TU PADDING
+            bloqueDiv.style.display = 'flex';
+            bloqueDiv.style.flexDirection = 'column';
+            bloqueDiv.style.alignItems = 'center';
+            bloqueDiv.style.marginBottom = '120px';
 
-        if (!subSeleccionada && itemsParaRenderizar.length > 1) {
-            const nombreDiv = document.createElement('div');
-            nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12 uppercase';
-            nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
-            const tName = t(`galeries.${item.name}`);
-            nombreDiv.textContent = tName || item.displayName || item.name;
-            bloqueDiv.appendChild(nombreDiv);
-        }
-
-        const wrapperDiv = document.createElement('div');
-        // Quitamos 'w-full' de las clases base de Tailwind para que no mande en Desktop
-        wrapperDiv.className = 'bg-gray-700 rounded-xl lg:max-w-[1000px]';
-        
-        // Estilos dinámicos según pantalla
-        if (window.innerWidth < 1024) {
-            wrapperDiv.style.width = '100%'; // En móvil sí queremos el 100%
-            wrapperDiv.style.display = 'block';
-        } else {
-            // En PC usamos 'table' o 'inline-block'. 'table' es un truco viejo pero infalible 
-            // para que un div se ajuste exactamente al ancho de su contenido hijo.
-            wrapperDiv.style.display = 'table'; 
-            wrapperDiv.style.width = 'auto';
-        }
-
-        wrapperDiv.style.padding = '10px';
-        wrapperDiv.style.boxSizing = 'border-box'; 
-        wrapperDiv.style.margin = '0 auto'; // Centra el 'table' en Desktop
-        
-        const mosaicoDiv = crearMosaico(item, images, openLightbox);
-        
-        // IMPORTANTE: Asegúrate de que el contenedor del mosaico no fuerce un ancho fijo
-        mosaicoDiv.style.width = '100%';
-
-        wrapperDiv.appendChild(mosaicoDiv);
-        bloqueDiv.appendChild(wrapperDiv);
-        subDiv.appendChild(bloqueDiv);
-    
-
-    } else {
-        const titleSection = document.createElement('div');
-        titleSection.className = window.innerWidth < 1024 ? 'flex flex-col gap-5 items-center mb-5' : 'flex gap-5 items-center mb-5'; 
-
-        const nombreDiv = document.createElement('div');
-        nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
-        const tName = t(`galeries.${item.name}`);
-        nombreDiv.textContent = tName || item.displayName || item.name;
-        nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
-        
-        if(window.innerWidth < 1024) nombreDiv.style.height = 'auto';
-
-        const wrapperDivCarrusel = document.createElement('div');
-        wrapperDivCarrusel.className = 'bg-gray-700 rounded-xl flex-grow box-border max-w-[1000px] flex justify-center p-[10px] items-center';
-        wrapperDivCarrusel.style.maxWidth = '1000px';
-        wrapperDivCarrusel.style.display = 'flex';
-        wrapperDivCarrusel.style.justifyContent = 'center';
-        wrapperDivCarrusel.style.padding = '10px';
-        wrapperDivCarrusel.style.alignItems = 'center';
-        wrapperDivCarrusel.style.boxSizing = 'border-box';
-
-        if (window.innerWidth < 1024) {
-            const imgPortada = document.createElement('img');
-            imgPortada.src = images[0];
-            imgPortada.className = 'w-full h-auto rounded-lg cursor-pointer shadow-lg';
-            imgPortada.style.maxHeight = '400px';
-            imgPortada.style.objectFit = 'contain';
-            imgPortada.addEventListener('click', () => openLightbox(images, 0));
-            wrapperDivCarrusel.appendChild(imgPortada);
-        } else {
-            const carruselWrapper = crearMiniCarrusel(item, images);
-            carruselWrapper.querySelectorAll('img').forEach((img, i) => {
-                img.addEventListener('click', () => openLightbox(images, i));
-            });
-            wrapperDivCarrusel.appendChild(carruselWrapper);
-        }
-
-        if (window.innerWidth < 1024) {
-            subDiv.style.paddingLeft = '10px';
-            subDiv.style.paddingRight = '10px';
-        } else {
-            if (index % 2 === 0) {
-                subDiv.style.paddingLeft = '15%';
-                subDiv.style.paddingRight = '5%';
-                titleSection.style.flexDirection = 'row';
-            } else {
-                subDiv.style.paddingLeft = '10%';
-                subDiv.style.paddingRight = '10%';
+            if (!subSeleccionada && itemsParaRenderizar.length > 1) {
+                const nombreDiv = document.createElement('div');
+                nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12 uppercase';
+                nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
+                nombreDiv.textContent = item.name;
+                bloqueDiv.appendChild(nombreDiv);
             }
-        }
 
-        titleSection.appendChild(nombreDiv);
-        titleSection.appendChild(wrapperDivCarrusel);
-        subDiv.appendChild(titleSection);
-    }
-    container.appendChild(subDiv);
-});
-if (typeof translatePage === 'function') translatePage();
+            const wrapperDiv = document.createElement('div');
+            wrapperDiv.className = 'bg-gray-700 rounded-xl lg:max-w-[1000px] mx-auto';
+            wrapperDiv.style.padding = '10px'; // TU PADDING
+            wrapperDiv.style.boxSizing = 'border-box';
+            
+            if (window.innerWidth < 1024) {
+                wrapperDiv.style.width = '100%';
+                wrapperDiv.style.display = 'block';
+            } else {
+                wrapperDiv.style.display = 'table';
+                wrapperDiv.style.width = 'auto';
+            }
+
+            const mosaicoDiv = crearMosaico(item, images, openLightbox);
+            mosaicoDiv.style.width = '100%';
+            wrapperDiv.appendChild(mosaicoDiv);
+            bloqueDiv.appendChild(wrapperDiv);
+            subDiv.appendChild(bloqueDiv);
+
+        } else {
+            const titleSection = document.createElement('div');
+            titleSection.className = window.innerWidth < 1024 ? 'flex flex-col gap-5 items-center mb-5' : 'flex gap-5 items-center mb-5'; 
+
+            const nombreDiv = document.createElement('div');
+            nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
+            nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
+            nombreDiv.textContent = item.name;
+            
+            if(window.innerWidth < 1024) nombreDiv.style.height = 'auto';
+
+            const wrapperDivCarrusel = document.createElement('div');
+            wrapperDivCarrusel.className = 'bg-gray-700 rounded-xl flex-grow box-border max-w-[1000px] flex justify-center p-[10px] items-center';
+            wrapperDivCarrusel.style.maxWidth = '1000px';
+            wrapperDivCarrusel.style.display = 'flex';
+            wrapperDivCarrusel.style.padding = '10px'; // TU PADDING
+            wrapperDivCarrusel.style.boxSizing = 'border-box';
+
+            if (window.innerWidth < 1024) {
+                const imgPortada = document.createElement('img');
+                imgPortada.src = images[0];
+                imgPortada.className = 'w-full h-auto rounded-lg cursor-pointer shadow-lg';
+                imgPortada.style.maxHeight = '400px';
+                imgPortada.style.objectFit = 'contain';
+                imgPortada.onclick = () => openLightbox(images, 0);
+                wrapperDivCarrusel.appendChild(imgPortada);
+            } else {
+                const carruselWrapper = crearMiniCarrusel(item, images);
+                carruselWrapper.querySelectorAll('img').forEach((img, i) => {
+                    img.onclick = () => openLightbox(images, i);
+                });
+                wrapperDivCarrusel.appendChild(carruselWrapper);
+            }
+
+            // --- TUS PADDINGS DE ZIG-ZAG ---
+            if (window.innerWidth < 1024) {
+                subDiv.style.paddingLeft = '10px';
+                subDiv.style.paddingRight = '10px';
+            } else {
+                if (index % 2 === 0) {
+                    subDiv.style.paddingLeft = '15%';
+                    subDiv.style.paddingRight = '5%';
+                    titleSection.style.flexDirection = 'row';
+                } else {
+                    subDiv.style.paddingLeft = '10%';
+                    subDiv.style.paddingRight = '10%';
+                    titleSection.style.flexDirection = 'row';
+                }
+            }
+
+            titleSection.appendChild(nombreDiv);
+            titleSection.appendChild(wrapperDivCarrusel);
+            subDiv.appendChild(titleSection);
+        }
+        container.appendChild(subDiv);
+    });
+    if (typeof translatePage === 'function') translatePage();
 })
 .catch(err => console.error('Error cargando galería:', err));
-
 </script>
 
 <div id="footer-placeholder"></div>
