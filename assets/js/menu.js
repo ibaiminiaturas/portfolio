@@ -86,8 +86,12 @@ function createMenuItem(name, data, parentPath = "") {
 /**
  * MÓVIL: Creación de la lista en cascada
  */
+/**
+ * MÓVIL: Creación de la lista en cascada RECURSIVA
+ */
 function createMobileItem(name, data, parentPath = "") {
     const container = document.createElement("div");
+    // Añadimos un borde sutil para separar secciones
     container.className = "py-2 border-b border-gray-300 w-full";
 
     const currentPath = parentPath 
@@ -96,22 +100,30 @@ function createMobileItem(name, data, parentPath = "") {
 
     const a = document.createElement("a");
     a.href = `${BASE_PATH}/galerias.html?${currentPath}`;
+    
+    // Si no hay parentPath, es nivel 1 (título grande), si no, es subnivel (texto medio)
+    const isTopLevel = !parentPath;
     a.textContent = data.displayName || name;
-    a.className = "block text-gray-800 text-2xl font-bold py-2";
+    a.className = isTopLevel 
+        ? "block text-gray-900 text-2xl font-bold py-2 hover:text-blue-600" 
+        : "block text-gray-700 text-xl font-medium py-1 hover:text-black";
+    
     container.appendChild(a);
 
+    // RECURSIVIDAD: Si tiene "subs" (hijos), los pintamos dentro de este mismo contenedor
     if (data.subs && data.subs.length > 0) {
         const subList = document.createElement("div");
-        subList.className = "ml-6 mt-2 space-y-3 border-l-2 border-gray-400 pl-4";
+        // Añadimos margen izquierdo y una línea guía para que se entienda la jerarquía
+        subList.className = "ml-6 mt-1 space-y-1 border-l-2 border-gray-400 pl-4 mb-2";
+        
         data.subs.forEach(sub => {
-            const subA = document.createElement("a");
-            subA.href = `${BASE_PATH}/galerias.html?${currentPath}&sub=${encodeURIComponent(sub.name)}`;
-            subA.textContent = sub.name;
-            subA.className = "block text-gray-600 text-xl";
-            subList.appendChild(subA);
+            // AQUÍ ESTÁ LA MAGIA: La función se llama a sí misma para los hijos
+            subList.appendChild(createMobileItem(sub.name, sub, currentPath));
         });
+        
         container.appendChild(subList);
     }
+    
     return container;
 }
 
@@ -127,10 +139,19 @@ function initializeMenu() {
     const menuContainer = document.getElementById("menu-galerias");
 
     // 1. Lógica del Menú Móvil (Abrir/Cerrar)
-    if (btnHamburguesa && menuMovil) {
+if (btnHamburguesa && menuMovil) {
         btnHamburguesa.onclick = () => {
+            const isOpening = menuMovil.classList.contains('hidden');
+            
             menuMovil.classList.toggle('hidden');
             menuMovil.classList.toggle('flex');
+
+            // Si se abre, bloqueamos el scroll del body. Si se cierra, lo devolvemos.
+            if (isOpening) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         };
     }
 
