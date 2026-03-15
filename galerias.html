@@ -109,12 +109,10 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
     const folderRaiz = categoriaRaiz.folder || categoriaRaiz.category;
     const basePathRaiz = `${BASE_PATH}/galleries/data/${folderRaiz}`;
 
-    if (subSeleccionada) {
-        // Buscamos el objeto de la subgalería (ej. GoT)
+if (subSeleccionada) {
         const encontrada = buscarEnItems(categoriaRaiz.items || [], subSeleccionada);
         
         if (encontrada) {
-            // Calculamos su path real en el servidor
             let pathAcumulado = basePathRaiz;
             if (allSubs.length > 1) {
                 for (let i = 0; i < allSubs.length - 1; i++) {
@@ -123,28 +121,32 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
             }
             const pathActual = `${pathAcumulado}/${encontrada.name}`;
 
-            // 1. Añadimos la galería principal donde estamos (GoT)
+            // 1. EL NIVEL ACTUAL
+            // Si tiene hijos, lo ponemos como carrusel. Si NO tiene hijos, es mosaico.
+            const tieneHijos = (encontrada.subs && encontrada.subs.length > 0) || (encontrada.items && encontrada.items.length > 0);
+            
             if (encontrada.images && encontrada.images > 0) {
                 itemsParaRenderizar.push({
                     ...encontrada,
                     calculatedPath: pathActual,
-                    renderType: 'carousel'
+                    renderType: tieneHijos ? 'carousel' : 'mosaic' // <--- EL FIX AQUÍ
                 });
             }
 
-            // 2. BUSQUEDA PROFUNDA: Añadimos CUALQUIER subgalería que esté dentro
+            // 2. BUSQUEDA PROFUNDA DE SUBS
             const recolectarSubs = (parentItem, currentPath) => {
                 const subLista = parentItem.subs || parentItem.items || [];
                 subLista.forEach(s => {
                     const miPath = `${currentPath}/${s.name}`;
+                    const sTieneHijos = (s.subs && s.subs.length > 0) || (s.items && s.items.length > 0);
+                    
                     if (s.images && s.images > 0) {
                         itemsParaRenderizar.push({
                             ...s,
                             calculatedPath: miPath,
-                            renderType: 'carousel'
+                            renderType: sTieneHijos ? 'carousel' : 'mosaic' // <--- Y AQUÍ
                         });
                     }
-                    // Seguimos bajando si hay más niveles
                     recolectarSubs(s, miPath);
                 });
             };
@@ -156,9 +158,12 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
         const listaAProcesar = categoriaRaiz.items || [categoriaRaiz];
         itemsParaRenderizar = listaAProcesar.map(hijo => {
             let fotosFucionadas = [];
+            
             const recolectarTodo = (item, pathPadre) => {
+                // Si pathPadre está vacío o es el raíz, el path es directamente el nombre del item
                 const nombreItem = item.name || item.category;
-                const miPath = `${pathPadre}/${nombreItem}`;
+                const miPath = pathPadre.endsWith(nombreItem) ? pathPadre : `${pathPadre}/${nombreItem}`;
+                
                 const nombreLimpio = nombreItem.toLowerCase().replace(/\s+/g, '-');
 
                 if (item.images > 0) {
@@ -169,8 +174,10 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
                 const subItems = item.subs || item.items || [];
                 subItems.forEach(s => recolectarTodo(s, miPath));
             };
-            const inicioPath = basePathRaiz.substring(0, basePathRaiz.lastIndexOf('/'));
-            recolectarTodo(hijo, inicioPath);
+
+            // FIX: Empezamos la ruta desde la carpeta de la galería (galleries/data/BoxArt)
+            // pero sin añadirle otra vez /BoxArt dentro de la función si ya estamos ahí.
+            recolectarTodo(hijo, basePathRaiz);
 
             return {
                 ...hijo,
