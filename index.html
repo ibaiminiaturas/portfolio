@@ -35,31 +35,29 @@ fetch(`${BASE_PATH}/components/header.html`)
     const header = document.getElementById('main-header');
     header.innerHTML = html;
 
-    // 1️⃣ Cargamos i18n.js dinámicamente
-    const i18nScript = document.createElement('script');
-    i18nScript.src = `${BASE_PATH}/assets/js/i18n.js`;
-    
-    i18nScript.onload = () => {
-      // ✅ Cargamos el idioma inicial
-      loadLanguage(currentLang);
+    // 1. Ya no necesitamos crear i18nScript porque está en el <head>
+    // Ejecutamos las funciones de traducción que ya están cargadas
+    if (typeof loadLanguage === 'function') {
+      loadLanguage(currentLang); 
+    }
 
-      // 2️⃣ IMPORTANTE: Cargamos las rutas de las imágenes (Logo, banderas, etc.)
-      // Asegúrate de que esta función loadHeader() en utils.js 
-      // ahora incluya también las IDs con "-mobile"
-      if (typeof loadHeader === 'function') {
-        loadHeader(""); 
-      }
+    if (typeof loadHeader === 'function') {
+      loadHeader(""); 
+    }
 
-      // 3️⃣ Finalmente cargamos menú.js 
-      // Este script ya contiene el initializeMenu() que creará los objetos
+    // 2. Cargamos el menú solo si no existe ya
+    if (!document.getElementById('menu-script')) {
       const menuScript = document.createElement('script');
+      menuScript.id = 'menu-script';
       menuScript.src = `${BASE_PATH}/assets/js/menu.js`;
+      // Cuando el menú cargue, lo inicializamos
+      menuScript.onload = () => {
+        if (window.initializeMenu) window.initializeMenu();
+      };
       document.body.appendChild(menuScript);
-    };
-    
-    document.body.appendChild(i18nScript);
+    }
 
-    // Efecto visual del header
+    // 3. Efecto visual
     header.style.transition = 'box-shadow 0.3s ease';
     window.addEventListener('scroll', () => {
       header.style.boxShadow = window.scrollY > 10 ? '0 2px 8px rgba(0,0,0,0.1)' : 'none';
