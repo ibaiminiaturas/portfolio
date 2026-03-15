@@ -10,7 +10,14 @@
     {
       "name": "a-song-of-ice-andfire-boardgame-painted-miniatures",
       "displayName": "Game of Thrones",
+      "images": 24,
+  
+           "subs": [
+    {
+      "name": "a-song-of-ice-andfire-boardgame-painted-miniatures",
+      "displayName": "Game of Thrones",
       "images": 24
+    }]
     },
     {
       "name": "marvel-zombies-boardgame-miniatures-painted",
