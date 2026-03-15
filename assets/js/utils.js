@@ -1,19 +1,25 @@
-// assets/js/utils.js
-function loadHeader(extra) {
-    
-      const base = (location.hostname.includes("github.io") ? "/portfolio/" : "") + extra;
-    const flagEs = document.getElementById('flag-es');
-    const flagEn = document.getElementById('flag-en');
-    const logo = document.getElementById('header-logo');
-    const logo_mobile = document.getElementById('header-logo-mobile');
+function loadHeader() {
+    // Le damos un respiro al DOM para que reconozca los nuevos elementos
+    setTimeout(() => {
+        const images = [
+            { id: 'header-logo', path: 'assets/images/ibai-miniaturas-circle.webp' },
+            { id: 'header-logo-mobile', path: 'assets/images/ibai-miniaturas-circle.webp' },
+            { id: 'flag-es', path: 'assets/images/flag-es.svg' },
+            { id: 'flag-uk', path: 'assets/images/flag-uk.svg' },
+            { id: 'flag-es-mobile', path: 'assets/images/flag-es.svg' },
+            { id: 'flag-en-mobile', path: 'assets/images/flag-uk.svg' }, // Asegúrate de que es .svg
+            { id: 'ig-icon', path: 'assets/images/instagram.png' },
+            { id: 'ig-icon-mobile', path: 'assets/images/instagram.png' }
+        ];
 
-    // Usamos el "Optional Chaining" o un simple IF
-    if (flagEs) flagEs.src = `${BASE_PATH}/assets/images/flag-es.svg`;
-    if (flagEn) flagEn.src = `${BASE_PATH}/assets/images/flag-en.png`;
-    if (logo)   logo.src   = `${BASE_PATH}/assets/images/ibai-miniaturas-circle.webp`;
-if(logo_mobile) logo_mobile.src =  `${BASE_PATH}/assets/images/ibai-miniaturas-circle.webp`;
-      document.getElementById('ig-icon').src = `${base}assets/images/instagram.png`;
-      // document.getElementById('flag-es-mobile').src = `${base}assets/images/flag-es.svg`;
-      // document.getElementById('flag-uk-mobile').src = `${base}assets/images/flag-uk.png`;
-      // document.getElementById('ig-icon-mobile').src = `${base}assets/images/instagram.png`;
-    }
+        images.forEach(img => {
+            const el = document.getElementById(img.id);
+            if (el) {
+                el.src = `${BASE_PATH}/${img.path}`.replace(/\/+/g, '/'); 
+                console.log(`✅ Cargada: ${img.id}`); // Si ves esto en consola, la ruta se puso
+            } else {
+                console.warn(`⚠️ No se encontró: ${img.id}`);
+            }
+        });
+    }, 50); // 50ms son suficientes para que el DOM se entere
+}
