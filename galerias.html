@@ -165,21 +165,17 @@ itemsParaRenderizar.forEach((item, index) => {
     const subDiv = document.createElement('div');
     subDiv.style.marginBottom = '120px';
 
-    if (item.renderType === 'mosaic') {
+if (item.renderType === 'mosaic') {
         const bloqueDiv = document.createElement('div');
-        bloqueDiv.className = 'flex flex-col items-center mb-[120px]';
+        bloqueDiv.className = 'flex flex-col items-center mb-[120px] w-full px-4 lg:px-0';
+        // Estilos de estructura
+        bloqueDiv.style.display = 'flex';
+        bloqueDiv.style.flexDirection = 'column';
+        bloqueDiv.style.alignItems = 'center';
 
         if (!subSeleccionada && itemsParaRenderizar.length > 1) {
             const nombreDiv = document.createElement('div');
             nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12 uppercase';
-            
-            // Estilos originales preservados
-            bloqueDiv.style.padding = '10px';  
-            bloqueDiv.style.display = 'flex';
-            bloqueDiv.style.flexDirection = 'column';
-            bloqueDiv.style.alignItems = 'center';
-            bloqueDiv.style.marginBottom = '120px';
-            
             nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
             const tName = t(`galeries.${item.name}`);
             nombreDiv.textContent = tName || item.displayName || item.name;
@@ -187,30 +183,44 @@ itemsParaRenderizar.forEach((item, index) => {
         }
 
         const wrapperDiv = document.createElement('div');
-        wrapperDiv.className = 'bg-gray-700 rounded-xl p-[10px] max-w-[800px] inline-block';
-        wrapperDiv.style.maxWidth = '1000px';
-        wrapperDiv.style.display = 'flex';
-        wrapperDiv.style.justifyContent = 'center';
+        // Quitamos 'w-full' de las clases base de Tailwind para que no mande en Desktop
+        wrapperDiv.className = 'bg-gray-700 rounded-xl lg:max-w-[1000px]';
+        
+        // Estilos dinámicos según pantalla
+        if (window.innerWidth < 1024) {
+            wrapperDiv.style.width = '100%'; // En móvil sí queremos el 100%
+            wrapperDiv.style.display = 'block';
+        } else {
+            // En PC usamos 'table' o 'inline-block'. 'table' es un truco viejo pero infalible 
+            // para que un div se ajuste exactamente al ancho de su contenido hijo.
+            wrapperDiv.style.display = 'table'; 
+            wrapperDiv.style.width = 'auto';
+        }
+
         wrapperDiv.style.padding = '10px';
-        wrapperDiv.style.alignItems = 'center';
+        wrapperDiv.style.boxSizing = 'border-box'; 
+        wrapperDiv.style.margin = '0 auto'; // Centra el 'table' en Desktop
         
         const mosaicoDiv = crearMosaico(item, images, openLightbox);
+        
+        // IMPORTANTE: Asegúrate de que el contenedor del mosaico no fuerce un ancho fijo
+        mosaicoDiv.style.width = '100%';
+
         wrapperDiv.appendChild(mosaicoDiv);
         bloqueDiv.appendChild(wrapperDiv);
         subDiv.appendChild(bloqueDiv);
+    
+
     } else {
         const titleSection = document.createElement('div');
-        // Cambio para móvil: si es pequeño, usamos flex-col, si no, lo que tenías
         titleSection.className = window.innerWidth < 1024 ? 'flex flex-col gap-5 items-center mb-5' : 'flex gap-5 items-center mb-5'; 
 
         const nombreDiv = document.createElement('div');
         nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
         const tName = t(`galeries.${item.name}`);
         nombreDiv.textContent = tName || item.displayName || item.name;
-        
-        // Estilo original del título
         nombreDiv.className = 'flex items-center justify-center h-[200px] w-[200px] flex-shrink-0 break-words carrusel-titulo';
-        // En móvil quitamos el h-200 fijo para que no ocupe tanto espacio vertical
+        
         if(window.innerWidth < 1024) nombreDiv.style.height = 'auto';
 
         const wrapperDivCarrusel = document.createElement('div');
@@ -220,15 +230,24 @@ itemsParaRenderizar.forEach((item, index) => {
         wrapperDivCarrusel.style.justifyContent = 'center';
         wrapperDivCarrusel.style.padding = '10px';
         wrapperDivCarrusel.style.alignItems = 'center';
+        wrapperDivCarrusel.style.boxSizing = 'border-box';
 
-        const carruselWrapper = crearMiniCarrusel(item, images);
-        carruselWrapper.querySelectorAll('img').forEach((img, i) => {
-            img.addEventListener('click', () => openLightbox(images, i));
-        });
+        if (window.innerWidth < 1024) {
+            const imgPortada = document.createElement('img');
+            imgPortada.src = images[0];
+            imgPortada.className = 'w-full h-auto rounded-lg cursor-pointer shadow-lg';
+            imgPortada.style.maxHeight = '400px';
+            imgPortada.style.objectFit = 'contain';
+            imgPortada.addEventListener('click', () => openLightbox(images, 0));
+            wrapperDivCarrusel.appendChild(imgPortada);
+        } else {
+            const carruselWrapper = crearMiniCarrusel(item, images);
+            carruselWrapper.querySelectorAll('img').forEach((img, i) => {
+                img.addEventListener('click', () => openLightbox(images, i));
+            });
+            wrapperDivCarrusel.appendChild(carruselWrapper);
+        }
 
-        wrapperDivCarrusel.appendChild(carruselWrapper);
-
-        // Lógica de Desktop intacta + Reset para móvil
         if (window.innerWidth < 1024) {
             subDiv.style.paddingLeft = '10px';
             subDiv.style.paddingRight = '10px';
@@ -249,7 +268,7 @@ itemsParaRenderizar.forEach((item, index) => {
     }
     container.appendChild(subDiv);
 });
-    if (typeof translatePage === 'function') translatePage();
+if (typeof translatePage === 'function') translatePage();
 })
 .catch(err => console.error('Error cargando galería:', err));
 
