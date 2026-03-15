@@ -107,20 +107,50 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
                     pathAcumulado += `/${allSubs[i]}`;
                 }
             }
-            if (encontrada.subs && encontrada.subs.length > 0) {
-                const pathHijos = `${pathAcumulado}/${encontrada.name}`;
-                itemsParaRenderizar = encontrada.subs.map(s => ({
-                    ...s,
-                    calculatedPath: `${pathHijos}/${s.name}`,
-                    renderType: 'carousel' 
-                }));
-            } else {
-                itemsParaRenderizar = [{
-                    ...encontrada,
-                    calculatedPath: `${pathAcumulado}/${encontrada.name}`,
-                    renderType: 'mosaic'
-                }];
-            }
+if (encontrada) {
+    let pathAcumulado = basePathRaiz;
+    if (allSubs.length > 1) {
+        for (let i = 0; i < allSubs.length - 1; i++) {
+            pathAcumulado += `/${allSubs[i]}`;
+        }
+    }
+
+    const pathActual = `${pathAcumulado}/${encontrada.name}`;
+    itemsParaRenderizar = [];
+
+    // 1. ¿TIENE IMÁGENES PROPIAS? (Las 24 de GoT)
+   if (encontrada) {
+    let pathAcumulado = basePathRaiz;
+    if (allSubs.length > 1) {
+        for (let i = 0; i < allSubs.length - 1; i++) {
+            pathAcumulado += `/${allSubs[i]}`;
+        }
+    }
+
+    const pathActual = `${pathAcumulado}/${encontrada.name}`;
+    itemsParaRenderizar = [];
+
+    // 1. EL PADRE COMO CARRUSEL (Tus 24 fotos de GoT)
+    if (encontrada.images && encontrada.images > 0) {
+        itemsParaRenderizar.push({
+            ...encontrada,
+            calculatedPath: pathActual,
+            renderType: 'carousel', // <--- Forzamos carrusel
+            displayName: encontrada.displayName || encontrada.name
+        });
+    }
+
+    // 2. LOS HIJOS COMO CARRUSELES (El "others")
+    if (encontrada.subs && encontrada.subs.length > 0) {
+        const hijos = encontrada.subs.map(s => ({
+            ...s,
+            calculatedPath: `${pathActual}/${s.name}`,
+            renderType: 'carousel' // <--- Coherencia visual
+        }));
+        itemsParaRenderizar = [...itemsParaRenderizar, ...hijos];
+    }
+}
+}
         }
     } else {
         const listaAProcesar = categoriaRaiz.items || [categoriaRaiz];
