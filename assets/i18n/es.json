@@ -42,7 +42,7 @@
     "a-song-of-ice-andfire-boardgame-painted-miniatures": "Canción de Hielo y Fuego",
     "cyberpunk-2077-boardgame-miniatures": "Cyber Punk 2077",
     "aradia-wizard-dwarf-dragon-miniatures": "Aradia Miniatures",
-    "supernatural-boardgame-painted-miniatures1": "Supernatural",
+    "supernatural-boardgame-painted-miniatures": "Supernatural",
     "art-w-sanguinius-blood-angel": "Art-W Studios",
     "masters-of-the-universe-clash-for-eternia-painted-miniatures": "Masters Del Universo",
     "thundercats-boardgame-painted-miniatures": "Thundercats",
@@ -96,5 +96,16 @@
       "p2": "Lo importante no es pintar la miniatura perfecta, sino seguir aprendiendo, seguir mejorando y disfrutar del proceso creativo.",
       "p3": "Porque al final, cada miniatura cuenta una historia… y cada pintor tiene la suya."
     }
-  }
+  },
+  "contact": {
+  "title": "Contacto",
+  "subtitle": "Si tienes alguna duda o quieres hablar sobre un proyecto, no dudes en enviarme un mensaje.",
+  "intro1": "Llevo pintando miniaturas más de 10 años, aprendiendo constantemente nuevas técnicas y explorando diferentes estilos. Lo que empezó como un hobby se convirtió poco a poco en una pasión por el detalle, la creatividad y la narrativa a través de figuras diminutas.",
+  "intro2": "Si tienes cualquier pregunta sobre pintura de miniaturas, técnicas, materiales o incluso por dónde empezar, no dudes en preguntar. Ninguna duda es demasiado pequeña o sencilla; todos empezamos en algún momento y siempre estaré encantado de ayudar.",
+  "intro3": "Tanto si acabas de entrar en el hobby como si llevas años pintando, me encantará hablar sobre miniaturas, compartir consejos y conectar con otros aficionados.",
+  "name": "Tu nombre",
+  "email": "Tu email",
+  "message": "Mensaje",
+  "send": "Enviar mensaje"
+}
 }

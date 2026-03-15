@@ -50,9 +50,13 @@ export function crearMosaico(sub, images, openLightbox) {
             container: grid,
             trueOrder: false,
             waitForImages: false,
-            margin: GUTTER,
-            columns: Math.floor((GRID_WIDTH + GUTTER) / (200 + GUTTER)), // columnas según tamaño mínimo
-            breakAt: {}, // sin responsive por ahora
+            margin: 10,
+            //columns: Math.floor((GRID_WIDTH + GUTTER) / (200 + GUTTER)), // columnas según tamaño mínimo
+            breakAt: {
+1024: 2,  // A menos de 1024px, 2 columnas
+        640: 1    // A menos de 640px (móvil), ¡1 SOLA COLUMNA!
+
+            }, // sin responsive por ahora
         });
     });
 

@@ -30,7 +30,7 @@ fetch(`${BASE_PATH}/components/header.html`)
 .then(html=>{
   const header=document.getElementById('main-header');
   header.innerHTML=html;
-      loadLanguage("en");
+      loadLanguage(currentLang);
           loadHeader("");
   header.style.transition='box-shadow 0.3s ease';
   window.addEventListener('scroll',()=>{

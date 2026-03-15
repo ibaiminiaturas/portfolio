@@ -1,96 +1,72 @@
-<script src="../assets/js/config.js"></script> <!-- define BASE_PATH -->
 <header class="bg-gray-200 sticky top-0 z-50 h-36 flex items-center px-6">
+  
+  <div class="hidden lg:flex w-full items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img id="header-logo" alt="Logo" class="h-20 w-20 rounded-full">
+      <span class="text-3xl font-bold text-gray-800">Ibai Miniaturas</span>
+    </div>
 
-  <!-- Logo + nombre a la izquierda -->
-  <div class="flex items-center gap-3">
-    <img  id="header-logo"  alt="Logo" class="h-20 w-20 rounded-full">
-    <span class="text-3xl font-bold text-gray-800">Ibai Miniaturas</span>
-  </div>
+    <ul class="absolute left-1/2 -translate-x-1/2 flex space-x-16 items-center text-2xl font-semibold text-gray-800">
+      <li><a href="./" class="hover:text-gray-400 transition-colors" data-i18n="header.menu.home"></a></li>
+      <li class="relative" id="menu-galerias">
+        <span class="cursor-default hover:text-gray-400" data-i18n="header.menu.gallery"></span>
+        <div id="dropdown-galerias" class="absolute hidden bg-gray-800 mt-2 rounded w-max text-white shadow-xl"></div>
+      </li>
+      <li><a href="./about.html" class="hover:text-gray-400 transition-colors" data-i18n="header.menu.about"></a></li>
+      <li><a href="./contact.html" class="hover:text-gray-400 transition-colors" data-i18n="header.menu.contact"></a></li>
+    </ul>
 
-  <!-- Menú centrado -->
-  <ul class="absolute left-1/2 -translate-x-1/2 flex space-x-16 items-center text-2xl font-semibold text-gray-800">
-    <li><a href="./" class="hover:text-gray-400 transition-colors duration-200" data-i18n="header.menu.home"></a></li>
-
-    <li class="relative" id="menu-galerias">
-       <span class="cursor-default hover:text-gray-400 transition-colors duration-200" data-i18n="header.menu.gallery"></span>
-      <!-- Submenú generado desde JSON -->
-      <div id="dropdown-galerias" class="absolute hidden bg-gray-400 mt-2 rounded w-max text-white">
-        <script>
-          fetch(`${BASE_PATH}/assets/galeries.json`)
-            .then(res => res.json())
-            .then(data => {
-              const dropdown = document.getElementById('dropdown-galerias');
-              Object.keys(data).forEach(sectionName => {
-                const sectionSubs = data[sectionName];
-
-                const li = document.createElement("div");
-                li.className = "relative";
-
-                // Link principal de la galería
-                const aMain = document.createElement("a");
-               
-                aMain.href = `${BASE_PATH}/galerias.html?galeria=${encodeURIComponent(sectionName)}`;
-                aMain.textContent = sectionName;
-                aMain.className = "block px-4 py-2 cursor-pointer rounded hover:bg-gray-700 w-full text-left text-white whitespace-nowrap";
-                li.appendChild(aMain);
-
-                // Submenú si hay subgalerías
-                if (sectionSubs.length > 0) {
-                  const subMenu = document.createElement("div");
-                  subMenu.className = "absolute top-0 left-full hidden bg-gray-700 py-2 rounded shadow-lg";
-                  subMenu.style.whiteSpace = "nowrap";
-                  subMenu.style.minWidth = "max-content";
-
-                  sectionSubs.forEach(sub => {
-                    const aSub = document.createElement("a");
-                    aSub.href = `${BASE_PATH}/galerias/index.html?galeria=${encodeURIComponent(sectionName)}&sub=${encodeURIComponent(sub.name)}`;
-                                const textoTraducido = t(`galeries.${ sub.name}`);
-                    aSub.textContent = textoTraducido || sub.name;
-                    aSub.className = "block px-4 py-2 rounded hover:bg-gray-600 text-white";
-                    subMenu.appendChild(aSub);
-                  });
-
-                  li.appendChild(subMenu);
-
-                  li.addEventListener("mouseenter", () => subMenu.classList.remove("hidden"));
-                  li.addEventListener("mouseleave", () => subMenu.classList.add("hidden"));
-                }
-
-                dropdown.appendChild(li);
-              });
-
-              // Hover persistente del dropdown principal
-              const menu = document.getElementById("menu-galerias");
-              let timeout;
-              menu.addEventListener("mouseenter", () => {
-                clearTimeout(timeout);
-                dropdown.classList.remove("hidden");
-              });
-              menu.addEventListener("mouseleave", () => {
-                timeout = setTimeout(() => {
-                  dropdown.classList.add("hidden");
-                }, 100);
-              });
-            })
-            .catch(err => console.error('Error cargando galerías:', err));
-        </script>
+    <div class="flex items-center gap-6">
+      <div class="flex gap-3">
+        <img id="flag-es" class="h-8 w-10 cursor-pointer hover:opacity-70" onclick="loadLanguage('es');">
+        <img id="flag-uk" class="h-8 w-10 cursor-pointer hover:opacity-70" onclick="loadLanguage('en');">
       </div>
-    </li>
-
-    <li><a href="./about.html" class="hover:text-gray-400 transition-colors duration-200" data-i18n="header.menu.about"></a></li>
-    <li><a href="./contact.html" class="hover:text-gray-400 transition-colors duration-200" data-i18n="header.menu.contact"></a></li>
-  </ul>
-<!-- Selector de idiomas -->
-<div class="absolute right-24 flex items-center gap-3">
-  <img  id="flag-es" alt="Español" class="h-8 w-10 cursor-pointer hover:opacity-70 transition-opacity duration-200" onclick="loadLanguage('es');">
-  <img  id="flag-uk" alt="English" class="h-8 w-10 cursor-pointer hover:opacity-70 transition-opacity duration-200" onclick="loadLanguage('en');">
-</div>
-  <!-- Icono de Instagram a la derecha -->
-  <div class="absolute right-6 flex items-center">
-    <a href="https://www.instagram.com/ibaiminiaturas" target="_blank" rel="noopener noreferrer" class="hover:opacity-70 transition-opacity duration-200">
-      <img  id="ig-icon" alt="Instagram" class="h-12 w-12">
-    </a>
+      <a href="https://www.instagram.com/ibaiminiaturas" target="_blank" class="hover:opacity-70">
+        <img id="ig-icon" class="h-12 w-12">
+      </a>
+    </div>
   </div>
+
+  <div class="flex lg:hidden w-full items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img id="header-logo-mobile" alt="Logo" class="h-16 w-16 rounded-full">
+      <span class="text-xl font-bold text-gray-800">Ibai Miniaturas</span>
+    </div>
+
+    <button id="btn-hamburguesa" class="p-2 focus:outline-none">
+      <div class="space-y-1.5">
+        <span class="block w-8 h-1 bg-gray-800"></span>
+        <span class="block w-8 h-1 bg-gray-800"></span>
+        <span class="block w-8 h-1 bg-gray-800"></span>
+      </div>
+    </button>
+  </div>
+
+<nav id="menu-movil" class="hidden fixed top-36 left-0 w-full bg-gray-200 border-t border-gray-300 flex-col p-8 space-y-6 text-2xl font-semibold text-gray-800 shadow-2xl h-[calc(100vh-144px)] overflow-y-auto z-50">
+
+    <a href="./" class="block border-b border-gray-300 pb-2" data-i18n="header.menu.home"></a>
+    
+    <div id="mobile-menu-galerias" class="w-full">
+      <div class="flex justify-between items-center cursor-pointer border-b border-gray-300 pb-2" id="btn-toggle-galerias-mobile">
+        <span data-i18n="header.menu.gallery"></span>
+        <span class="text-xl transition-transform duration-300" id="arrow-galerias">▼</span>
+      </div>
+      <div id="mobile-dropdown-galerias" class="hidden flex-col ml-6 mt-4 space-y-4 border-l-4 border-gray-400 pl-4 text-xl font-medium text-gray-600">
+      </div>
+    </div>
+
+    <a href="./about.html" class="block border-b border-gray-300 pb-2" data-i18n="header.menu.about"></a>
+    <a href="./contact.html" class="block border-b border-gray-300 pb-2" data-i18n="header.menu.contact"></a>
+    
+    <div class="flex flex-col items-center gap-8 pt-6">
+      <div class="flex gap-10">
+        <img id="flag-es-mobile" class="h-10 w-14 cursor-pointer" onclick="loadLanguage('es');">
+        <img id="flag-en-mobile" class="h-10 w-14 cursor-pointer" onclick="loadLanguage('en');">
+      </div>
+      <a href="https://www.instagram.com/ibaiminiaturas" target="_blank">
+        <img id="ig-icon-mobile" class="h-14 w-14">
+      </a>
+    </div>
+</nav>
 
 </header>
-
