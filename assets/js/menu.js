@@ -86,42 +86,62 @@ function createMenuItem(name, data, parentPath = "") {
 /**
  * MÓVIL: Creación de la lista en cascada
  */
-/**
- * MÓVIL: Creación de la lista en cascada RECURSIVA
- */
 function createMobileItem(name, data, parentPath = "") {
     const container = document.createElement("div");
-    // Añadimos un borde sutil para separar secciones
-    container.className = "py-2 border-b border-gray-300 w-full";
+    container.className = "w-full border-b border-gray-300 py-1";
 
     const currentPath = parentPath 
         ? `${parentPath}&sub=${encodeURIComponent(name)}` 
         : `galeria=${encodeURIComponent(name)}`;
 
+    // Contenedor de la fila superior (Nombre + Flecha)
+    const row = document.createElement("div");
+    row.className = "flex justify-between items-center w-full py-2 cursor-pointer";
+
+    // Enlace al nombre
     const a = document.createElement("a");
     a.href = `${BASE_PATH}/galerias.html?${currentPath}`;
-    
-    // Si no hay parentPath, es nivel 1 (título grande), si no, es subnivel (texto medio)
     const isTopLevel = !parentPath;
     a.textContent = data.displayName || name;
     a.className = isTopLevel 
-        ? "block text-gray-900 text-2xl font-bold py-2 hover:text-blue-600" 
-        : "block text-gray-700 text-xl font-medium py-1 hover:text-black";
+        ? "text-gray-900 text-2xl font-bold flex-grow" 
+        : "text-gray-700 text-xl font-medium flex-grow";
     
-    container.appendChild(a);
+    row.appendChild(a);
 
-    // RECURSIVIDAD: Si tiene "subs" (hijos), los pintamos dentro de este mismo contenedor
+    // Si tiene hijos, añadimos la flecha y la lógica de acordeón
     if (data.subs && data.subs.length > 0) {
+        const arrow = document.createElement("span");
+        arrow.textContent = "▼";
+        arrow.className = "text-gray-400 px-4 transition-transform duration-300 text-sm";
+        row.appendChild(arrow);
+
         const subList = document.createElement("div");
-        // Añadimos margen izquierdo y una línea guía para que se entienda la jerarquía
-        subList.className = "ml-6 mt-1 space-y-1 border-l-2 border-gray-400 pl-4 mb-2";
-        
+        // EMPIEZA CERRADO: Usamos 'hidden'
+        subList.className = "hidden ml-6 border-l-2 border-gray-400 pl-4 mb-2 space-y-1";
+
+        // Al hacer clic en la fila (pero no en el enlace directo)
+        row.onclick = (e) => {
+            // Si el clic es en la flecha o en el espacio de la fila, toggleamos
+            // Si es en el enlace 'a', el navegador navegará (comportamiento normal)
+            if (e.target !== a) {
+                e.preventDefault();
+                const isHidden = subList.classList.contains('hidden');
+                subList.classList.toggle('hidden');
+                arrow.style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
+            }
+        };
+
+        // Recursividad para los hijos
         data.subs.forEach(sub => {
-            // AQUÍ ESTÁ LA MAGIA: La función se llama a sí misma para los hijos
             subList.appendChild(createMobileItem(sub.name, sub, currentPath));
         });
-        
+
+        container.appendChild(row);
         container.appendChild(subList);
+    } else {
+        // Si no tiene hijos, solo añadimos la fila sin flecha
+        container.appendChild(row);
     }
     
     return container;
