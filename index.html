@@ -8,6 +8,7 @@
 <!-- TailwindCSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="assets/js/config.js"></script>
+<script src="assets/js/i18n.js"></script>
 <script src="assets/js/utils.js"></script>
 <!-- Google Fonts: Montserrat -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -40,7 +41,7 @@ fetch(`${BASE_PATH}/components/header.html`)
     
     i18nScript.onload = () => {
       // ✅ Cargamos el idioma inicial
-      loadLanguage("en");
+      loadLanguage(currentLang);
 
       // 2️⃣ IMPORTANTE: Cargamos las rutas de las imágenes (Logo, banderas, etc.)
       // Asegúrate de que esta función loadHeader() en utils.js 
