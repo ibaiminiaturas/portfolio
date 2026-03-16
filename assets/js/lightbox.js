@@ -76,21 +76,45 @@ function showPrev() {
 }
 
 function positionButtons() {
-  const imgRect = lightboxImg.getBoundingClientRect();
-  
-  // Si la imagen no tiene tamaño aún, salimos
-  if (imgRect.width === 0) return;
+    const imgRect = lightboxImg.getBoundingClientRect();
+    
+    // Si la imagen no está cargada, no calculamos
+    if (imgRect.width === 0) return;
 
-  const margin = 30; // Un poco más de margen para que respiren
+    const margin = 20; // Espacio entre imagen y botón
+    const viewportWidth = window.innerWidth;
 
-  // Posicionamos respecto a los bordes de la IMAGEN real
-  prevBtn.style.left = (imgRect.left - prevBtn.offsetWidth - margin) + 'px';
-  nextBtn.style.left = (imgRect.right + margin) + 'px';
-  
-  // Centrado vertical perfecto
-  const topPos = (imgRect.top + imgRect.height / 2 - prevBtn.offsetHeight / 2) + 'px';
-  prevBtn.style.top = topPos;
-  nextBtn.style.top = topPos;
+    // --- BOTÓN IZQUIERDO ---
+    // Calculamos la posición: el borde izquierdo de la imagen menos el ancho del botón
+    let leftPos = imgRect.left - prevBtn.offsetWidth - margin;
+    
+    // Si no hay espacio a la izquierda, lo pegamos al borde de la pantalla
+    if (leftPos < margin) {
+        prevBtn.style.left = margin + 'px';
+    } else {
+        prevBtn.style.left = leftPos + 'px';
+    }
+
+    // --- BOTÓN DERECHO ---
+    // En lugar de calcular 'left', calculamos la distancia desde la DERECHA de la pantalla
+    // Distancia = (Ancho total pantalla - Borde derecho de imagen) - Ancho botón - margen
+    let spaceOnRight = viewportWidth - imgRect.right;
+    let rightPos = spaceOnRight - nextBtn.offsetWidth - margin;
+
+    // Limpiamos el 'left' previo para que no haya conflictos
+    nextBtn.style.left = 'auto';
+
+    // Si no hay espacio a la derecha, lo pegamos al borde derecho de la pantalla
+    if (rightPos < margin) {
+        nextBtn.style.right = margin + 'px';
+    } else {
+        nextBtn.style.right = rightPos + 'px';
+    }
+
+    // --- CENTRADO VERTICAL ---
+    const topPos = (imgRect.top + (imgRect.height / 2) - (prevBtn.offsetHeight / 2)) + 'px';
+    prevBtn.style.top = topPos;
+    nextBtn.style.top = topPos;
 }
 // Eventos
 nextBtn.addEventListener('click', showNext);
