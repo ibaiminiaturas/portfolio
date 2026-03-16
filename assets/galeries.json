@@ -4,20 +4,18 @@
     "folder": "Box Arts",
     "items": [
       {
+      "name": "infinity-boardgame-corvus-belli-painted-miniatures",
+      "displayName": "Infinity",
+      "images": 25
+    },
+      {
         "name": "Big Child",
         "displayName": "Big Child Studios",
        "subs": [
     {
       "name": "a-song-of-ice-andfire-boardgame-painted-miniatures",
       "displayName": "Game of Thrones",
-      "images": 24,
-        
-           "subs": [
-    {
-      "name": "others",
-      "displayName": "Game of Thrones",
-      "images": 3
-    }]
+      "images": 24
     },
     {
       "name": "marvel-zombies-boardgame-miniatures-painted",
