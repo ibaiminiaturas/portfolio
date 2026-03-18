@@ -4,96 +4,95 @@
     "folder": "Box Arts",
     "items": [
       {
-      "name": "infinity-boardgame-corvus-belli-painted-miniatures",
-      "displayName": "Infinity",
-      "images": 25
-    },
+        "name": "infinity-boardgame-corvus-belli-painted-miniatures",
+        "displayName": "Infinity",
+        "images": 25
+      },
       {
         "name": "Big Child",
         "displayName": "Big Child Studios",
-       "subs": [
-    {
-      "name": "a-song-of-ice-andfire-boardgame-painted-miniatures",
-      "displayName": "Game of Thrones",
-      "images": 24
-    },
-    {
-      "name": "marvel-zombies-boardgame-miniatures-painted",
-      "displayName": "Marvel Zombies",
-      "images": 7,
-      "type": ""
-    },
-    {
-      "name": "marvel_united_boardgame_chibis_painted-miniatures",
-      "displayName": "Marvel United",
-      "images": 6,
-      "type": ""
-    },
-    {
-      "name": "cyberpunk-2077-boardgame-miniatures",
-      "displayName": "Cyber Punk 2077",
-      "images": 10,
-      "type": ""
-    },
-    {
-      "name": "masters-of-the-universe-clash-for-eternia-painted-miniatures",
-      "images": 9
-    },
-    {
-      "name": "zombicide-army-of-the-dead-miniatures",
-      "displayName": "Army Of The Dead",
-      "images": 10,
-      "type": ""
-    },
-    {
-      "name": "zombicide-black-plague-boardgame-miniatures",
-      "displayName": "Black Plague",
-      "images": 4,
-      "type": ""
-    },
-    {
-      "name": "supernatural-boardgame-painted-miniatures",
-      "displayName": "Supernatural",
-      "images": 3,
-      "type": ""
-    },
-    {
-      "name": "household-ttrpg-boardgame-rpg-painted-miniaures",
-      "displayName": "Household TTRPG",
-      "images": 3,
-      "type": ""
-    },
-    {
-      "name": "others",
-      "displayName": "others",
-      "images": 3,
-      "type": ""
-    },
-    {
-      "name": "stranger-things-boardgame-painted-miniatures",
-      "displayName": "Stranger Things",
-      "images": 3,
-      "type": ""
-    },
-    {
-      "name": "dark-knights-metal-boardgame-painted-miniatures",
-      "displayName": "DKM",
-      "images": 2
-    },
-    {
-      "name": "thundercats-boardgame-painted-miniatures",
-      "displayName": "Thundercats",
-      "images": 2,
-      "type": ""
-    }
-  ]
+        "subs": [
+          {
+            "name": "a-song-of-ice-andfire-boardgame-painted-miniatures",
+            "displayName": "Game of Thrones",
+            "images": 24
+          },
+          {
+            "name": "marvel-zombies-boardgame-miniatures-painted",
+            "displayName": "Marvel Zombies",
+            "images": 7,
+            "type": ""
+          },
+          {
+            "name": "marvel_united_boardgame_chibis_painted-miniatures",
+            "displayName": "Marvel United",
+            "images": 6,
+            "type": ""
+          },
+          {
+            "name": "cyberpunk-2077-boardgame-miniatures",
+            "displayName": "Cyber Punk 2077",
+            "images": 10,
+            "type": ""
+          },
+          {
+            "name": "masters-of-the-universe-clash-for-eternia-painted-miniatures",
+            "images": 9
+          },
+          {
+            "name": "zombicide-army-of-the-dead-miniatures",
+            "displayName": "Army Of The Dead",
+            "images": 10,
+            "type": ""
+          },
+          {
+            "name": "zombicide-black-plague-boardgame-miniatures",
+            "displayName": "Black Plague",
+            "images": 4,
+            "type": ""
+          },
+          {
+            "name": "supernatural-boardgame-painted-miniatures",
+            "displayName": "Supernatural",
+            "images": 3,
+            "type": ""
+          },
+          {
+            "name": "household-ttrpg-boardgame-rpg-painted-miniaures",
+            "displayName": "Household TTRPG",
+            "images": 3,
+            "type": ""
+          },
+          {
+            "name": "others",
+            "displayName": "others",
+            "images": 3,
+            "type": ""
+          },
+          {
+            "name": "stranger-things-boardgame-painted-miniatures",
+            "displayName": "Stranger Things",
+            "images": 3,
+            "type": ""
+          },
+          {
+            "name": "dark-knights-metal-boardgame-painted-miniatures",
+            "displayName": "DKM",
+            "images": 2
+          },
+          {
+            "name": "thundercats-boardgame-painted-miniatures",
+            "displayName": "Thundercats",
+            "images": 2,
+            "type": ""
+          }
+        ]
       },
       {
         "name": "bite-the-bullet-studio-painted-miniatures",
         "displayName": "Bite the bullet",
         "images": 12
       },
-      
       {
         "name": "aradia-wizard-dwarf-dragon-miniatures",
         "displayName": "Aradia Miniatures",
@@ -106,5 +105,22 @@
     "folder": "art-w-sanguinius-blood-angel",
     "images": 7,
     "displayName": "Art-W Collection"
+  },
+  {
+    "category": "Warhammer",
+    "folder": "Warhammer",
+    "items": [
+      {
+        "name": "Warhammer-40k",
+        "displayName": "Warhammer 40k",
+        "subs": [
+          {
+            "name": "blood-angels-penitents-painted-miniatures",
+            "displayName": "Angels Penitents",
+            "images": 9
+          }
+        ]
+      }
+    ]
   }
 ]
