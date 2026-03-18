@@ -76,6 +76,9 @@ if (galeriaSeleccionada) galeriaSeleccionada = decodeURIComponent(galeriaSelecci
 const allSubs = params.getAll('sub');
 const subSeleccionada = allSubs.length > 0 ? allSubs[allSubs.length - 1] : null;
 
+// NUEVO: Verificamos si estamos en una subgalería profunda (más allá del nivel 1)
+const esNivelProfundo = allSubs.length > 1;
+
 const container = document.getElementById('galeria-container');
 const titulo = document.getElementById('titulo-galeria');
 
@@ -109,84 +112,89 @@ fetch(`${BASE_PATH}/assets/galeries.json`)
     const folderRaiz = categoriaRaiz.folder || categoriaRaiz.category;
     const basePathRaiz = `${BASE_PATH}/galleries/data/${folderRaiz}`;
 
-if (subSeleccionada) {
-        const encontrada = buscarEnItems(categoriaRaiz.items || [], subSeleccionada);
-        
-        if (encontrada) {
-            let pathAcumulado = basePathRaiz;
-            if (allSubs.length > 1) {
-                for (let i = 0; i < allSubs.length - 1; i++) {
-                    pathAcumulado += `/${allSubs[i]}`;
-                }
-            }
-            const pathActual = `${pathAcumulado}/${encontrada.name}`;
+// --- LÓGICA DE SELECCIÓN DE RENDERIZADO ---
 
-            // 1. EL NIVEL ACTUAL
-            // Si tiene hijos, lo ponemos como carrusel. Si NO tiene hijos, es mosaico.
-            const tieneHijos = (encontrada.subs && encontrada.subs.length > 0) || (encontrada.items && encontrada.items.length > 0);
-            
-            if (encontrada.images && encontrada.images > 0) {
+if (subSeleccionada) {
+    const encontrada = buscarEnItems(categoriaRaiz.items || [], subSeleccionada);
+    
+    if (encontrada) {
+        let pathAcumulado = basePathRaiz;
+        if (allSubs.length > 1) {
+            for (let i = 0; i < allSubs.length - 1; i++) {
+                pathAcumulado += `/${allSubs[i]}`;
+            }
+        }
+        const pathActual = `${pathAcumulado}/${encontrada.name}`;
+
+        // Determinar si el elemento que hemos pinchado tiene hijos
+        const tieneHijos = (encontrada.subs && encontrada.subs.length > 0) || (encontrada.items && encontrada.items.length > 0);
+
+        if (!tieneHijos) {
+            // CASO: "Pincho en Marvel Zombies" (No tiene hijos) -> MOSAICO ÚNICO
+            itemsParaRenderizar.push({
+                ...encontrada,
+                calculatedPath: pathActual,
+                renderType: 'mosaic'
+            });
+        } else {
+            // CASO: "Pincho en Big Child" (Tiene hijos) -> LISTA DE CARRUSELES
+            // Primero, si el padre tiene imágenes propias, las ponemos como carrusel
+            if (encontrada.images > 0) {
                 itemsParaRenderizar.push({
                     ...encontrada,
                     calculatedPath: pathActual,
-                    renderType: tieneHijos ? 'carousel' : 'mosaic' // <--- EL FIX AQUÍ
+                    renderType: 'carousel'
                 });
             }
 
-            // 2. BUSQUEDA PROFUNDA DE SUBS
-            const recolectarSubs = (parentItem, currentPath) => {
+            // Luego, todos sus hijos directos o profundos se vuelven carruseles
+            const recolectarComoCarruseles = (parentItem, currentPath) => {
                 const subLista = parentItem.subs || parentItem.items || [];
                 subLista.forEach(s => {
                     const miPath = `${currentPath}/${s.name}`;
-                    const sTieneHijos = (s.subs && s.subs.length > 0) || (s.items && s.items.length > 0);
-                    
                     if (s.images && s.images > 0) {
                         itemsParaRenderizar.push({
                             ...s,
                             calculatedPath: miPath,
-                            renderType: sTieneHijos ? 'carousel' : 'mosaic' // <--- Y AQUÍ
+                            renderType: 'carousel' // Todo hijo en esta vista es carrusel
                         });
                     }
-                    recolectarSubs(s, miPath);
+                    recolectarComoCarruseles(s, miPath);
                 });
             };
-
-            recolectarSubs(encontrada, pathActual);
+            recolectarComoCarruseles(encontrada, pathActual);
         }
-    } else {
-        // --- VISTA GENERAL (MOSAICOS) ---
-        const listaAProcesar = categoriaRaiz.items || [categoriaRaiz];
-        itemsParaRenderizar = listaAProcesar.map(hijo => {
-            let fotosFucionadas = [];
-            
-            const recolectarTodo = (item, pathPadre) => {
-                // Si pathPadre está vacío o es el raíz, el path es directamente el nombre del item
-                const nombreItem = item.name || item.category;
-                const miPath = pathPadre.endsWith(nombreItem) ? pathPadre : `${pathPadre}/${nombreItem}`;
-                
-                const nombreLimpio = nombreItem.toLowerCase().replace(/\s+/g, '-');
-
-                if (item.images > 0) {
-                    for (let i = 1; i <= item.images; i++) {
-                        fotosFucionadas.push(`${miPath}/${nombreLimpio}-${i}.webp`);
-                    }
-                }
-                const subItems = item.subs || item.items || [];
-                subItems.forEach(s => recolectarTodo(s, miPath));
-            };
-
-            // FIX: Empezamos la ruta desde la carpeta de la galería (galleries/data/BoxArt)
-            // pero sin añadirle otra vez /BoxArt dentro de la función si ya estamos ahí.
-            recolectarTodo(hijo, basePathRaiz);
-
-            return {
-                ...hijo,
-                name: hijo.name || hijo.category,
-                forcedImages: fotosFucionadas,
-                renderType: 'mosaic'
-            };
-        });
     }
+} else {
+    // --- CASO NIVEL 1 (Box Arts) ---
+    // Todo sale como MOSAICO (aplanando el contenido)
+    const listaAProcesar = categoriaRaiz.items || [categoriaRaiz];
+    itemsParaRenderizar = listaAProcesar.map(hijo => {
+        let fotosFucionadas = [];
+        const recolectarTodo = (item, pathPadre) => {
+            const nombreItem = item.name || item.category;
+            const miPath = pathPadre.endsWith(nombreItem) ? pathPadre : `${pathPadre}/${nombreItem}`;
+            const nombreLimpio = nombreItem.toLowerCase().replace(/\s+/g, '-');
+
+            if (item.images > 0) {
+                for (let i = 1; i <= item.images; i++) {
+                    fotosFucionadas.push(`${miPath}/${nombreLimpio}-${i}.webp`);
+                }
+            }
+            const subItems = item.subs || item.items || [];
+            subItems.forEach(s => recolectarTodo(s, miPath));
+        };
+
+        recolectarTodo(hijo, basePathRaiz);
+
+        return {
+            ...hijo,
+            name: hijo.name || hijo.category,
+            forcedImages: fotosFucionadas,
+            renderType: 'mosaic'
+        };
+    });
+}
 
     // Título i18n
     const claveI18n = subSeleccionada ? `galeries.${subSeleccionada}` : `galeries.${galeriaSeleccionada}`;
@@ -213,7 +221,10 @@ if (subSeleccionada) {
             bloqueDiv.style.alignItems = 'center';
             bloqueDiv.style.marginBottom = '120px';
 
-            if (!subSeleccionada && itemsParaRenderizar.length > 1) {
+            const esVistaGeneral = !subSeleccionada && itemsParaRenderizar.length > 1;
+            const esGaleriaColgante = subSeleccionada && item.name !== subSeleccionada;
+
+            if (esVistaGeneral || esGaleriaColgante) {
                 const nombreDiv = document.createElement('div');
                 nombreDiv.className = 'text-4xl font-bold text-gray-500 text-center mb-12 uppercase';
                 nombreDiv.setAttribute('data-i18n', `galeries.${item.name}`);
