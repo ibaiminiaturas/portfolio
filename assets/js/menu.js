@@ -231,7 +231,7 @@ if (btnHamburguesa && menuMovil) {
                 });
             }
         })
-        .catch(err => console.error("Error cargando menú:", err));
+        .catch(err => console.error("Error loading menu:", err));
 }
 
 // Ejecución

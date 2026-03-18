@@ -24,7 +24,7 @@ async function loadLanguage(lang) {
         document.dispatchEvent(new CustomEvent('languageChanged', { detail: lang }));
         
     } catch (err) {
-        console.error("Error cargando idioma:", err);
+        console.error("Error loading language:", err);
     }
 }
 

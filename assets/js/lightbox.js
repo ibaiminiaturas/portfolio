@@ -1,5 +1,3 @@
-console.log("LIGHTBOX JS CARGADO - MODO FULLSCREEN");
-
 let currentImages = [];
 let currentIndex = 0;
 

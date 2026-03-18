@@ -16,9 +16,6 @@ function loadHeader() {
             const el = document.getElementById(img.id);
             if (el) {
                 el.src = `${BASE_PATH}/${img.path}`.replace(/\/+/g, '/'); 
-                console.log(`✅ Cargada: ${img.id}`); // Si ves esto en consola, la ruta se puso
-            } else {
-                console.warn(`⚠️ No se encontró: ${img.id}`);
             }
         });
     }, 50); // 50ms son suficientes para que el DOM se entere
