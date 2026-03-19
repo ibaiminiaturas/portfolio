@@ -6,8 +6,8 @@ function loadHeader() {
             { id: 'header-logo-mobile', path: 'assets/images/ibai-miniaturas-circle.webp' },
             { id: 'flag-es', path: 'assets/images/flag-es.svg' },
             { id: 'flag-uk', path: 'assets/images/flag-uk.svg' },
-            { id: 'flag-es-mobile', path: 'assets/images/flag-es.svg' },
-            { id: 'flag-en-mobile', path: 'assets/images/flag-uk.png' }, // Asegúrate de que es .svg
+            { id: 'flag-es-mobile', path: '/assets/images/flag-es.png' },
+            { id: 'flag-en-mobile', path: '/assets/images/flag-uk.png' }, 
             { id: 'ig-icon', path: 'assets/images/instagram.png' },
             { id: 'ig-icon-mobile', path: 'assets/images/instagram.png' }
         ];
