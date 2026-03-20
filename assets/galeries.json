@@ -115,9 +115,36 @@
         "displayName": "Warhammer 40k",
         "subs": [
           {
-            "name": "blood-angels-penitents-painted-miniatures",
-            "displayName": "Angels Penitents",
-            "images": 9
+            "name": "chaos-space-marine-painted-miniatures",
+            "displayName": "Chaos Space Marines",
+            "images": 0,
+            "subs": [
+              {
+                "name": "black-legion-abaddon-painted-miniatures",
+                "displayName": "Black Legion Abaddon",
+                "images": 6
+              },
+              {
+                "name": "huron-blackheart-painted-miniatures",
+                "displayName": "Huron Blackheart",
+                "images": 5
+              },
+              {
+                "name": "nightlords-konrad-curze-forgeworld-painted-miniatures",
+                "displayName": "Konrad Kurze",
+                "images": 6
+              },
+              {
+                "name": "nightlords-sevatar-painted-miniatures",
+                "displayName": "Sevatar",
+                "images": 7
+              },
+              {
+                "name": "chaos-spawn-painted-miniatures",
+                "displayName": "Chaos Spawn",
+                "images": 5
+              }
+            ]
           }
         ]
       }
