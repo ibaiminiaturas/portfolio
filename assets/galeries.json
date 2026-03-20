@@ -145,6 +145,58 @@
                 "images": 5
               }
             ]
+          },
+          {
+            "name": "loyalist-space-marines-painted-miniatures",
+            "displayName": "Loyalist Space Marines",
+            "images": 10,
+            "subs": [
+              {
+                "name": "black-templars-painted-miniatures",
+                "displayName": "Black Templars",
+                "images": 10
+              },
+              {
+                "name": "blood-angels-penitents-painted-miniatures",
+                "displayName": "Angels Penitents",
+                "images": 9
+              },
+              {
+                "name": "blood-angels-dante-painted-miniatures",
+                "displayName": "Dante",
+                "images": 3
+              },
+              {
+                "name": "blood-angels-death-company-painted-miniatures",
+                "displayName": "Death Company",
+                "images": 3
+              },
+              {
+                "name": "catachan-forces-painted-miniatures",
+                "displayName": "Catachan",
+                "images": 4
+              },             
+              {
+                "name": "red-ronin-space-marine-painted-miniatures",
+                "displayName": "Red Ronins",
+                "images": 6
+              },
+                            {
+                "name": "rogal-dorn-forge-worl-painted-miniatures",
+                "displayName": "Rogal Dorn",
+                "images": 9
+              },
+                {
+                "name": "space-wolves-ragnar-blackmane-painted-miniatures",
+                "displayName": "Ragnar Blackmane",
+                "images": 5
+              },
+                              {
+                "name": "trajan-valoris-custodes-painted-miniatures",
+                "displayName": "Trajan Valoris",
+                "images": 6
+              }
+            ]
           }
         ]
       }
