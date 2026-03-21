@@ -220,7 +220,46 @@
             ]
           } 
         ]
-      }
+      },
+      {
+      "name": "warhammer-age-of-sigmar",
+        "displayName": "Warhammer Age Of Sigmar",
+        "images": 21,
+        "subs": [
+          {
+            "name": "mega-gargant-ogre-reigns-painted-miniatures",
+            "displayName": "Mega Gargant",
+            "images": 14
+          },
+           {
+            "name": "teclis-and-celennar-age-of-sigmar-painted-miniatures",
+            "displayName": "Teclis And Celennar",
+            "images": 8
+          },
+          
+                    {
+            "name": "orcs-and-goblins-age-of-sigmar-painted-miniatures",
+            "displayName": "Orcs And Goblins",
+            "images": 19
+          },
+                    {
+            "name": "vampire-counts-age-of-sigmar-painted-miniatures",
+            "displayName": "Vampire Counts",
+            "images": 19
+          },
+
+          {
+            "name": "gotrek-dwarf-age-of-sigma-painted-miniatures",
+            "displayName": "Gotrek",
+            "images": 6
+          },
+                    {
+            "name": "nurgle-age-of-sigmar-painted-miniatures",
+            "displayName": "Nurgle Rot King",
+            "images": 10
+          }
+            ]
+          }
     ]
   },
         {
