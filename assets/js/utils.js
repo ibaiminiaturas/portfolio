@@ -9,7 +9,11 @@ function loadHeader() {
             { id: 'flag-es-mobile', path: '/assets/images/flag-es.png' },
             { id: 'flag-en-mobile', path: '/assets/images/flag-uk.png' }, 
             { id: 'ig-icon', path: 'assets/images/instagram.png' },
-            { id: 'ig-icon-mobile', path: 'assets/images/instagram.png' }
+
+            { id: 'ig-icon-mobile', path: 'assets/images/instagram.png' },
+            { id: 'fiverr-icon', path: '/assets/images/fiverr.svg' },
+            
+            { id: 'fiverr-icon-mobile', path: '/assets/images/fiverr.png' }
         ];
 
         images.forEach(img => {
