@@ -235,6 +235,34 @@
     "images": 13,
     "displayName": "Blood Bowl"
   },
+  {
+    "category": "54mm-75mm-painted-miniatures",
+    "folder": "54mm-75mm",
+    "items": [
+       {
+        "name": "squidmar-painted-miniatures",
+        "displayName": "Squidmar",
+            "images": 8
+      },
+    
+            {
+        "name": "75mm-fantasy-painted-miniatures",
+        "displayName": "Fantasy 75,mm",
+            "images":17
+      },
+      {
+        "name": "the-last-of-us-2-miniatures-painted",
+        "displayName": "The Last of Us 2",
+            "images": 5
+      },
+            {
+        "name": "hero-forge-viking-painted-miniaturesd",
+        "displayName": "Hero Forge Viking",
+            "images": 5
+      }
+     
+    ]
+    },
       {
     "category": "kingdom-death-monsters-painted-miniatures",
     "folder": "kingdom-death-monsters-painted-miniatures",
