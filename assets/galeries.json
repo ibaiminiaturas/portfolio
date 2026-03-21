@@ -192,12 +192,33 @@
                 "images": 5
               },
                               {
-                "name": "trajan-valoris-custodes-painted-miniatures",
+                "name": "trajann-valoris-custodes-painted-miniatures",
                 "displayName": "Trajan Valoris",
                 "images": 6
               }
             ]
-          }
+          },
+          {"name": "xenos-space-marine-painted-miniatures",
+            "displayName": "Xenos",
+            "images": 1,
+            "subs": [
+              {
+                "name": "dark-eldars-painted-miniatures",
+                "displayName": "Dark Eldars",
+                "images": 12
+              },
+                            {
+                "name": "ynnari-eldar-deathgod-painted-miniatures",
+                "displayName": "Ynnari",
+                "images": 9
+              },
+                            {
+                "name": "eldar-harlequins-painted-miniatures",
+                "displayName": "Dark Eldars",
+                "images": 8
+              }
+            ]
+          } 
         ]
       }
     ]
