@@ -117,7 +117,7 @@
           {
             "name": "chaos-space-marine-painted-miniatures",
             "displayName": "Chaos Space Marines",
-            "images": 0,
+            "images": 6,
             "subs": [
               {
                 "name": "black-legion-abaddon-painted-miniatures",
@@ -149,7 +149,7 @@
           {
             "name": "loyalist-space-marines-painted-miniatures",
             "displayName": "Loyalist Space Marines",
-            "images": 10,
+            "images": 18,
             "subs": [
               {
                 "name": "black-templars-painted-miniatures",
@@ -222,5 +222,23 @@
         ]
       }
     ]
+  },
+        {
+    "category": "lord-of-the-rings-board-game-painted-miniatures",
+    "folder": "lord-of-the-rings-board-game-painted-miniatures",
+    "images": 12,
+    "displayName": "The Lord Of the Rings"
+  },
+    {
+    "category": "bloodbowl-painted-miniatures",
+    "folder": "bloodbowl-painted-miniatures",
+    "images": 13,
+    "displayName": "Blood Bowl"
+  },
+      {
+    "category": "kingdom-death-monsters-painted-miniatures",
+    "folder": "kingdom-death-monsters-painted-miniatures",
+    "images": 6,
+    "displayName": "Kingdom death"
   }
 ]
