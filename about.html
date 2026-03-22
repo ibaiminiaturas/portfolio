@@ -32,6 +32,7 @@ fetch(`${BASE_PATH}/components/header.html`)
   header.innerHTML=html;
       loadLanguage(currentLang);
           loadHeader("");
+          loadLinks();
   header.style.transition='box-shadow 0.3s ease';
   window.addEventListener('scroll',()=>{
     header.style.boxShadow=window.scrollY>10?'0 2px 8px rgba(0,0,0,0.1)':'none';
@@ -195,11 +196,16 @@ fetch(`${BASE_PATH}/components/header.html`)
 
 <script>
 fetch(`${BASE_PATH}/components/footer.html`)
-.then(res=>res.text())
-.then(html=>{
-document.getElementById('footer-placeholder').innerHTML=html;
-
-});
+  .then(res => res.text())
+  .then(html => {
+    // Usamos el ID con getElementById
+    const placeholder = document.getElementById('footer-placeholder');
+    if (placeholder) {
+      placeholder.innerHTML = html;
+      // Ahora que el HTML existe, ejecutamos la carga de links
+      loadLinks(); 
+    }
+  });
     
 </script>
 

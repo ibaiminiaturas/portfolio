@@ -1,15 +1,5 @@
 // assets/js/config.js
-// Define BASE_PATH dinámicamente
-const BASE_PATH = (function() {
 
-  const isGithub = location.hostname.includes("github.io");
-  if (isGithub) {
-    // Ajusta 'portfolio' al nombre de tu repo en GitHub
-    return "/portfolio";
-  } else {
-    return ""; // local
-  }
-})();
 
 // Objeto global accesible desde cualquier sitio
 window.AppConfig = {
@@ -43,3 +33,14 @@ init: async function() {
 
 // Arrancamos la carga
 window.AppConfig.init();
+
+// Define BASE_PATH dinámicamente
+const BASE_PATH = (function() {
+
+  const isGithub = location.hostname.includes("github.io");
+  if (isGithub) {
+    return window.AppConfig.get("repo_name");
+  } else {
+    return ""; // local
+  }
+})();

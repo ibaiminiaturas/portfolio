@@ -1,6 +1,13 @@
 {
   "contact": 
   {
-    "email_service_url": "https://formspree.io/f/xaqpelyo"
+    "email_service_url": "https://formspree.io/f/xaqpelyo",
+    "email": "ibaiminiaturas@gmail.com"
+  },
+      "repo_name": "/portfolio",
+  "socialMedia": 
+  {
+    "instagram": "https://www.instagram.com/ibaiminiaturas",
+    "fiverr": "https://www.fiverr.com/sellers/ibaiminiatures"
   }
 }
