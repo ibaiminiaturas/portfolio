@@ -101,226 +101,216 @@
     ]
   },
   {
-    "category": "art-w-sanguinius-blood-angel",
-    "folder": "art-w-sanguinius-blood-angel",
-    "images": 7,
-    "displayName": "Art-W Collection"
-  },
-  {
-    "category": "Warhammer",
-    "folder": "Warhammer",
+    "category": "Warhammer-40k",
+    "folder": "Warhammer-40k",
     "items": [
       {
-        "name": "Warhammer-40k",
-        "displayName": "Warhammer 40k",
+        "name": "chaos-space-marine-painted-miniatures",
+        "displayName": "Chaos Space Marines",
+        "images": 6,
         "subs": [
           {
-            "name": "chaos-space-marine-painted-miniatures",
-            "displayName": "Chaos Space Marines",
-            "images": 6,
-            "subs": [
-              {
-                "name": "black-legion-abaddon-painted-miniatures",
-                "displayName": "Black Legion Abaddon",
-                "images": 6
-              },
-              {
-                "name": "huron-blackheart-painted-miniatures",
-                "displayName": "Huron Blackheart",
-                "images": 5
-              },
-              {
-                "name": "nightlords-konrad-curze-forgeworld-painted-miniatures",
-                "displayName": "Konrad Kurze",
-                "images": 6
-              },
-              {
-                "name": "nightlords-sevatar-painted-miniatures",
-                "displayName": "Sevatar",
-                "images": 7
-              },
-              {
-                "name": "chaos-spawn-painted-miniatures",
-                "displayName": "Chaos Spawn",
-                "images": 5
-              }
-            ]
+            "name": "black-legion-abaddon-painted-miniatures",
+            "displayName": "Black Legion Abaddon",
+            "images": 6
           },
           {
-            "name": "loyalist-space-marines-painted-miniatures",
-            "displayName": "Loyalist Space Marines",
-            "images": 18,
-            "subs": [
-              {
-                "name": "black-templars-painted-miniatures",
-                "displayName": "Black Templars",
-                "images": 10
-              },
-              {
-                "name": "blood-angels-penitents-painted-miniatures",
-                "displayName": "Angels Penitents",
-                "images": 9
-              },
-              {
-                "name": "blood-angels-dante-painted-miniatures",
-                "displayName": "Dante",
-                "images": 3
-              },
-              {
-                "name": "blood-angels-death-company-painted-miniatures",
-                "displayName": "Death Company",
-                "images": 3
-              },
-              {
-                "name": "catachan-forces-painted-miniatures",
-                "displayName": "Catachan",
-                "images": 4
-              },             
-              {
-                "name": "red-ronin-space-marine-painted-miniatures",
-                "displayName": "Red Ronins",
-                "images": 6
-              },
-                            {
-                "name": "rogal-dorn-forge-worl-painted-miniatures",
-                "displayName": "Rogal Dorn",
-                "images": 9
-              },
-                {
-                "name": "space-wolves-ragnar-blackmane-painted-miniatures",
-                "displayName": "Ragnar Blackmane",
-                "images": 5
-              },
-                              {
-                "name": "trajann-valoris-custodes-painted-miniatures",
-                "displayName": "Trajan Valoris",
-                "images": 6
-              }
-            ]
+            "name": "huron-blackheart-painted-miniatures",
+            "displayName": "Huron Blackheart",
+            "images": 5
           },
-          {"name": "xenos-space-marine-painted-miniatures",
-            "displayName": "Xenos",
-            "images": 1,
-            "subs": [
-              {
-                "name": "dark-eldars-painted-miniatures",
-                "displayName": "Dark Eldars",
-                "images": 12
-              },
-                            {
-                "name": "ynnari-eldar-deathgod-painted-miniatures",
-                "displayName": "Ynnari",
-                "images": 9
-              },
-                            {
-                "name": "eldar-harlequins-painted-miniatures",
-                "displayName": "Dark Eldars",
-                "images": 8
-              }
-            ]
-          } 
+          {
+            "name": "nightlords-konrad-curze-forgeworld-painted-miniatures",
+            "displayName": "Konrad Kurze",
+            "images": 6
+          },
+          {
+            "name": "nightlords-sevatar-painted-miniatures",
+            "displayName": "Sevatar",
+            "images": 7
+          },
+          {
+            "name": "chaos-spawn-painted-miniatures",
+            "displayName": "Chaos Spawn",
+            "images": 5
+          }
         ]
       },
       {
-      "name": "warhammer-age-of-sigmar",
-        "displayName": "Warhammer Age Of Sigmar",
-        "images": 21,
+        "name": "loyalist-space-marines-painted-miniatures",
+        "displayName": "Loyalist Space Marines",
+        "images": 18,
         "subs": [
           {
-            "name": "mega-gargant-ogre-reigns-painted-miniatures",
-            "displayName": "Mega Gargant",
-            "images": 14
+            "name": "art-w-sanguinius-blood-angel",
+            "displayName": "Art-W Collection",
+            "images": 7
           },
-           {
-            "name": "teclis-and-celennar-age-of-sigmar-painted-miniatures",
-            "displayName": "Teclis And Celennar",
-            "images": 8
-          },
-          
-                    {
-            "name": "orcs-and-goblins-age-of-sigmar-painted-miniatures",
-            "displayName": "Orcs And Goblins",
-            "images": 19
-          },
-                    {
-            "name": "vampire-counts-age-of-sigmar-painted-miniatures",
-            "displayName": "Vampire Counts",
-            "images": 19
-          },
-
           {
-            "name": "gotrek-dwarf-age-of-sigma-painted-miniatures",
-            "displayName": "Gotrek",
-            "images": 6
-          },
-                    {
-            "name": "nurgle-age-of-sigmar-painted-miniatures",
-            "displayName": "Nurgle Rot King",
+            "name": "black-templars-painted-miniatures",
+            "displayName": "Black Templars",
             "images": 10
-          }
-            ]
-          }
-          ,
-      {
-      "name": "warhammer-the-old-world",
-        "displayName": "Warhammer The Old World",
-        "subs": [
-          
-                    {
-            "name": "chaos-ogroids-age-of-sigmar-painted-miniatures",
-            "displayName": "Chaos Ogroids",
+          },
+          {
+            "name": "blood-angels-penitents-painted-miniatures",
+            "displayName": "Angels Penitents",
+            "images": 9
+          },
+          {
+            "name": "blood-angels-dante-painted-miniatures",
+            "displayName": "Dante",
+            "images": 3
+          },
+          {
+            "name": "blood-angels-death-company-painted-miniatures",
+            "displayName": "Death Company",
+            "images": 3
+          },
+          {
+            "name": "catachan-forces-painted-miniatures",
+            "displayName": "Catachan",
             "images": 4
           },
           {
-            "name": "bretonnia-old-world-pianted-miniatures",
-            "displayName": "Bretonnia",
-            "images": 15
+            "name": "red-ronin-space-marine-painted-miniatures",
+            "displayName": "Red Ronins",
+            "images": 6
+          },
+          {
+            "name": "rogal-dorn-forge-worl-painted-miniatures",
+            "displayName": "Rogal Dorn",
+            "images": 9
+          },
+          {
+            "name": "space-wolves-ragnar-blackmane-painted-miniatures",
+            "displayName": "Ragnar Blackmane",
+            "images": 5
+          },
+          {
+            "name": "trajann-valoris-custodes-painted-miniatures",
+            "displayName": "Trajan Valoris",
+            "images": 6
+          }
+        ]
+      },
+      {
+        "name": "xenos-space-marine-painted-miniatures",
+        "displayName": "Xenos",
+        "images": 1,
+        "subs": [
+          {
+            "name": "dark-eldars-painted-miniatures",
+            "displayName": "Dark Eldars",
+            "images": 12
+          },
+          {
+            "name": "ynnari-eldar-deathgod-painted-miniatures",
+            "displayName": "Ynnari",
+            "images": 9
+          },
+          {
+            "name": "eldar-harlequins-painted-miniatures",
+            "displayName": "Dark Eldars",
+            "images": 8
           }
         ]
       }
     ]
   },
-        {
+  {
+    "category": "warhammer-age-of-sigmar",
+    "folder": "warhammer-age-of-sigmar",
+    "images": 21,
+    "items": [
+      {
+        "name": "mega-gargant-ogre-reigns-painted-miniatures",
+        "displayName": "Mega Gargant",
+        "images": 14
+      },
+      {
+        "name": "teclis-and-celennar-age-of-sigmar-painted-miniatures",
+        "displayName": "Teclis And Celennar",
+        "images": 8
+      },
+      {
+        "name": "orcs-and-goblins-age-of-sigmar-painted-miniatures",
+        "displayName": "Orcs And Goblins",
+        "images": 19
+      },
+      {
+        "name": "vampire-counts-age-of-sigmar-painted-miniatures",
+        "displayName": "Vampire Counts",
+        "images": 19
+      },
+      {
+        "name": "gotrek-dwarf-age-of-sigma-painted-miniatures",
+        "displayName": "Gotrek",
+        "images": 6
+      },
+      {
+        "name": "nurgle-age-of-sigmar-painted-miniatures",
+        "displayName": "Nurgle Rot King",
+        "images": 10
+      }
+    ]
+  },
+  {
+    "category": "warhammer-the-old-world",
+    "folder": "warhammer-the-old-world",
+    "displayName": "Warhammer The Old World",
+    "items": [
+      {
+        "name": "chaos-ogroids-age-of-sigmar-painted-miniatures",
+        "displayName": "Chaos Ogroids",
+        "images": 4
+      },
+      {
+        "name": "bretonnia-old-world-pianted-miniatures",
+        "displayName": "Bretonnia",
+        "images": 15
+      }
+    ]
+  },
+    {
+    "category": "54mm-75mm-painted-miniatures",
+    "folder": "54mm-75mm",
+    "items": [
+      {
+        "name": "squidmar-painted-miniatures",
+        "displayName": "Squidmar",
+        "images": 8
+      },
+      {
+        "name": "75mm-fantasy-painted-miniatures",
+        "displayName": "Fantasy 75,mm",
+        "images": 17
+      },
+      {
+        "name": "the-last-of-us-2-miniatures-painted",
+        "displayName": "The Last of Us 2",
+        "images": 5
+      },
+      {
+        "name": "hero-forge-viking-painted-miniaturesd",
+        "displayName": "Hero Forge Viking",
+        "images": 5
+      }
+    ]
+  },
+  {
     "category": "lord-of-the-rings-board-game-painted-miniatures",
     "folder": "lord-of-the-rings-board-game-painted-miniatures",
     "images": 12,
     "displayName": "The Lord Of the Rings"
   },
-    {
+  {
     "category": "bloodbowl-painted-miniatures",
     "folder": "bloodbowl-painted-miniatures",
     "images": 13,
     "displayName": "Blood Bowl"
   },
+
   {
-    "category": "54mm-75mm-painted-miniatures",
-    "folder": "54mm-75mm",
-    "items": [
-       {
-        "name": "squidmar-painted-miniatures",
-        "displayName": "Squidmar",
-            "images": 8
-      },
-    
-            {
-        "name": "75mm-fantasy-painted-miniatures",
-        "displayName": "Fantasy 75,mm",
-            "images":17
-      },
-      {
-        "name": "the-last-of-us-2-miniatures-painted",
-        "displayName": "The Last of Us 2",
-            "images": 5
-      },
-            {
-        "name": "hero-forge-viking-painted-miniaturesd",
-        "displayName": "Hero Forge Viking",
-            "images": 5
-      }
-     
-    ]
-    },
-      {
     "category": "kingdom-death-monsters-painted-miniatures",
     "folder": "kingdom-death-monsters-painted-miniatures",
     "images": 6,
