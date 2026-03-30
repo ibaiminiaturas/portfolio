@@ -39,7 +39,7 @@ fetch(`${BASE_PATH}/components/header.html`)
     if (typeof loadHeader === 'function') {
       loadHeader(""); 
     }
-
+      loadLinks(); 
     if (!document.getElementById('menu-script')) {
       const menuScript = document.createElement('script');
       menuScript.id = 'menu-script';
@@ -126,6 +126,7 @@ fetch(`${BASE_PATH}/components/footer.html`)
   .then(res => res.text())
   .then(html => {
     document.getElementById('footer-placeholder').innerHTML = html;
+          loadLinks(); 
   });
 </script>
 
