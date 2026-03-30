@@ -20,10 +20,11 @@ export function crearMiniCarrusel(sub, images) {
         img.src = images[i];
         img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0 cursor-pointer';
 // --- ESTA LÍNEA ES LA QUE FALTA ---
-    img.style.transition = 'transform 0.3s ease-out';
+        img.style.transition = 'transform 0.3s ease-out';
         carruselDiv.appendChild(img);
         imgs.push(img);
-
+        img.loading = "lazy"; // <--- Añade esto siempre
+        img.decoding = "async";
         img.addEventListener('click', () => openLightbox(images, i));
 
         img.addEventListener('mouseenter', () => { img.style.transform = 'scale(0.95)'; });
@@ -37,7 +38,7 @@ export function crearMiniCarrusel(sub, images) {
 <svg xmlns="http://www.w3.org/2000/svg"
      width="60"
      height="60"
-     class="text-gray-800 hover:text-fuchsia-600 cursor-pointer"
+     class="text-fuchsia-400 hover:text-fuchsia-600 cursor-pointer"
      fill="none"
      viewBox="0 0 24 24"
      stroke="currentColor">
@@ -57,7 +58,7 @@ export function crearMiniCarrusel(sub, images) {
     rightArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" 
          width="60"
      height="60"
-    class="text-gray-800 hover:text-fuchsia-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
+    class="text-fuchsia-400 hover:text-fuchsia-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
     rightArrow.style.position = 'absolute';
     rightArrow.style.right = '0';
     rightArrow.style.top = '50%';

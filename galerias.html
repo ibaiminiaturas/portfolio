@@ -44,7 +44,7 @@
         document.getElementById('main-header').innerHTML = html;
         if (typeof loadLanguage === 'function') loadLanguage("en");
         if (typeof loadHeader === 'function') loadHeader("");
-
+      loadLinks(); 
         // Cargamos el menú DESPUÉS de inyectar el HTML
         const scriptMenu = document.createElement('script');
         scriptMenu.src = `assets/js/menu.js`;
@@ -316,7 +316,7 @@ if (subSeleccionada) {
 <script>
   fetch(`${BASE_PATH}/components/footer.html`)
     .then(res => res.text())
-    .then(html => { document.getElementById('footer-placeholder').innerHTML = html; });
+    .then(html => { document.getElementById('footer-placeholder').innerHTML = html;       loadLinks(); });
 </script>
 
 </body>

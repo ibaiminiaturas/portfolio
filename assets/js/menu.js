@@ -94,6 +94,8 @@ function createMobileItem(name, data, parentPath = "") {
         ? `${parentPath}&sub=${encodeURIComponent(name)}` 
         : `galeria=${encodeURIComponent(name)}`;
 
+
+        
     // Contenedor de la fila superior (Nombre + Flecha)
     const row = document.createElement("div");
     row.className = "flex justify-between items-center w-full py-2 cursor-pointer";
@@ -101,8 +103,19 @@ function createMobileItem(name, data, parentPath = "") {
     // Enlace al nombre
     const a = document.createElement("a");
     a.href = `${BASE_PATH}/galerias.html?${currentPath}`;
+
+const claveI18n = `galeries.${name}`;
+    a.setAttribute('data-i18n', claveI18n);
+
+    // Intentamos traducir igual que en escritorio
+    const textoTraducido = (typeof t === 'function') ? t(claveI18n) : null;
+    
+    a.textContent = (textoTraducido && textoTraducido !== claveI18n) 
+                    ? textoTraducido 
+                    : (data.displayName || name);
+
     const isTopLevel = !parentPath;
-    a.textContent = data.displayName || name;
+
     a.className = isTopLevel 
         ? "text-gray-900 text-2xl font-bold flex-grow" 
         : "text-gray-700 text-xl font-medium flex-grow";
