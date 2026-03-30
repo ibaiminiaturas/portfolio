@@ -272,6 +272,11 @@
     ]
   },
     {
+    "category": "busts-different-sizes-painted-miniatures",
+    "images": 23,
+    "displayName": "Busts"
+  },
+    {
     "category": "54mm-75mm-painted-miniatures",
     "folder": "54mm-75mm",
     "items": [
