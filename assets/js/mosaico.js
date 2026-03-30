@@ -34,6 +34,8 @@ export function crearMosaico(sub, images, openLightbox) {
         img.style.objectFit = 'cover';
         img.style.borderRadius = '8px';
         img.style.cursor = 'pointer';
+        img.loading = "lazy"; // <--- Añade esto siempre
+        img.decoding = "async";
         img.style.transition = 'transform 0.25s ease-out';
 
         img.addEventListener('click', () => openLightbox(images, i));

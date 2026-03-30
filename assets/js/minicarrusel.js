@@ -20,10 +20,11 @@ export function crearMiniCarrusel(sub, images) {
         img.src = images[i];
         img.className = 'w-[200px] h-[200px] object-cover rounded flex-shrink-0 cursor-pointer';
 // --- ESTA LÍNEA ES LA QUE FALTA ---
-    img.style.transition = 'transform 0.3s ease-out';
+        img.style.transition = 'transform 0.3s ease-out';
         carruselDiv.appendChild(img);
         imgs.push(img);
-
+        img.loading = "lazy"; // <--- Añade esto siempre
+        img.decoding = "async";
         img.addEventListener('click', () => openLightbox(images, i));
 
         img.addEventListener('mouseenter', () => { img.style.transform = 'scale(0.95)'; });
