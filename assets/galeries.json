@@ -32,7 +32,7 @@
           {
             "name": "cyberpunk-2077-boardgame-miniatures",
             "displayName": "Cyber Punk 2077",
-            "images": 10,
+            "images": 11,
             "type": ""
           },
           {
@@ -275,6 +275,11 @@
         "images": 15
       }
     ]
+  },
+    {
+    "category": "busts-different-sizes-painted-miniatures",
+    "images": 23,
+    "displayName": "Busts"
   },
     {
     "category": "54mm-75mm-painted-miniatures",
